@@ -4390,3 +4390,24 @@ F:\Mohamed Sayed\GIG-ICPRO\ICP_ABC\obj\Debug\ICP_ABC.Migrations.update5.resource
 F:\Mohamed Sayed\GIG-ICPRO\ICP_ABC\obj\Debug\ICP_ABC.Migrations.addExcelTbl.resources
 F:\Mohamed Sayed\GIG-ICPRO\ICP_ABC\obj\Debug\ICP_ABC.Migrations.updateExcel.resources
 F:\Mohamed Sayed\GIG-ICPRO\ICP_ABC\obj\Debug\ICP_ABC.Migrations.addExcelFk.resources
+F:\Mohamed Sayed\GIG-ICPRO\ICP_ABC\obj\Debug\ICP_ABC.Migrations.updates.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.csprojAssemblyReference.cache
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.Migrations.initGig2.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.Migrations.updateCustomer3.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.Migrations.updateRedemption.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.Migrations.addPassword.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.Migrations.Policies.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.Migrations.updateCompany.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.Migrations.updateSubAndTrans.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.Migrations.update1.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.Migrations.update2.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.Migrations.update3.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.Migrations.update4.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.Migrations.update5.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.Migrations.addExcelTbl.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.Migrations.updateExcel.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.Migrations.addExcelFk.resources
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.csproj.GenerateResource.cache
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.csproj.CoreCompileInputs.cache
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.dll
+G:\GIG\GIG\ICP_ABC\obj\Debug\ICP_ABC.pdb

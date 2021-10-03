@@ -1129,7 +1129,7 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                 System.IO.File.Delete(fullPath);
                 var excel = new ExcelDetails
                 {
-                    Name = vm.file.FileName + DateTime.Now.ToString("dd:MM:yy , hh:mm"),
+                    Name = vm.file.FileName + DateTime.Now.ToString("dd/MM/yy,hh:mm"),
                     Status = (byte)ExcelStatus.Pending,
                     Screen = (byte)ExcelTransactionType.Contribution,
                     uploadDate = DateTime.Now,
@@ -1256,9 +1256,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                         delreason = DeleteFlag.NotDeleted,
 
                                      
-                                        nav_date = DateTime.Now.Date,//api to get icprice
-                                        Nav_Ddate = DateTime.Now.Date,//api to get icprice
-                                        ProcessingDate = DateTime.Now.Date,//api to get icprice
+                                        nav_date = icprice.Date,//api to get icprice
+                                        Nav_Ddate = icprice.Date,//api to get icprice
+                                        ProcessingDate = icprice.Date,//api to get icprice
                                         total = employeeContributions * Decimal.Divide(allocationRule.PercentageOfEmpShare , 100),
                                         system_date = DateTime.Now,
                                         ExcelId = excel.Id
@@ -1282,9 +1282,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                         UserID = User.Identity.GetUserId(),
                                         PolicyId = policy.Id,
                                         pur_sal = 0,
-                                        value_date = DateTime.Now.Date,//api to get icprice
-                                        Nav_Ddate = DateTime.Now.Date,//api to get icprice
-                                        ProcessingDate = DateTime.Now.Date,//api to get icprice,
+                                        value_date = icprice.Date,//api to get icprice
+                                        Nav_Ddate = icprice.Date,//api to get icprice
+                                        ProcessingDate = icprice.Date,//api to get icprice,
                                         ExcelId = excel.Id
 
                                     };
@@ -1323,9 +1323,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                         delreason = DeleteFlag.NotDeleted,
 
                                     
-                                        nav_date = DateTime.Now.Date,//api to get icprice
-                                        Nav_Ddate = DateTime.Now.Date,//api to get icprice
-                                        ProcessingDate = DateTime.Now.Date,//api to get icprice
+                                        nav_date = icprice.Date,//api to get icprice
+                                        Nav_Ddate = icprice.Date,//api to get icprice
+                                        ProcessingDate = icprice.Date,//api to get icprice
                                         total = employerContributions * Decimal.Divide(allocationRule.PercentageOfCompanyShare , 100),
                                         system_date = DateTime.Now,
                                         ExcelId = excel.Id
@@ -1345,9 +1345,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                         GTF_Flag = 2,
                                         UserID = User.Identity.GetUserId(),
                                         pur_sal = 0,
-                                        value_date = DateTime.Now.Date,
-                                        Nav_Ddate = DateTime.Now.Date,
-                                        ProcessingDate = DateTime.Now.Date,
+                                        value_date = icprice.Date,
+                                        Nav_Ddate = icprice.Date,
+                                        ProcessingDate = icprice.Date,
                                         PolicyId = policy.Id,
                                         ExcelId = excel.Id
                                     };
@@ -1388,9 +1388,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                                     delreason = DeleteFlag.NotDeleted,
                                                     PolicyId = policy.Id,
                                                    
-                                                    nav_date = DateTime.Now.Date,//api to get icprice
-                                                    Nav_Ddate = DateTime.Now.Date,//api to get icprice
-                                                    ProcessingDate = DateTime.Now.Date,//api to get icprice
+                                                    nav_date = icprice.Date,//api to get icprice
+                                                    Nav_Ddate = icprice.Date,//api to get icprice
+                                                    ProcessingDate = icprice.Date,//api to get icprice
                                                     total = additionalEmployeeContributions * Decimal.Divide(allocationRule.PercentageOfEmpShareBooster, 100),
                                                     system_date = DateTime.Now,
                                                     ExcelId = excel.Id
@@ -1410,9 +1410,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                                     GTF_Flag = 3,
                                                     UserID = User.Identity.GetUserId(),
                                                     pur_sal = 0,
-                                                    value_date = DateTime.Now.Date,//api to get icprice
-                                                    Nav_Ddate = DateTime.Now.Date,//api to get icprice
-                                                    ProcessingDate = DateTime.Now.Date,//api to get icprice
+                                                    value_date = icprice.Date,//api to get icprice
+                                                    Nav_Ddate = icprice.Date,//api to get icprice
+                                                    ProcessingDate = icprice.Date,//api to get icprice
                                                     PolicyId = policy.Id,
                                                     ExcelId = excel.Id
                                                 };
@@ -1462,9 +1462,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                                     delreason = DeleteFlag.NotDeleted,
                                           
                                                     PolicyId = policy.Id,
-                                                    nav_date = DateTime.Now.Date,//api to get icprice
-                                                    Nav_Ddate = DateTime.Now.Date,//api to get icprice
-                                                    ProcessingDate = DateTime.Now.Date,//api to get icprice
+                                                    nav_date = icprice.Date,//api to get icprice
+                                                    Nav_Ddate = icprice.Date,//api to get icprice
+                                                    ProcessingDate = icprice.Date,//api to get icprice
                                                     total = additionalEmployerContributions * Decimal.Divide(allocationRule.PercentageOfCompanyShareBooster, 100),
                                                     system_date = DateTime.Now,
                                                     ExcelId = excel.Id
@@ -1484,9 +1484,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                                     GTF_Flag = 4,
                                                     UserID = User.Identity.GetUserId(),
                                                     pur_sal = 0,
-                                                    value_date = DateTime.Now.Date,//api to get icprice
-                                                    Nav_Ddate = DateTime.Now.Date,//api to get icprice
-                                                    ProcessingDate = DateTime.Now.Date,//api to get icprice
+                                                    value_date = icprice.Date,//api to get icprice
+                                                    Nav_Ddate = icprice.Date,//api to get icprice
+                                                    ProcessingDate = icprice.Date,//api to get icprice
                                                     PolicyId = policy.Id,
                                                     ExcelId = excel.Id
                                                 };
@@ -1623,7 +1623,7 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                     System.IO.File.Delete(fullPath);
                     var excel = new ExcelDetails
                     {
-                        Name = vm.file.FileName + DateTime.Now.ToString("dd:MM:yy , hh:mm"),
+                        Name = vm.file.FileName + DateTime.Now.ToString("dd/MM/yy,hh:mm"),
                         Status = (byte)ExcelStatus.Pending,
                         Screen = (byte)ExcelTransactionType.Addition,
                         uploadDate = DateTime.Now,
@@ -1775,9 +1775,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                                     PolicyId = policy.Id,
                                                     delreason = DeleteFlag.NotDeleted,
 
-                                                    nav_date = DateTime.Now,//api to get icprice
-                                                    Nav_Ddate = DateTime.Now,//api to get icprice
-                                                    ProcessingDate = DateTime.Now,//api to get icprice
+                                                    nav_date = icprice.Date,//api to get icprice
+                                                    Nav_Ddate = icprice.Date,//api to get icprice
+                                                    ProcessingDate = icprice.Date,//api to get icprice
                                                     total = employeeContributions * Decimal.Divide(allocationRule.PercentageOfEmpShare, 100),
                                                     system_date = DateTime.Now,
                                                     ExcelId = excel.Id
@@ -1795,9 +1795,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                                     inputer = User.Identity.GetUserId(),
 
                                                     auth = 1,
-                                                    value_date = DateTime.Now,//api to get icprice
-                                                    Nav_Ddate = DateTime.Now,//api to get icprice
-                                                    ProcessingDate = DateTime.Now,//api to get icprice
+                                                    value_date = icprice.Date,//api to get icprice
+                                                    Nav_Ddate = icprice.Date,//api to get icprice
+                                                    ProcessingDate = icprice.Date,//api to get icprice
                                                     GTF_Flag = 1,
                                                     UserID = User.Identity.GetUserId(),
                                                     PolicyId = policy.Id,
@@ -1838,9 +1838,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                                     PolicyId = policy.Id,
                                                     delreason = DeleteFlag.NotDeleted,
 
-                                                    nav_date = DateTime.Now,//api to get icprice
-                                                    Nav_Ddate = DateTime.Now,//api to get icprice
-                                                    ProcessingDate = DateTime.Now,//api to get icprice
+                                                    nav_date = icprice.Date,//api to get icprice
+                                                    Nav_Ddate = icprice.Date,//api to get icprice
+                                                    ProcessingDate = icprice.Date,//api to get icprice
                                                     total = employerContributions * Decimal.Divide(allocationRule.PercentageOfCompanyShare, 100),
                                                     system_date = DateTime.Now,
                                                     ExcelId = excel.Id
@@ -1857,9 +1857,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                                     fund_id = allocationRule.FundId,
                                                     inputer = User.Identity.GetUserId(),
                                                     auth = 0,
-                                                    value_date = DateTime.Now,//api to get icprice
-                                                    Nav_Ddate = DateTime.Now,//api to get icprice
-                                                    ProcessingDate = DateTime.Now,//api to get icprice
+                                                    value_date = icprice.Date,//api to get icprice
+                                                    Nav_Ddate = icprice.Date,//api to get icprice
+                                                    ProcessingDate = icprice.Date,//api to get icprice
                                                     GTF_Flag = 2,
                                                     PolicyId = policy.Id,
                                                     UserID = User.Identity.GetUserId(),
@@ -1903,9 +1903,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                                         PolicyId = policy.Id,
                                                         delreason = DeleteFlag.NotDeleted,
 
-                                                        nav_date = DateTime.Now,//api to get icprice
-                                                        Nav_Ddate = DateTime.Now,//api to get icprice
-                                                        ProcessingDate = DateTime.Now,//api to get icprice
+                                                        nav_date = icprice.Date,//api to get icprice
+                                                        Nav_Ddate = icprice.Date,//api to get icprice
+                                                        ProcessingDate = icprice.Date,//api to get icprice
                                                         total = additionalEmployeeContributions * Decimal.Divide(allocationRule.PercentageOfEmpShareBooster, 100),
                                                         system_date = DateTime.Now,
                                                         ExcelId = excel.Id
@@ -1922,9 +1922,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                                         fund_id = allocationRule.FundId,
                                                         inputer = User.Identity.GetUserId(),
                                                         auth = 0,
-                                                        value_date = DateTime.Now,//api to get icprice
-                                                        Nav_Ddate = DateTime.Now,//api to get icprice
-                                                        ProcessingDate = DateTime.Now,//api to get icprice
+                                                        value_date = icprice.Date,//api to get icprice
+                                                        Nav_Ddate = icprice.Date,//api to get icprice
+                                                        ProcessingDate = icprice.Date,//api to get icprice
                                                         GTF_Flag = 3,
                                                         PolicyId = policy.Id,
                                                         UserID = User.Identity.GetUserId(),
@@ -1978,9 +1978,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                                         PolicyId = policy.Id,
                                                         delreason = DeleteFlag.NotDeleted,
 
-                                                        nav_date = DateTime.Now,//api to get icprice
-                                                        Nav_Ddate = DateTime.Now,//api to get icprice
-                                                        ProcessingDate = DateTime.Now,//api to get icprice
+                                                        nav_date = icprice.Date,//api to get icprice
+                                                        Nav_Ddate = icprice.Date,//api to get icprice
+                                                        ProcessingDate = icprice.Date,//api to get icprice
                                                         total = additionalEmployerContributions * Decimal.Divide(allocationRule.PercentageOfCompanyShareBooster, 100),
                                                         system_date = DateTime.Now,
                                                         ExcelId = excel.Id
@@ -1997,9 +1997,9 @@ namespace ICP_ABC.Areas.Subscriptions.Controllers
                                                         fund_id = allocationRule.FundId,
                                                         inputer = User.Identity.GetUserId(),
                                                         auth = 0,
-                                                        value_date = DateTime.Now,//api to get icprice
-                                                        Nav_Ddate = DateTime.Now,//api to get icprice
-                                                        ProcessingDate = DateTime.Now,//api to get icprice
+                                                        value_date = icprice.Date,//api to get icprice
+                                                        Nav_Ddate = icprice.Date,//api to get icprice
+                                                        ProcessingDate = icprice.Date,//api to get icprice
                                                         GTF_Flag = 4,
                                                         PolicyId = policy.Id,
                                                         UserID = User.Identity.GetUserId(),

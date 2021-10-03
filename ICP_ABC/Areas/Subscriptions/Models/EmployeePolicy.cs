@@ -1,5 +1,4 @@
-﻿using ICP_ABC.Areas.Companies.Models;
-using ICP_ABC.Areas.Customers.Models;
+﻿using ICP_ABC.Areas.Customers.Models;
 using ICP_ABC.Areas.Policies.Models;
 using System;
 using System.Collections.Generic;

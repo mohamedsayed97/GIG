@@ -1,5 +1,4 @@
-﻿using ICP_ABC.Areas.Companies.Models;
-using ICP_ABC.Areas.Funds.Models;
+﻿using ICP_ABC.Areas.Funds.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -17,7 +16,8 @@ namespace ICP_ABC.Areas.Policies.Models
 
         [Required]
         public int CompanyId { get; set; }
-        public List<Company> Companies { get; set; }
+
+        public List<ICP_ABC.Areas.Company.Models.Company> Companies { get; set; }
 
         [Required]
         public string PolicyHolderName { get; set; }
@@ -96,10 +96,8 @@ namespace ICP_ABC.Areas.Policies.Models
 
         
         public byte BusinessChannel { get; set; }
-
-       
       
-        public List<Company> Companies { get; set; }
+        public List<ICP_ABC.Areas.Company.Models.Company> Companies { get; set; }
         public List<Fund> Funds { get; set; }
 
         public bool HasWithdrawal { get; set; }

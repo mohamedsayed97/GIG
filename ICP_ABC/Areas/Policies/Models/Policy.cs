@@ -1,5 +1,4 @@
-﻿using ICP_ABC.Areas.Companies.Models;
-using ICP_ABC.Models;
+﻿using ICP_ABC.Models;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -34,7 +33,7 @@ namespace ICP_ABC.Areas.Policies.Models
 
         [Required]
         public int CompanyId { get; set; }
-        public Company Company { get; set; }
+        public ICP_ABC.Areas.Company.Models.Company Company { get; set; }
 
         [Required]
         public byte CalculationBasis { get; set; }

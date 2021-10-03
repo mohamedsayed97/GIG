@@ -13,22 +13,20 @@ using System.IO;
 using System.Web.UI;
 using System.Web.UI.WebControls;
 using ICP_ABC.Extentions;
-using ICP_ABC.Repositry;
-using ICP_ABC.Controllers;
 
 namespace ICP_ABC.Areas.Company.Controllers
 {
     public class CompanyController : Controller
     {
         private ApplicationDbContext dbContext;
-        private readonly GenericCRUD<ICP_ABC.Areas.Company.Models.Company> gcrud;
+ //       private readonly GenericCRUD<ICP_ABC.Areas.Company.Models.Company> gcrud;
 
         static string[] IDs;
 
         public CompanyController()
         {
             dbContext = new ApplicationDbContext();
-            gcrud = new GenericCRUD<ICP_ABC.Areas.Company.Models.Company>();
+   //         gcrud = new GenericCRUD<ICP_ABC.Areas.Company.Models.Company>();
         }
         // GET: Company/Company
         public ActionResult Index()
@@ -66,9 +64,9 @@ namespace ICP_ABC.Areas.Company.Controllers
                     Maker = User.Identity.GetUserId(),
                     UserID = User.Identity.GetUserId(),
                 };
-                gcrud.Add(companies);
-                //dbContext.Companies.Add(companies);
-                //dbContext.SaveChanges();
+              //  gcrud.Add(companies);
+                dbContext.Companies.Add(companies);
+                dbContext.SaveChanges();
                 return RedirectToAction("Details", new { Code = lastcode });
             }
             return View(company);

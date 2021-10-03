@@ -1,7 +1,7 @@
 ﻿using DocumentFormat.OpenXml.Spreadsheet;
 using ICP_ABC.Areas.Branches.Models;
 using ICP_ABC.Areas.Cities.Models;
-using ICP_ABC.Areas.Companies.Models;
+using ICP_ABC.Areas.Company.Models;
 using ICP_ABC.Areas.Customers.Models;
 using ICP_ABC.Areas.CustTypes.Models;
 using ICP_ABC.Areas.Nationalities.Models;
@@ -27,7 +27,7 @@ namespace ICP_ABC.Areas.Customers.Models
         public string tel1 { get; set; }
 
         public int CompanyId { get; set; }
-        public Company Company { get; set; }
+        public ICP_ABC.Areas.Company.Models.Company Company { get; set; }
 
         public string EnName { get; set; }
        

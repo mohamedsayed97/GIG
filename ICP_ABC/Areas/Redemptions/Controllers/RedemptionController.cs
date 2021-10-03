@@ -1232,8 +1232,8 @@ namespace ICP_ABC.Areas.Redemptions.Controllers
                                         else
                                         {
                                             var numberOfYears = (VestingRule.Base == (byte)VestingRuleBase.Joining)
-                                            ? (DateTime.Now.Date - employee.DateOfContribute.Date).Days / 365
-                                            : (DateTime.Now.Date - employee.DateOfHiring.Date).Days / 365;
+                                             ? Decimal.Divide((DateTime.Now.Date - employee.DateOfContribute.Date).Days, 365)
+                                             : Decimal.Divide((DateTime.Now.Date - employee.DateOfHiring.Date).Days, 365);
                                             VestingRuleDetails vestingRuleDetail = VestingRule.VestingRuleDetails.SingleOrDefault(vr => numberOfYears >= vr.FromYear && numberOfYears <= vr.ToYear);
 
                                             if (vestingRuleDetail != null)
@@ -1578,9 +1578,9 @@ namespace ICP_ABC.Areas.Redemptions.Controllers
                                                                 UserID = User.Identity.GetUserId(),
                                                                 delreason = DeleteFlag.NotDeleted,
                                                                 PolicyId = Policy.Id,
-                                                                nav_date = DateTime.Now.Date,
-                                                                Nav_Ddate = DateTime.Now.Date,
-                                                                ProcessingDate = DateTime.Now.Date,
+                                                                nav_date = icprice.Date,
+                                                                Nav_Ddate = icprice.Date,
+                                                                ProcessingDate = icprice.Date,
                                                                 total = AmountWillBeAddedAsSubForZeroAcc,
                                                                 system_date = DateTime.Now,
                                                                 ExcelId = excel.Id

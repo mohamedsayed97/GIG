@@ -31,7 +31,8 @@ using ICP_ABC.Areas.Calendars.Models;
 using ICP_ABC.Areas.Account.Models;
 using ICP_ABC.Areas.Policies.Models;
 using ICP_ABC.Areas.VestingRules.Models;
-using ICP_ABC.Areas.Companies.Models;
+using ICP_ABC.Areas.Company.Models;
+using ICP_ABC.Areas.ExcelAuthorization.Models;
 
 namespace ICP_ABC.Models
 {
