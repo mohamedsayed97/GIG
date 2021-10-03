@@ -1,0 +1,182 @@
+﻿@model PagedList.IPagedList<ICP_ABC.Areas.Customers.Models.Customer>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    /**/
+
+    TempData.Keep();
+    /**/
+
+    ViewBag.Title = "Customers";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Employee Setup: (Search)</h2>
+
+<form class="form-inline" id="SearchForm">
+    <label class="sr-only" for="inlineFormInputName2">Name</label>
+    @*<input type="text" class="form-control mb-2 mr-sm-2" name="ArName" id="ArName" value="@ViewData["Code"]" placeholder="By Code">*@
+
+    <input type="text" class="form-control form-control-sm" name="ArName" id="ArName" value="@ViewData["ArName"]" placeholder="بالأسم">
+
+    <input type="text" class="form-control form-control-sm" name="EnName" id="EnName" value="@ViewData["EnName"]" placeholder="By Name">
+    <input type="text" class="form-control form-control-sm" name="IdNum" id="IdNum" value="@ViewData["IdNum"]" placeholder="By Id Number">
+
+    @Html.DropDownList("BranchId", ViewData["Branches"] as SelectList, "Select Branch", new { @class = "form-control form-control-sm", id = "ddlist" })
+
+
+    @Html.DropDownList("CustomerType", ViewData["CustType"] as SelectList, "Select Employee Type", new { @class = "form-control form-control-sm", id = "ddlist" })
+
+
+    @{
+        var chk = ViewData["radioCHeck"] as string;
+        var AuthorizeCHK = chk == "1" ? "checked" : "";
+        var CheckerCHK = chk == "2" ? "checked" : "";
+        var MakerCHK = chk == "3" ? "checked" : "";
+        var AllCHK = chk == "4" ? "checked" : "";
+
+    }
+    <input id="Authorize"
+           name="RadioCHeck"
+           type="radio"
+           value="1"
+           @AuthorizeCHK />Authorize&nbsp;
+    @{
+        if (ViewBag.SecuLevel == 3)
+        {
+            <input style="display:inline-block" id="Checker"
+                   name="RadioCHeck"
+                   type="radio"
+                   value="2" @CheckerCHK /><label style="display:inline-block" for="Check">Checker&nbsp;</label>
+        }
+    }
+
+    <input id="Maker"
+           name="RadioCHeck"
+           type="radio"
+           value="3"
+           @MakerCHK />Maker&nbsp;
+
+    <input id="All"
+           name="RadioCHeck"
+           type="radio"
+           value="4"
+           @AllCHK />All&nbsp;
+    <button type="submit" class="btn btn-outline-primary mb-2 mr-sm-2" style="margin-left:5px;height:35px;"><i class="fa fa-search"></i> Search</button>
+
+</form>
+
+<p>
+    @if (Model.TotalItemCount != 0)
+    {
+        <a target="_blank" rel="noopener noreferrer" href="~/Customers/Customer/ExportToPDF">Print Result To PDF</a>
+
+        @Html.ActionLink("Print Result To Excel", "ExportToExcel", "Customer")
+
+    }
+
+</p>
+
+<table class="table">
+    <tr style="font-family:initial;color:blue">
+        <th>
+            الاسم
+        </th>
+
+        <th>
+            Name
+        </th>
+        <th>
+            CBO Type
+        </th>
+        <th>
+            Telephone
+        </th>
+        <th>
+            Id Number
+        </th>
+        <th>
+            CRN Number
+        </th>
+        <th>
+            City
+        </th>
+        <th>
+            Postal Code
+        </th>
+
+        <th>
+            Branch
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArName)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.EnName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CustType.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.tel1)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IdNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CRNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.City.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostalCode)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Branch.BName)
+            </td>
+            <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    @Html.ActionLink("Details", "Details", new { Id = item.CustomerID }, new { @class = " btn btn-outline-primary" })
+                    @*@Html.ActionLink("Details", "Details", new { id = item.GroupID }, new { @class = " btn btn-outline-primary" })*@
+                </div>
+            </td>
+        </tr>
+
+    }
+
+</table>
+
+
+@*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Search",
+        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
+@Html.PagedListPager(Model, page => Url.Action("Search",
+    new { page,
+        RadioCHeck = Request.QueryString["RadioCHeck"] ,
+        ArName = Request.QueryString["ArName"],
+        EnName = Request.QueryString["EnName"],
+        IdNum = Request.QueryString["IdNum"],
+        BranchId = Request.QueryString["BranchId"],
+        CustomerType = Request.QueryString["CustomerType"]
+    }))
+<div class="ButtonsControl">
+    <div class="text-center">
+        <div class="col-lg-3"></div>
+        <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+            <a href="~/Employees/Create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Customer</a>
+
+            <a href="~/Employees/Index" class="btn btn-primary"><i class="fa fa-backward"></i> Back </a>
+
+        </div>
+    </div>
+</div>

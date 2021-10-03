@@ -1,0 +1,339 @@
+﻿@model ICP_ABC.Areas.Blocks.Models.BlockViewModel
+@using ICP_ABC.Extentions
+@{ /**/
+    /**/
+    /**/
+    /**/
+    /**/
+
+    ViewBag.Title = "Blocks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+
+}
+<style>
+
+    body {
+        font-weight: 500;
+        background-color: aliceblue;
+        /*background-image: url(../../Content/Images/vehdb4tur0fg6yphaiumv2bmtplollhqll0gvubgxt58t7znz43m5enjos1cxcdn-.jpg );*/
+    }
+</style>
+
+<h2>Block Setup: (Details)</h2>
+
+
+@using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "CreateForm" }))
+{
+
+    <div style="width:95%;height:375px;overflow-y:scroll;overflow-x:hidden;border:solid 1px #ddd;margin:3px;padding:5px;">
+        @Html.AntiForgeryToken()
+
+        <p id="valsum" class="text-danger"> @Html.ValidationSummary(true)</p>
+        <div class="horizontal">
+            <div class="row">
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.code, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.code, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                        @Html.ValidationMessageFor(model => model.code, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4" id="branchdiv">
+                    @*<label for="inputEmail4">CompanyId</label>*@
+                    @Html.Label("Branch", htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-7">
+                        @Html.Editor("branch", new { htmlAttributes = new { @class = "form-control form-control-sm", id = "branch_id", Value = ViewData["Branches"], disabled = "disabled" } })
+
+                        @Html.ValidationMessage("branchId", "", new { @class = "text-danger", id = "branchId" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.cust_id, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.cust_id, new { htmlAttributes = new { @class = "form-control form-control-sm", id = "cust_id", disabled = "disabled" } })
+                        @*@Html.ValidationMessageFor(model => model.cust_id, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-4  mb-3">
+                    @Html.Label("Customer Name", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control form-control-sm", id = "EnName", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.block_date, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.block_date, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                        @Html.ValidationMessageFor(model => model.block_date, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.fund_id, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.Editor("fund", new { htmlAttributes = new { @class = "form-control form-control-sm", id = "FundId", Value = ViewData["Funds"], disabled = "disabled" } })
+                        @Html.ValidationMessage("fund_Id", "", new { @class = "text-danger", id = "fund_Id" })
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @*<div class="form-group col-sm-4">
+                @Html.LabelFor(model => model.BlockCmb, htmlAttributes: new { @class = "control-label col-md-6" })
+
+                <div class="col-md-7">
+
+                    @Html.DropDownListFor(model => model.BlockCmb, ViewData["CMB"] as SelectList, "", new { @class = "form-control form-control-sm ddlist ", id = "BlockCMB", disabled = "disabled" })
+
+
+                </div>
+            </div>*@
+
+                <div class="form-group col-sm-4">
+                    @Html.LabelFor(model => model.BlockCmb, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @foreach (var item in ViewData["CMB"] as SelectList)
+                        {
+                            if (Model.BlockCmb == 0)
+                            {
+                                if (@item.Text == "Block")
+                                {
+                                    <input type="radio" value="@item.Text" disabled checked />@item.Text
+                                }
+                                else
+                                {
+                                    <input type="radio" value="@item.Text" disabled />@item.Text
+                                }
+                            }
+                            else
+                            {
+                                if (@item.Text == "UnBlock")
+                                {
+                                    <input type="radio" value="@item.Text" disabled checked />@item.Text
+                                }
+                                else
+                                {
+                                    <input type="radio" value="@item.Text" disabled />@item.Text
+                                }
+                            }
+
+
+                        }
+                    </div>
+                </div>
+
+
+
+                <div class="form-group col-md-4">
+                    @Html.Label("Qty ", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.qty_block, new { htmlAttributes = new { @class = "form-control form-control-sm", id = "qty_block", type = "number", @readonly = "readonly" } })
+                    </div>
+                </div>
+
+                @*<div class="form-group col-md-4">
+                @Html.LabelFor(model => model.BlockCmb, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.BlockCmb, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.BlockCmb, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.block_reson, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+
+                        @Html.TextAreaFor(model => model.block_reson, htmlAttributes: new { @class = "control-label col-md-12", disabled = "disabled" })
+                        @*<textarea name="block_reson" value="model.block_reson" class="form-control form-control-sm" disabled> </textarea>*@
+                    </div>
+                </div>
+            </div>
+
+
+
+
+
+            <div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Delete</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            Are You Sure You Want to Delete ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a href="~/Blocks/Block/Delete?Code=@Model.code" class="btn btn-danger ">Delete</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal fade" id="Auth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Autherize</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            Are You Sure You Want to Autherize ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a  href="~/Blocks/Block/AuthorizeBlock?Code=@Model.code" class="btn btn-primary">Autherize</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="text-center" style="padding-top:15px;">
+        <div class="col-lg-1"></div>
+        <div class="btn-group col-md-10" role="group" aria-label="Basic example">
+            <div style="display:none;" id="AllCondition">
+                @if (User.Identity.HasTheRights("Block", "Create"))
+                {
+                    <a href="~/Blocks/Block/Create" class="btn btn-outline-primary"><i class="fa fa-plus"></i> Add Block</a>}
+                @if (User.Identity.HasTheRights("Block", "Update"))
+                {
+                    if (!Model.AuthForEditAndDelete)
+                    {
+                        <a href="~/Blocks/Block/Edit?Code=@Model.code" class="btn btn-outline-primary"><i class="fa fa-edit"></i> Edit </a> @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@}
+                }
+                @if (User.Identity.HasTheRights("Block", "Delete"))
+                {
+                    if (!Model.AuthForEditAndDelete)
+                    {
+                        <a href="#" data-toggle="modal" data-target="#Delete" class="btn btn-outline-primary"><i class="fa fa-remove"></i> Delete </a> 
+                        @*@Html.ActionLink("Delete", "Delte", "Account", new { Code = Model.Code, }, new { @class = " btn btn-outline-primary fa fa-remove" })*@}
+                }
+                @if (User.Identity.HasTheRights("Block", "Check"))
+                {
+                    if (!Model.Check)
+                    {
+
+                        <a href="~/Blocks/Block/CheckBlock?Code=@Model.code" class="btn btn-outline-primary"><i class="fa fa-check"></i> Check </a> } @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@}
+                @if (User.Identity.HasTheRights("Block", "Authorized"))
+                {
+                    if (Model.Check && !Model.Auth)
+                    {
+                        <a href="#" data-toggle="modal" data-target="#Auth" class="btn btn-outline-primary"><i class="fa fa-user-secret"></i> Autherize </a>
+                        @*<a href="~/Blocks/Block/AuthorizeBlock?Code=@Model.code" class="btn btn-outline-primary"><i class="fa fa-user-secret"></i> Autherize </a>*@
+                    }
+                    @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+                }
+            </div>
+            <a href="~/Blocks/Block/Search" class="btn btn-outline-primary"><i class="fa fa-search"></i> Search</a>
+            <a href="~/Blocks/Block/Previous?id=@Model.code" id="Prev" class="btn btn-outline-primary"><i class="fa fa-backward"></i> Previous </a>
+            <a href="~/Blocks/Block/Next?id=@Model.code" id="Next" class="btn btn-outline-primary"><i class="fa fa-forward"></i> Next </a>
+            <a href="~/Home/Home/Index" class="btn btn-outline-primary"><i class="fa fa-home"></i> Back to Home</a>
+        </div>
+    </div>
+
+}
+
+@section scripts{
+    <script>
+        $(function () {
+            //   normal dropdown
+            //$(".ddlist").chosen({
+            //    disable_search_threshold: 5,
+            //    width: "100%"
+            //});
+           // $("#branch_id").val(@Model.branch_id).trigger("chosen:updated");
+           // $("#FundId").val(@Model.fund_id).trigger("chosen:updated");
+           // $("#BlockCMB").val(@Model.BlockCmb).trigger("chosen:updated");
+            //$("#branch_id").chosen().change(function () {
+            //    $('span[data-valmsg-for="branchId"]').text(null);
+            //});
+
+            //$("#FundId").chosen().change(function () {
+            //    $('span[data-valmsg-for="fund_Id"]').text(null);
+            //});
+        });
+
+
+    </script>
+    <script>
+        $(function () {
+
+            var last=  "@TempData["Last"]" ;
+
+            if (last != null) {
+
+
+                if ("@TempData["Last"]" == "Last") {
+
+
+
+                    document.getElementById("Next").classList.add('disabled');
+                }
+
+            }
+            /////////////////////////
+           var last=  "@TempData["First"]" ;
+
+            if (last != null) {
+
+                if ("@TempData["First"]" == "First") {
+
+
+
+                    document.getElementById("Prev").classList.add('disabled');
+                }
+
+            }
+            /////////////////////
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '@servername/ChekCalendar',
+                type: 'POST',
+                success: function (Result) {
+                    if (Result.NOtInCalendar == 1) {
+                        var AllCond = document.getElementById("AllCondition");
+                        AllCond.style.display = "block";
+
+                    }
+                    else if (Result.result == 2) {
+
+                        var AllCond = document.getElementById("AllCondition");
+                        AllCond.style.display = "block";
+
+                    }
+                }
+            });
+        }
+        );
+
+
+    </script>
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

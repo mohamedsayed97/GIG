@@ -1,0 +1,388 @@
+﻿@model ICP_ABC.Areas.VestingRules.Models.VestingRuleViewModel
+@using ICP_ABC.Areas.VestingRules.Models
+@{
+    /**/
+
+    /**/
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+
+
+    <div class="col-12" id="">
+        <h2>Vesting Rule Setup</h2>
+        @using (Html.BeginForm("Create", "VestingRule", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "containerVestingRule", style = "margin-top:50px" }))
+        {
+            <div style="margin-bottom:100px;">
+
+
+
+                <div class="row">
+
+                    <div class="form-group col-3">
+                        <label for="PolicyId" class="control-label">Policy</label>
+
+                        @Html.DropDownListFor(model => model.PolicyId, new SelectList(Model.Policies, "Id", "PolicyHolderName"), "Select Policy", new { @class = "form-control ", id = "PolicyId" })
+                        @Html.ValidationMessageFor(model => model.PolicyId, "", new { @class = "text-danger" })
+
+
+                    </div>
+                 
+                        <div class="form-group col-3">
+
+                            <label for="FundId" class="control-label">Fund</label>
+
+                            @Html.DropDownListFor(model => model.FundId, new SelectList(Model.Funds, "FundID", "Name"), "Select Fund", new { @class = "form-control ", id = "FundId" ,type="text" })
+                            @Html.ValidationMessageFor(model => model.FundId, "", new { @class = "text-danger" })
+
+
+                        </div>
+                    
+                    <div class="form-group col-3">
+                        <label for="TransactionType" class="control-label">TransactionType</label>
+
+                        @Html.EnumDropDownListFor(model => model.TransactionType, "Select TransactionType", new { @class = "form-control" })
+                        @Html.ValidationMessageFor(model => model.TransactionType, "", new { @class = "text-danger" })
+
+
+                    </div>
+                    <div class="form-group col-3">
+                        <label for="Base" class="control-label">Base</label>
+                        @Html.EnumDropDownListFor(model => model.Base, "Select Base", new { @class = "form-control" })
+
+                        @Html.ValidationMessageFor(model => model.Base, "", new { @class = "text-danger" })
+
+
+                    </div>
+                    <div class="form-group col-12">
+
+                        <div class="alert alert-danger" style="display:none" id="ErrorMessage" role="alert">
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <div class="row">
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+
+                                <th scope="col" style="width:10%">From</th>
+                                <th scope="col" style="width:10%"> To</th>
+
+                                <th scope="col">% Of Emp Share</th>
+                                <th scope="col">% Of Company Share</th>
+
+                                <th scope="col">% Of Emp Share(Booster)</th>
+                                <th scope="col">% Of Company Share Booster</th>
+                                <th scope="col">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody id="vestingRuleItem">
+                            @for (int i = 0; i < Model.VestingRuleDetails.Count; i++)
+                            {
+                                <tr>
+
+                                    <td>
+                                        @Html.EditorFor(model => Model.VestingRuleDetails[i].FromYear, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => Model.VestingRuleDetails[i].FromYear, "", new { @class = "text-danger" })
+
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(model => Model.VestingRuleDetails[i].ToYear, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => Model.VestingRuleDetails[i].ToYear, "", new { @class = "text-danger" })
+
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(model => Model.VestingRuleDetails[i].PercentageOfEmpShare, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => Model.VestingRuleDetails[i].PercentageOfEmpShare, "", new { @class = "text-danger" })
+
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(model => Model.VestingRuleDetails[i].PercentageOfCompanyShare, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => Model.VestingRuleDetails[i].PercentageOfCompanyShare, "", new { @class = "text-danger" })
+
+                                    </td>
+                                    <td>
+
+                                        @Html.EditorFor(model => Model.VestingRuleDetails[i].PercentageOfEmpShareBooster, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => Model.VestingRuleDetails[i].PercentageOfEmpShareBooster, "", new { @class = "text-danger" })
+
+                                    </td>
+                                    <td>
+                                        @Html.EditorFor(model => Model.VestingRuleDetails[i].PercentageOfCompanyShareBooster, new { htmlAttributes = new { @class = "form-control" } })
+                                        @Html.ValidationMessageFor(model => Model.VestingRuleDetails[i].PercentageOfCompanyShareBooster, "", new { @class = "text-danger" })
+
+                                    </td>
+
+                                    <td>
+                                        @{var Dis = ""; if (i == 0) { Dis = "disabled"; }
+                                            <button type="button" @Dis class="btn btn-danger removeVestingRule">
+                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                            </button>
+                                        }
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+                <div class="row">
+                    <div class="offset-5 col-2">
+                        <button id="addVestingRule" type="button" class="btn btn-success " style="display:block"> <i class="fa fa-plus-circle" aria-hidden="true"></i>Add Rule</button>
+
+                    </div>
+
+
+                </div>
+
+
+
+            </div>
+            <div class="ButtonsControl">
+
+
+                <div class="text-center" style="padding-top:15px;">
+
+                    <div class="btn-group col-md-8" role="group" aria-label="Basic example">
+                        <input type="submit" value="Apply" class="btn btn-primary" id="submit" />
+
+                        <a href="~/VestingRules/VestingRule/Index" class="btn btn-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+
+        $(document).ready(function () {
+            var index = 0;
+            $("#addVestingRule").on("click", function () {
+
+                debugger
+                index++;
+                var vestingRuleItem = '<tr class="addedByButton">' +
+                    '<td>'+
+                    '  <input class="form-control text-box single-line" data-val="true" data-val-number="The field FromYear must be a number." data-val-range="0 - 100" data-val-range-max="1.79769313486232E+308" data-val-range-min="0"  data-val-required="Required" id="VestingRuleDetails_' + index + '__FromYear" name="' + 'VestingRuleDetails[' + index + ']' + '.FromYear" type="number"  aria-describedby="VestingRuleDetails_' + index + '__FromYear-error"aria-invalid="true" >' +
+                    ' <span class="field-validation-valid text-danger" data-valmsg-for="' + 'VestingRuleDetails[' + index + ']' + '.FromYear" data-valmsg-replace="true"></span>' +
+                    '</td>' +
+
+                    '<td>'+
+                    ' <input class="form-control text-box single-line" data-val="true" data-val-number="The field ToYear must be a number." data-val-range="0 - 100" data-val-range-max="1.79769313486232E+308" data-val-range-min="0" data-val-required="Required" id="VestingRuleDetails_' + index + '__ToYear" name="' + 'VestingRuleDetails[' + index + ']' + '.ToYear" type="number"  aria-describedby="VestingRuleDetails_' + index + '__ToYear-error"aria-invalid="true" >' +
+                    '    <span class="field-validation-valid text-danger" data-valmsg-for="' + 'VestingRuleDetails[' + index + ']' + '.ToYear" data-valmsg-replace="true"></span>' +
+                    '</td>' +
+
+                    '<td>' +
+                    ' <input class="form-control text-box single-line" data-val="true" data-val-number="The field PercentageOfEmpShare must be a number." data-val-range="0 - 100" data-val-range-max="100" data-val-range-min="0" data-val-required="Required" id="VestingRuleDetails_' + index + '__PercentageOfEmpShare" name="' + 'VestingRuleDetails[' + index + ']' + '.PercentageOfEmpShare"  type="number"  aria-describedby="VestingRuleDetails_' + index + '__PercentageOfEmpShare-error"aria-invalid="true"  >' +
+                    ' <span class="field-validation-valid text-danger" data-valmsg-for="' + 'VestingRuleDetails[' + index + ']' + '.PercentageOfEmpShare" data-valmsg-replace="true"></span>' +
+                    '</td>' +
+
+
+                    '<td>' +
+                    '   <input class="form-control text-box single-line" data-val="true" data-val-number="The field PercentageOfCompanyShare must be a number." data-val-range="0 - 100" data-val-range-max="100" data-val-range-min="0" data-val-required="Required" id="VestingRuleDetails_' + index + '__PercentageOfCompanyShare" name="' + 'VestingRuleDetails[' + index + ']' + '.PercentageOfCompanyShare"  type="number" aria-describedby="VestingRuleDetails_' + index + '__PercentageOfCompanyShare-error"aria-invalid="true">' +
+                    '  <span class="field-validation-valid text-danger" data-valmsg-for="' + 'VestingRuleDetails[' + index + ']' + '.PercentageOfCompanyShare" data-valmsg-replace="true"></span>' +
+                    '</td>' +
+
+
+                    '<td>' +
+                    '   <input class="form-control text-box single-line" data-val="true" data-val-number="The field PercentageOfEmpShareBooster must be a number." data-val-range="0 - 100" data-val-range-max="100" data-val-range-min="0" data-val-required="Required" id="VestingRuleDetails_' + index + '__PercentageOfEmpShareBooster" name="' + 'VestingRuleDetails[' + index + ']' + '.PercentageOfEmpShareBooster"  type="number" aria-describedby="VestingRuleDetails_' + index + '__PercentageOfEmpShareBooster-error"aria-invalid="true">' +
+                    '       <span class="field-validation-valid text-danger" data-valmsg-for="' + 'VestingRuleDetails[' + index + ']' + '.PercentageOfEmpShareBooster" data-valmsg-replace="true"></span>' +
+                    '</td>' +
+
+                    '<td>' +
+                    '   <input class="form-control text-box single-line" data-val="true" data-val-number="The field PercentageOfCompanyShareBooster must be a number." data-val-range="0 - 100" data-val-range-max="100" data-val-range-min="0" data-val-required="Required" id="VestingRuleDetails_' + index + '__PercentageOfCompanyShareBooster" name="' + 'VestingRuleDetails[' + index + ']' + '.PercentageOfCompanyShareBooster"  type="number"  aria-describedby="VestingRuleDetails_' + index + '__PercentageOfCompanyShareBooster-error"aria-invalid="true" >' +
+                    '   <span class="field-validation-valid text-danger" data-valmsg-for="' + 'VestingRuleDetails[' + index + ']' + '.PercentageOfCompanyShareBooster" data-valmsg-replace="true"></span>' +
+                    '</td>' +
+
+
+
+                    '<td>' +
+                    '   <button type="button" class="btn btn-danger removeVestingRule">' +
+                    '       <i class="fa fa-times" aria-hidden="true"></i>' +
+                    '   </button>' +
+                    '</td>' +
+
+                    '</tr>';
+                $('#vestingRuleItem').append(vestingRuleItem);
+
+                $("#containerVestingRule").removeData("validator");
+                $("#containerVestingRule").removeData("unobtrusiveValidation");
+                $.validator.unobtrusive.parse("#containerVestingRule");
+            });
+            $(document).on('click', '.removeVestingRule', function () {
+
+
+
+                this.parentNode.parentNode.remove();
+                index--;
+            });
+
+            //$(document).on('change', '#TransactionType', function () {
+            //    debugger
+            //    if ($(this).children(":selected").text() == "Surrender") {
+            //        document.getElementById("addVestingRule").style.display = '';
+            //    }
+            //    else if ($(this).children(":selected").text() == "Withdrawal") {
+
+            //        document.getElementById("addVestingRule").style.display = "none";
+            //        document.querySelectorAll('.addedByButton').forEach(e => e.remove());
+            //    }
+            //    else {
+
+            //    }
+            //});
+
+
+            $("#containerVestingRule").submit(function (e) {
+                debugger
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+                var isFormValid = $("#containerVestingRule").valid();
+                if (isFormValid) {
+                    var tableObj = document.getElementById("vestingRuleItem");
+                var rules = [];
+                var allTRs = tableObj.getElementsByTagName("tr");
+                for (var trCounter = 0; trCounter < allTRs.length; trCounter++) {
+
+                    var allTDsInTR = allTRs[trCounter].getElementsByTagName("td");
+                    var rule = {
+                        FromYear: allTDsInTR[0].children[0].value,
+                        ToYear: allTDsInTR[1].children[0].value,
+                        PercentageOfEmpShare: allTDsInTR[2].children[0].value,
+                        PercentageOfCompanyShare: allTDsInTR[3].children[0].value,
+                        PercentageOfEmpShareBooster: allTDsInTR[4].children[0].value,
+                        PercentageOfCompanyShareBooster: allTDsInTR[5].children[0].value
+                    };
+
+                    rules.push(rule);
+                }
+                    var VestingRule = {
+                        FundId: ($('#TransactionType').children(":selected").val() != 1) ? Number(document.getElementById("FundId").value) : null,
+                        PolicyId: document.getElementById("PolicyId").value,
+                        TransactionType: document.getElementById("TransactionType").value,
+                        Base: $('#Base :selected').val(),
+
+                    VestingRuleDetails: rules
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '@servername/VestingRules/VestingRule/Create',
+                    data: { model: VestingRule }, // serializes the form's elements.
+                    success: function (result) {
+                        debugger
+                        if (!result.success) {
+                            document.getElementById("ErrorMessage").style.display = '';
+                            var markupErrors = "";
+                            var errors = result.errors.split("&");
+                            for (var i = 0; i < errors.length; i++) {
+                                if (i == 0)
+                                    markupErrors = markupErrors + errors[i];
+                                else
+                                    markupErrors = markupErrors + '<br>' + errors[i];
+
+                            }
+
+                            document.getElementById('ErrorMessage').innerHTML = markupErrors;
+                        }
+                        else {
+                            window.location.href = '@servername/VestingRules/VestingRule/Details?id=' + result.id;
+                        }
+
+                    }
+                });
+
+                }
+
+
+
+            });
+            
+            $('#TransactionType').change(function () {
+                debugger
+                var TransactionType = Number($(this).children(":selected").val());
+                if (TransactionType == 1) {
+                    $('#FundId').find('option').remove().end();
+                    $('#FundId').append($('<option>', {
+                        value: null,
+                        text: "All Funds"
+                    }));
+                    document.getElementById("FundId").setAttribute("disabled", "disabled");
+                } else {
+                    $('#FundId').find('option').remove().end();
+                    $('#FundId').append($('<option>', {
+                        value: null,
+                        text: "Select Fund"
+                    }));
+                    document.getElementById("FundId").removeAttribute("disabled");
+
+                    getFundsByPolicyId(Number($('#PolicyId').children(":selected").val()));
+                }
+
+            });
+            function getFundsByPolicyId(id) {
+                   $.ajax({
+                        type: "Get",
+                        url: '@servername/VestingRules/VestingRule/GetFundsByPolicy',
+                        data: { id: id },
+                        success: function (result) {
+                            debugger
+                            $('#FundId').find('option').remove().end();
+                            $('#FundId').append($('<option>', {
+                                value: 0,
+                                text: "Select Fund"
+                            }));
+
+                            result.Funds.forEach(element => {
+                                $('#FundId').append($('<option>', {
+                                    value: element.FundID,
+                                    text: element.Name
+                                }));
+                            });
+
+                        },
+                        error: function (result) {
+                            debugger
+                            
+
+                        }
+                    });
+            }
+            $('#PolicyId').change(function () {
+                debugger
+                var id = Number($(this).children(":selected").val());
+                if (id != 0 && Number($('#TransactionType').children(":selected").val()) != 1) {
+                    getFundsByPolicyId(id);
+                }
+                else {
+                    if (Number($('#TransactionType').children(":selected").val()) != 1) {
+                    $('#FundId').find('option').remove().end();
+                    $('#FundId').append($('<option>', {
+                        value: 0,
+                        text: "Select Fund"
+                    }));
+                    }
+                }
+
+            });
+        });
+
+    </script>
+}

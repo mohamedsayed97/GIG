@@ -1,0 +1,139 @@
+﻿@model PagedList.IPagedList<ICP_ABC.Areas.Group.Models.UserGroup>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@*<link href="~/Content/FontAwesome/all.css" rel="stylesheet" type="text/css" />*@
+@{ Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Search";
+    TempData.Keep("GrouprightForExc");
+
+}
+@*<style>
+        .table-responsive {
+            display: table;
+        }
+    </style>*@
+<h2>Group Rights Setup: (Search)</h2>
+<br>
+<form class="form-inline" id="SearchForm">
+    <label class="sr-only" for="inlineFormInputName2">Name</label>
+    <label for="GroupCode">GroupCode : &nbsp;</label>
+    <input type="text" class="form-control form-control-sm" name="Code" id="Code" value="@ViewData["Code"]" placeholder="By Code">
+    <label for="GroupName">GroupName : &nbsp;</label>
+    <input type="text" class="form-control form-control-sm" name="searchString" id="searchString" value="@ViewData["searchString"]" placeholder="By Name">
+    @{
+        var chk = ViewData["radioCHeck"] as string;
+        var AuthorizeCHK = chk == "1" ? "checked" : "";
+        var CheckerCHK = chk == "2" ? "checked" : "";
+        var MakerCHK = chk == "3" ? "checked" : "";
+        var AllCHK = chk == "4" ? "checked" : "";
+
+    }
+    <input id="Authorize"
+           name="RadioCHeck"
+           type="radio"
+           value="1" @AuthorizeCHK />Authorize&nbsp;
+    @{
+        if (ViewBag.SecuLevel == 3)
+        {
+            <input style="display:inline-block" id="Checker"
+                   name="RadioCHeck"
+                   type="radio"
+                   value="2" @CheckerCHK /><label style="display:inline-block" for="Check">Checker&nbsp;</label>
+        }
+    }
+
+    <input id="Maker"
+           name="RadioCHeck"
+           type="radio"
+           value="3" @MakerCHK />Maker&nbsp;
+
+    <input id="All"
+           name="RadioCHeck"
+           type="radio"
+           value="4" @AllCHK />All&nbsp;
+
+
+    <button type="submit" class="btn btn-primary mb-2 mr-sm-4" style="margin-left:5px;"><i class="fa fa-search"></i> Search</button>
+</form>
+<p>
+    @if (Model.TotalItemCount != 0)
+    {
+        <a target="_blank" rel="noopener noreferrer" href="/GroupsRights/GroupRight/ExportToPDF">Print Result To PDF</a>
+        @Html.ActionLink("Print Result To Excel", "ExportToExcel", "GroupRight")
+    }
+
+</p>
+
+<div class="">
+    <div style="width:95%;height:260px;overflow-y:scroll;overflow-x:hidden;border:solid 1px #ddd;margin:3px;padding:5px;">
+        <table class="table table-responsive-sm " id="table">
+            <thead>
+                <tr style="font-family:initial;color:blue">
+                    <th scope="col">
+                        Code
+                    </th>
+                    <th scope="col">
+                        Group Name
+                    </th>
+                    <th scope="col">
+                        Has Rights
+                    </th>
+                    <th scope="col">
+                    </th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GroupID)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.HasGroupRight)
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                @if (item.HasGroupRight == true)
+                                {
+                                    @Html.ActionLink("Details", "Details", "GroupRight", new { Id = item.GroupID }, new { @class = " btn btn-outline-primary" }) }
+                                else
+                                {
+                                    <button type="button" class="btn btn-outline-primary" disabled>Details</button>}
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            }
+        </table>
+
+    </div>
+</div>
+@*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    @Html.PagedListPager(Model, page => Url.Action("Search",
+                            new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
+@Html.PagedListPager(Model, page => Url.Action("Search",
+    new { page, RadioCHeck= Request.QueryString["RadioCHeck"] , Code= Request.QueryString["CodeString"], searchString = Request.QueryString["searchString"] }))
+<div class="ButtonsControl">
+    <div class="text-center">
+        <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+            <a href="~/GroupsRights/GroupRight/Create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Group Right</a>
+            <a href="~/GroupsRights/GroupRight/Index" class="btn btn-primary"><i class="fa fa-backward"></i> Back </a>
+        </div>
+    </div>
+</div>
+    @section scripts{
+        @Scripts.Render("~/bundles/jqueryval")
+        <script>
+            $(function () {
+                //   normal dropdown
+                $(".ddlist").chosen({
+                    inherit_select_classes: false,
+                    disable_search_threshold: 5,
+
+                });
+            });</script>
+    }

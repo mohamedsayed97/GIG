@@ -1,0 +1,272 @@
+﻿@using PagedList.Mvc
+@using ICP_ABC.Extentions
+
+@model PagedList.IPagedList<ICP_ABC.Models.ApplicationUser>
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+@*<link href="~/Content/FontAwesome/all.css" rel="stylesheet" type="text/css" />*@
+
+@{
+                /**/
+
+
+                ViewBag.Title = "Search";
+                TempData.Keep("UserForExc");
+}
+
+<h2>User Profile Setup: (Search)</h2>
+
+<form class="form-inline" id="SearchForm">
+    <p class="text-danger">@Html.ValidationSummary(true)</p>
+    <label class="sr-only" for="inlineFormInputName2">Name</label>
+    <input type="text" class="form-control form-control-sm" name="CodeString" value="@ViewData["CodeString"]" id="CodeString" placeholder="By Code">
+    <input type="text" class="form-control form-control-sm" name="searchString" value="@ViewData["searchString"]" id="searchString" placeholder="By Name">
+
+
+    @Html.DropDownList("Branches", ViewData["Branches"] as SelectList, "Select Branch", new { @class = "form-control form-control-sm", id = "ddlist" })
+
+    @Html.DropDownList("Groups", ViewData["Groups"] as SelectList, "Select Group", new { @class = "form-control form-control-sm" })
+    @{
+        var chk = ViewData["radioCHeck"] as string;
+        var AuthorizeCHK = chk == "1" ? "checked" : "";
+        var CheckerCHK = chk == "2" ? "checked" : "";
+        var MakerCHK = chk == "3" ? "checked" : "";
+        var AllCHK = chk == "4" ? "checked" : "";
+
+    }
+    <input id="Authorize"
+           name="RadioCHeck"
+           type="radio"
+           value="1"
+           @AuthorizeCHK />Authorize&nbsp;
+    @{
+        if (ViewBag.SecuLevel == 3)
+        {
+            <input style="display:inline-block" id="Checker"
+                   name="RadioCHeck"
+                   type="radio"
+                   value="2" @CheckerCHK /><label style="display:inline-block" for="Check">Checker&nbsp;</label>
+        }
+    }
+
+    <input id="Maker"
+           name="RadioCHeck"
+           type="radio"
+           value="3"
+           @MakerCHK />Maker&nbsp;
+
+    <input id="All"
+           name="RadioCHeck"
+           type="radio"
+           value="4"
+           @AllCHK />All&nbsp;
+
+
+
+    <button type="submit" class="btn btn-sm btn-primary mb-2 mr-sm-4" style="margin-left:5px;"><i class="fa fa-search"></i> Search</button>
+</form>
+
+<p>
+    @if (Model.TotalItemCount != 0)
+    {
+        <a target="_blank" rel="noopener noreferrer" href="/Account/Account/ExportToPDF">Print Result To PDF</a>
+
+        @Html.ActionLink("Print Result To Excel", "ExportToExcel", "Account")
+    }
+
+
+    @*@Html.ActionLink("Print Result To PDF", "ExportToPDF", "Account")*@
+</p>
+<div class="">
+
+    <div style="margin-bottom:70px;">
+
+        <table class="table table-responsive-lg " id="table">
+            <thead>
+                <tr style="font-family:initial;color:blue">
+                    <th scope="col">
+                        @*@Html.ActionLink("Code", "Search", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, Code = true })*@
+                        Code
+                    </th>
+                    <th scope="col">
+                        @*@Html.ActionLink("User Name", "Search", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, name = true })*@
+                        User Name
+                    </th>
+                    <th scope="col">
+                        @*@Html.ActionLink("Company Name", "Search", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, Branch = true })*@
+                        BranchName
+                    </th>
+                    <th scope="col">
+                        @*@Html.ActionLink("Group", "Search", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, Group = true })*@
+                        Group
+                    </th>
+                    <th scope="col">
+                        @*@Html.ActionLink("Title", "Search", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, Title = true })*@
+                        Title
+                    </th>
+                    <th scope="col">
+                        @*@Html.ActionLink("Lock User", "Search", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, Lock_User = true })*@
+                        LockUser
+                    </th>
+                    <th scope="col">
+                        @*@Html.ActionLink("Lock User", "Search", new { sortOrder = ViewBag.DateSortParm, currentFilter = ViewBag.CurrentFilter, Lock_User = true })*@
+                        Actions
+                    </th>
+                </tr>
+            </thead>
+            @foreach (var item in Model)
+            {
+                <tbody>
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Code)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Branch.BName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.UserGroup.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.IsLocked)
+                        </td>
+                        <td>
+                            <div class="btn-group" role="group" aria-label="Basic example">
+                                @*@if (User.Identity.HasTheRights("_users", "Edit"))
+                                    {
+                                        @Html.ActionLink("Edit", "Edit", "Account", new { UserName = item.UserName, }, new { @class = " btn btn-outline-primary" })
+                                                                }*@
+
+                                @Html.ActionLink("Details", "Details", "Account", new { UserName = item.UserName, }, new { @class = " btn btn-outline-primary" })
+
+                                @Html.ActionLink("Reset Password", "ResetPassword", "Account", new { UserName = item.UserName, }, new { @class = " btn btn-outline-primary", data_toggle = "modal", data_target = "." + item.UserName })
+                                @if (item.IsLocked)
+                                {
+
+                                    @Html.ActionLink("Unlock User", "UnlockUser", "Account", new { Id = item.Id }, new { @class = " btn btn-outline-primary", data_toggle = "modal", data_target = "#" + item.UserName })
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("lock User", "UnlockUser", "Account", new { Id = item.Id }, new { @class = " btn btn-outline-primary", data_toggle = "modal", data_target = "#" + item.UserName })
+
+                                }
+                                @if (item.IsLogged)
+                                {
+                                    @Html.ActionLink("Force Log Out", "ForceLogOff", "Account", new { UserName = item.UserName, }, new { @class = " btn btn-outline-primary" })
+                                }
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+                <div class="modal fade @item.UserName" id="" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Reset Password </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are You Sure You Want to Reset Password to @item.UserName ?
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <a href="~/Account/Account/ResetPassword/?UserName=@item.UserName" class="btn btn-primary ">Confirm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal fade delete " id="Delete_@item.UserName" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Reset Password </h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                Are You Sure You Want delete to @item.UserName ?
+
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <a href="~/Account/Account/ResetPassword/?UserName=@item.UserName" class="btn btn-primary ">Confirm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="modal fade" id=@item.UserName tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalCenterTitle">Lock/Unlock User</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+
+                                Are You Sure You Want to Lock/Unlock @item.UserName ?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <a href="~/Account/Account/UnlockUser/@item.Id" class="btn btn-primary ">Confirm</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        </table>
+
+    </div>
+
+</div>
+
+@*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount*@
+
+
+@Html.PagedListPager(Model, page => Url.Action("Search",
+    new { page, RadioCHeck= Request.QueryString["RadioCHeck"] ,  Branches = Request.QueryString["Branches"], Group = Request.QueryString["Group"], Code= Request.QueryString["CodeString"], searchString = Request.QueryString["searchString"] }))
+<div class="ButtonsControl">
+    <div class="text-center">
+        <div class="col-md-3"></div>
+        <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+            <a href="~/Account/Account/Register" class="btn btn-primary"><i class="fa fa-group"></i> Add User</a>
+
+            <a href="~/Home/Home/Index" class="btn btn-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+        </div>
+
+
+    </div>
+</div>
+
+    @section scripts{
+        @Scripts.Render("~/bundles/jqueryval")
+        <script>
+
+            $(function () {
+                //   normal dropdown
+                $(".ddlist").chosen({
+                    inherit_select_classes: false,
+                    disable_search_threshold: 5,
+
+                });
+            });
+        </script>
+
+    }
+

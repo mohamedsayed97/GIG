@@ -1,0 +1,89 @@
+﻿@model ICP_ABC.Areas.UsersSecurity.Models.UserSecurity
+@{ Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Register"; }
+<style>
+
+    body {
+        font-weight: 500;
+        background-color: aliceblue;
+        /*background-image: url(../../Content/Images/vehdb4tur0fg6yphaiumv2bmtplollhqll0gvubgxt58t7znz43m5enjos1cxcdn-.jpg );*/
+    }
+</style>
+<h2>User Security Setup: (Update)</h2>
+@*<form method="post" action="@Url.Action("REgister", "Account")">*@
+@using (Html.BeginForm("Edit", "UserSecurity", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+<div style="width:95%;height:375px;overflow-y:scroll;overflow-x:hidden;border:solid 1px #ddd;margin:3px;padding:5px;">
+
+
+    @Html.AntiForgeryToken()
+
+    <p class="text-danger">@Html.ValidationSummary(true)</p>
+
+    <div class="horizontal">
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.NumberOfTrials, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.NumberOfTrials, new { htmlAttributes = new { @class = "form-control form-control-sm", @min = 1, @max = 5 } })
+                @Html.ValidationMessageFor(model => model.NumberOfTrials, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.ExpireInterval, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.ExpireInterval, new { htmlAttributes = new { @class = "form-control form-control-sm" ,@min=1} })
+                @Html.ValidationMessageFor(model => model.ExpireInterval, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Levels, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.Levels, htmlAttributes: new { @class = "form-control form-control-sm",disabled="disabled"})
+                @Html.HiddenFor(model => model.Levels)
+                @*@readonly = "readonly"*@
+                @Html.ValidationMessageFor(model => model.Levels, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group col-md-4">
+            @Html.Label("Vacation Day Transaction :", htmlAttributes: new { @class = "control-label col-md-9 " })
+            
+            <div class="form-group row-cols-md-4">
+               
+                <div class="form-group col-md-12">
+                    @Html.CheckBoxFor(model => model.ViewTransaction, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                    @Html.ValidationMessageFor(model => model.ViewTransaction, "", new { @class = "text-danger" })
+                    <label class="control-label" >View-Transaction</label>
+
+                    @Html.CheckBoxFor(model => model.CreateTransaction, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                    @Html.ValidationMessageFor(model => model.CreateTransaction, "", new { @class = "text-danger" })
+                    <label class="control-label">Create-Transaction</label>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+                <div class="text-center" style="padding-top:15px;">
+                    <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+                        <button type="submit" class="btn btn-outline-primary"><i class="fa fa-save"></i> Apply</button>
+                        <a href="~/UsersSecurity/UserSecurity/Index" class="btn btn-outline-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+
+                    </div>
+                </div>}
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(function () {
+            //   normal dropdown
+            $(".ddlist").chosen({
+                //  disable_search_threshold: 1
+            });
+        });</script>
+}
+<script src="~/Scripts/jquery-1.10.2.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

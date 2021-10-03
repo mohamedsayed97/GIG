@@ -1,0 +1,41 @@
+﻿@model ICP_ABC.Areas.Group.Models.EditViewModel
+@{ ViewBag.Title = "Group Setup";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+<h2>User Group Setup: (Update) </h2>
+@using (Html.BeginForm("Edit", "Group", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", style = "margin-top:50px" }))
+{
+    <div style="margin-bottom:70px;">
+        @Html.AntiForgeryToken()
+        <p class="text-danger">@Html.ValidationSummary(true)</p>
+        <div class="horizontal">
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Group Code</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control form-control-sm", @ReadOnly = "ReadOnly" })
+                    @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Group Name</label>
+                @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.Name, new { @class = "form-control form-control-sm" })
+                    @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ButtonsControl">
+        <div class="text-center" style="padding-top:10px;">
+            <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+                <button type="submit" class="btn btn-primary"><i class="fa fa-group"></i> Apply</button>
+                <a href="~/Group/Group/Details?Code=@Model.Code" class="btn btn-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+            </div>
+        </div>
+    </div>}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

@@ -1,0 +1,295 @@
+﻿
+@model List<ICP_ABC.Areas.FundRights.Models.FundRight>
+@using ICP_ABC.Areas.Funds.Models
+@using ICP_ABC.Extentions
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+
+}
+<h2>Fund Rights Setup: (Details) </h2>
+<div>
+    @using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <p class="text-danger">@Html.ValidationSummary(true, "", new { htmlAttributes = new { @class = "text-danger" } })</p>
+
+        <div class="row">
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4"> Code</label>
+                @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", Value = ViewData["currr"], @readonly = "readonly", Text = ViewData["currr"] } })*@
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.FirstOrDefault().Code, new { @class = "form-control form-control-sm", id = "Code", @readonly = "readonly", Value = ViewData["Code"], disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.FirstOrDefault().Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Group Name</label>
+                @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                <div class="col-md-7">
+                    @Html.DropDownListFor(model => model.FirstOrDefault().FundRightID, ViewData["Groups"] as SelectList, new { @class = "form-control form-control-sm", id = "grpdrpdwn", disabled = "disabled" })
+                    @*@Html.DropDownListFor(model => model.FirstOrDefault().GroupID, ViewData["Groups"] as SelectList, "Choose", new { @class = "form-control form-control-sm", id = "grpdrpdwn", disabled = "disabled" })*@
+                    @* @Html.TextBoxFor(model => model.FirstOrDefault().GroupID, new { @class = "form-control form-control-sm", id = "Code", @readonly = "readonly", Value = ViewData["Code"], disabled = "disabled" })*@
+                    @*@Html.ValidationMessageFor(m => m.FundRightID, "", new { @class = "text-danger" })*@
+
+                </div>
+            </div>
+        </div>
+
+
+    }
+
+
+    <div style="width:95%;height:300px;overflow-y:scroll;overflow-x:hidden;border:solid 1px #ddd;margin:3px;padding:5px;">
+
+        <div id="tbl" class="row" style="display:initial">
+            <table class="table table-xl table-responsive-md table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Fund name</th>
+                        <th scope="col">Access</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in (List<Fund>)ViewData["Funds"])
+                    {
+                        <tr>
+                            <td> @item.Name</td>
+
+                            <td>
+                                <input type="checkbox" id="@item.Auth" checked disabled />
+                            </td>
+
+                            <td hidden> @item.FundID</td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="text-center" style="padding-top:10px;">
+        <div class="col-lg-2"></div>
+        <div class="btn-group col-md-10" role="group" aria-label="Basic example">
+            @if (User.Identity.HasTheRights("fundright", "Create"))
+            {
+                <a href="~/FundRights/FundRight/Create" class="btn btn-outline-primary"><i class="fa fa-plus"></i> Add Fund Right</a>
+            }
+            @if (User.Identity.HasTheRights("fundright", "Update"))
+            {
+                if (!ViewBag.Actualy_auth)
+                {
+                    <a href="~/FundRights/FundRight/Edit/@Model.FirstOrDefault().GroupID" class="btn btn-outline-primary"><i class="fa fa-edit"></i> Edit </a>
+                }
+                @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+            }
+            @if (User.Identity.HasTheRights("fundright", "Delete"))
+            {
+                if (!ViewBag.Actualy_auth)
+                {
+                    <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#delete"><i class="fa fa-remove"></i> Delete </a>
+                }
+            }
+            @if (User.Identity.HasTheRights("fundright", "Check"))
+            {
+                if (!Model.FirstOrDefault().Chk)
+                {
+                    <a href="~/FundRights/FundRight/CheckFund?Id=@Model.FirstOrDefault().GroupID" class="btn btn-outline-primary"><i class="fa fa-check"></i> Check </a>
+                }
+                @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+            }
+            @if (User.Identity.HasTheRights("fundright", "Authorized"))
+            {
+                if (Model.FirstOrDefault().Chk && !Model.FirstOrDefault().Auth)
+                {
+                    <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#Auth"><i class="fa fa-user-secret"></i> Autherize </a>
+                    @*<a href="~/FundRights/FundRight/AuthorizeFund?Id=@Model.FirstOrDefault().GroupID" class="btn btn-outline-primary"><i class="fa fa-user-secret"></i> Autherized </a>*@
+                }
+                @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+            }
+            <a href="~/FundRights/FundRight/Search" class="btn btn-outline-primary"><i class="fa fa-search"></i> Search</a>
+            <a href="~/FundRights/FundRight/Previous?Code=@Model.FirstOrDefault().GroupID" id="Prev" class="btn btn-outline-primary"><i class="fa fa-backward"></i> Previous </a>
+            <a href="~/FundRights/FundRight/Next?Code=@Model.FirstOrDefault().GroupID" id="Next" class="btn btn-outline-primary"><i class="fa fa-forward"></i> Next </a>
+            <a href="~/Home/Home/Index" class="btn btn-outline-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                Are You Sure You Want to delete ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="~/FundRights/FundRight/Delete?id=@Model.FirstOrDefault().GroupID" class="btn btn-danger ">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="Auth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Autherize</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                Are You Sure You Want to Autherize ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="~/FundRights/FundRight/AuthorizeFund?Id=@Model.FirstOrDefault().GroupID"  class="btn btn-primary">Autherize</a>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts{
+    <script>
+            function disableAll(code) {
+                var checked = $("#tbl").find('#' + code).prop("checked") == true;
+
+                if (checked) {
+
+                    //checked = false;
+                    //document.getElementsByClassName('.' + code).checked = false;
+                    $("#tbl").find('.' + code).prop("checked", false);
+
+                    $("#tbl ").find('.' + code).attr("disabled", "disabled");
+
+                }
+                else {
+
+
+                    $("#tbl ").find('.' + code).attr("disabled", false);
+
+                }
+            };
+
+            $("#grpdrpdwn").change(function () {
+
+                document.getElementById("submit").disabled = false;
+                var drpdwnVal = $("#grpdrpdwn :selected").val();
+
+                document.getElementById("Code").value = drpdwnVal;
+
+                $("#tbl").css('display', 'initial');
+            });
+
+            function submit() {
+                var Code = document.getElementById("Code").value;
+                var GroupID = $("#grpdrpdwn :selected").val();
+
+                var Rightslist = [];
+                var table = $("table tbody");
+                table.find('tr').each(function (i) {
+                    var $tds = $(this).find('td'),
+                        // objName = $tds.eq(0).text(),
+                        Access = $tds.eq(1).find('input[type=checkbox]').prop("checked") == true,
+                        FundId = $tds.eq(2).text();
+
+
+                    var obj = new Object();
+                    // obj.name = objName;
+                    obj.GroupID = GroupID;
+                    obj.Code = Code;
+                    obj.Access = Access;
+                    obj.FundId = FundId;
+
+                    if (obj.Access) {
+                        Rightslist.push(obj);
+                    }
+
+                });
+
+                var FundList = JSON.stringify(Rightslist);
+
+                $.ajax({
+                    type: "Post",
+                    url: '@servername/FundRights/FundRight/Edit', // the method we are calling
+                    contentType: "application/x-www-form-urlencoded",
+                    data: { Rights: FundList, Code: Code },//, 'Code': Code, 'GroupID': GroupID },
+                    //dataType: "json",
+                    success: function (result) {
+                        //  alert("success");
+                        window.location.href = "/FundRights/FundRight";
+                    },
+                    error: function (result) {
+                        alert("fffff");
+                    }
+                });
+            }
+
+    </script>
+    <script>
+        $(function () {
+
+            var last=  "@TempData["Last"]" ;
+
+            if (last != null) {
+                if ("@TempData["Last"]" == "Last") {
+
+                    document.getElementById("Next").classList.add('disabled');
+                }
+            }
+            /////////////////////////
+           var last=  "@TempData["First"]" ;
+
+            if (last != null) {
+
+                if ("@TempData["First"]" == "First") {
+
+                    document.getElementById("Prev").classList.add('disabled');
+                }
+
+            }
+            /////////////////////
+        });
+
+    </script>
+}
+
+<script>
+        $(function () {
+
+            var last=  "@TempData["Last"]" ;
+
+            if (last != null) {
+                if ("@TempData["Last"]" == "Last") {
+
+                    document.getElementById("Next").classList.add('disabled');
+                }
+            }
+            /////////////////////////
+           var last=  "@TempData["First"]" ;
+
+            if (last != null) {
+
+                if ("@TempData["First"]" == "First") {
+
+                    document.getElementById("Prev").classList.add('disabled');
+                }
+
+            }
+            /////////////////////
+        });
+
+</script>

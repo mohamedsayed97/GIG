@@ -1,0 +1,49 @@
+﻿@model ICP_ABC.Reports.Rpt_CLientMapV8.Model.Rpt_CLientMapV8VM
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+@*<link rel="stylesheet" href="/resources/demos/style.css">*@
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+@using (Html.BeginForm("Rpt_CLientMapV8", "Rpt_CLientMapV8"))
+{
+    <div style="width:95%;height:450px;overflow-y:scroll;overflow-x:hidden;border:solid 1px #ddd;margin:3px;padding:5px;">
+
+
+        <div class="row">
+            <div class="form-group col-lg-4 col-md-4">
+                <span class="input-group-addon" id="basic-addon1" aria-describedby="sizing-addon1">From Date</span>
+                <div class="input-group">
+
+                    @Html.TextBoxFor(m => m.FromDate, new { type = "Date", @class = "form-control", aria_describedby = "sizing-addon1", placeholder = "From Date" })
+                </div>
+                @Html.ValidationMessageFor(m => m.FromDate)
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-lg-4 col-md-4">
+                <span class="input-group-addon" id="basic-addon1">To Date</span>
+                <div class="input-group">
+
+                    @Html.TextBoxFor(m => m.ToDate, new { type = "Date", @class = "form-control", placeholder = "To Date" })
+                </div>
+                @Html.ValidationMessageFor(m => m.ToDate)
+            </div>
+        </div>
+
+    </div>
+    <div class="text-center" style="padding-top:15px;">
+
+        <button type="submit" class="btn btn-primary" aria-pressed="false">Preview</button>
+        </div>
+        }
+        @section scripts
+    {
+            @Scripts.Render("~/bundles/jqueryval")
+
+        }

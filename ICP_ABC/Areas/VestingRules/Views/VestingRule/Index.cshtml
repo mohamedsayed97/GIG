@@ -1,0 +1,144 @@
+﻿@model ICP_ABC.Areas.VestingRules.Models.VestingRuleViewModel
+@using System.Linq;
+
+@{
+    /**/
+
+    /**/
+
+    /**/
+
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+   
+}
+
+<div class="row">
+
+  
+    <div class="col-12" id="">
+        <h2>Vesting Rule Setup</h2>
+
+        <div style="margin-bottom:100px;">
+
+
+
+            <div class="row">
+
+                <div class="form-group col-3">
+                    <label for="PolicyId" class="control-label">Policy</label>
+
+                    @Html.DropDownListFor(model => model.PolicyId, new SelectList(Model.Policies, "Id", "PolicyHolderName"), "Select Policy", new { @class = "form-control ", id = "PolicyId", @disabled = "@disabled" })
+                    @Html.ValidationMessageFor(model => model.PolicyId, "", new { @class = "text-danger" })
+
+
+                </div>
+              
+                    <div class="form-group col-3">
+
+                        <label for="FundId" class="control-label">Fund</label>
+
+                        @Html.DropDownListFor(model => model.FundId, new SelectList(Model.Funds, "FundID", "Name"), "Select Fund", new { @class = "form-control ", id = "FundId", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.FundId, "", new { @class = "text-danger" })
+
+
+                    </div>
+                
+                <div class="form-group col-3">
+                    <label for="TransactionType" class="control-label">TransactionType</label>
+
+                    @Html.EnumDropDownListFor(model => model.TransactionType, "Select TransactionType", new { @class = "form-control", @disabled = "@disabled" })
+                    @Html.ValidationMessageFor(model => model.TransactionType, "", new { @class = "text-danger" })
+
+
+                </div>
+                <div class="form-group col-3">
+                    <label for="Base" class="control-label">Base</label>
+                    @Html.EnumDropDownListFor(model => model.Base, "Select Base", new { @class = "form-control", @disabled = "@disabled" })
+
+                    @Html.ValidationMessageFor(model => model.Base, "", new { @class = "text-danger" })
+
+
+                </div>
+                <div class="form-group col-12">
+
+                    <div class="alert alert-danger" style="display:none" id="ErrorMessage" role="alert">
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="row">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+
+                            <th scope="col" style="width:10%">From</th>
+                            <th scope="col" style="width:10%"> To</th>
+
+                            <th scope="col">% Of Emp Share</th>
+                            <th scope="col">% Of Company Share</th>
+
+                            <th scope="col">% Of Emp Share(Booster)</th>
+                            <th scope="col">% Of Company Share Booster</th>
+
+                        </tr>
+                    </thead>
+                    <tbody id="vestingRuleItem">
+
+                        <tr>
+
+                            <td>
+                                <input class="form-control" value="0" readonly>
+                            </td>
+                            <td>
+                                <input class="form-control" value="0" readonly>
+
+                            </td>
+                            <td>
+                                <input class="form-control" value="0" readonly>
+
+                            </td>
+                            <td>
+                                <input class="form-control" value="0" readonly>
+
+                            </td>
+                            <td>
+
+                                <input class="form-control" value="0" readonly>
+
+                            </td>
+                            <td>
+                                <input class="form-control" value="0" readonly>
+
+                            </td>
+
+
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+
+            </div>
+
+        </div>
+        <div class="ButtonsControl">
+
+            <div class="text-center" style="padding-top:15px;">
+                <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+
+                    <a href="~/VestingRules/VestingRule/Create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Rule</a>
+                    <a href="~/VestingRules/VestingRule/Search" class="btn btn-primary"><i class="fa fa-search"></i> Search</a>
+                    <a href="~/Home/Home/Index" class="btn btn-primary"><i class="fa fa-home"></i> Back to Home</a>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+
+

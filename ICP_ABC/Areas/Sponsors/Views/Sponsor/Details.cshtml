@@ -1,0 +1,138 @@
+﻿@model ICP_ABC.Areas.Sponsors.Models.DetailsViewModel
+@using ICP_ABC.Extentions
+@{ /**/
+                /**/
+
+                ViewBag.Title = "Details";
+                Layout = "~/Views/Shared/_Layout.cshtml"; }
+<h2>Sponsor Setup: (Details)</h2>
+@using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+<div style="height:375px;overflow-y:scroll;overflow-x:hidden;margin:3px;padding:5px; border:solid 1px #ddd;">
+    @Html.AntiForgeryToken()
+    <p class="text-danger">@Html.ValidationSummary(true)</p>
+    <div class="row">
+        <div class="form-group col-md-5 ">
+            <label for="inputEmail4">Sponsor Code</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(m => m.Code, new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-5 ">
+            <label for="inputEmail4">Sponsor Name</label>
+            @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+            <div class="col-md-7">
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Delete Sponsor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    Are You Sure You Want to Delete ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a href="~/Sponsors/Sponsor/Delete?Code=@Model.Code" class="btn btn-danger ">Delete</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="modal fade" id="Auth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Autherize Sponsor</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    Are You Sure You Want to Autherize ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a href="~/Sponsors/Sponsor/AuthorizeSponsor?Code=@Model.Code" class="btn btn-primary ">Autherize</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="text-center" style="padding-top:15px;">
+        <div class="col-lg-2"></div>
+        <div class="btn-group col-md-12" role="group" aria-label="Basic example">
+            @if (User.Identity.HasTheRights("Sponsor", "Create"))
+            {
+                <a href="~/Sponsors/Sponsor/Create" class="btn btn-outline-primary"><i class="fa fa-group"></i> Add Sponsor</a>}
+            @if (User.Identity.HasTheRights("Sponsor", "Update"))
+            {
+                if (!Model.AuthForEditAndDelete)
+                {
+
+                    <a href="~/Sponsors/Sponsor/Edit?Code=@Model.Code" class="btn btn-outline-primary"><i class="fa fa-edit"></i> Edit </a> } @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@}
+            @if (User.Identity.HasTheRights("Sponsor", "Delete"))
+            {
+                if (!Model.AuthForEditAndDelete)
+                {
+                    <a href="#" data-target="#Delete" data-toggle="modal" class="btn btn-outline-primary"><i class="fa fa-remove"></i> Delete </a> } @*@Html.ActionLink("Delete", "Delte", "Account", new { Code = Model.Code, }, new { @class = " btn btn-outline-primary fa fa-remove" })*@}
+            @if (User.Identity.HasTheRights("Sponsor", "Check"))
+            {
+                if (!Model.Check)
+                {
+                    <a href="~/Sponsors/Sponsor/CheckSponsor?Code=@Model.Code" class="btn btn-outline-primary"><i class="fa fa-check"></i> Check </a> } @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@}
+            @if (User.Identity.HasTheRights("Sponsor", "Authorized"))
+            {
+                if (Model.Check && !Model.Auth)
+                {
+                    <a href="#" data-target="#Auth" data-toggle="modal" class="btn btn-outline-primary"><i class="fa fa-remove"></i> Autherize </a>
+                    @*<a href="~/Sponsors/Sponsor/AuthorizeSponsor?Code=@Model.Code" class="btn btn-outline-primary"><i class="fa fa-user-secret"></i> Autherize </a>*@ } @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@}
+            <a href="~/Sponsors/Sponsor/Search" class="btn btn-outline-primary"><i class="fa fa-search"></i> Search</a>
+            <a href="~/Sponsors/Sponsor/Previous?id=@Model.Code" id="Prev" class="btn btn-outline-primary"><i class="fa fa-backward"></i> Previous </a>
+            <a href="~/Sponsors/Sponsor/Next?code=@Model.Code" id="Next" class="btn btn-outline-primary"><i class="fa fa-forward"></i> Next </a>
+            <a href="~/Home/Home/Index" class="btn btn-outline-primary"><i class="fa fa-home"></i> Back to Home</a>
+        </div>
+    </div>}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+        $(function () {
+
+            var last=  "@TempData["Last"]" ;
+
+            if (last != null) {
+                if ("@TempData["Last"]" == "Last") {
+
+                    document.getElementById("Next").classList.add('disabled');
+                }
+            }
+            /////////////////////////
+           var last=  "@TempData["First"]" ;
+
+            if (last != null) {
+
+                if ("@TempData["First"]" == "First") {
+
+                    document.getElementById("Prev").classList.add('disabled');
+                }
+
+            }
+            /////////////////////
+        });
+
+</script>

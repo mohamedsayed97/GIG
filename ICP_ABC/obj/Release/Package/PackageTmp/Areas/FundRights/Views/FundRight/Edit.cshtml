@@ -1,0 +1,179 @@
+﻿@model List<ICP_ABC.Areas.FundRights.Models.FundRight>
+@using ICP_ABC.Areas.Funds.Models
+@using ICP_ABC.Areas.FundRights.Models
+@using System.Collections.Generic;
+@using System.Linq;
+@{
+    /**/
+
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+
+}
+<h2>Fund Rights Setup: (Update) </h2>
+<div>
+    @using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+@Html.AntiForgeryToken()
+
+                <p class="text-danger">@Html.ValidationSummary(true)</p>
+
+                                <div class="row">
+
+                                    <div class="form-group col-md-5 ">
+                                        <label for="inputEmail4">Code</label>
+                                        @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", Value = ViewData["currr"], @readonly = "readonly", Text = ViewData["currr"] } })*@
+                                        <div class="col-md-7">
+                                            @Html.TextBoxFor(m => m.FirstOrDefault().Code, new { @class = "form-control form-control-sm", id = "Code", @readonly = "readonly", Value = ViewData["Code"] })
+                                            @*@Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })*@
+                                        </div>
+                                    </div>
+                                    <div class="form-group col-md-5 ">
+                                        <label for="inputEmail4">Group Name</label>
+                                        @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                                        <div class="col-md-7">
+                                            @Html.DropDownListFor(model => model.FirstOrDefault().FundRightID, ViewData["Groups"] as SelectList, new { @class = "form-control form-control-sm", id = "grpdrpdwn",disabled="disabled" })
+                                            @*@Html.ValidationMessageFor(m => m.FundRightID, "", new { @class = "text-danger" })*@
+
+                                        </div>
+                                    </div>
+                                </div>}
+<div style="width:95%;height:300px;overflow-y:scroll;overflow-x:hidden;border:solid 1px #ddd;margin:3px;padding:5px;">
+    <div id="tbl" class="row" style="display:initial">
+        <table class="table table-xl table-responsive-md table-hover">
+            <thead>
+                <tr>
+                    <th scope="col">Fund name</th>
+                    <th scope="col">Access</th>
+
+                </tr>
+            </thead>
+            <tbody>
+
+                @foreach (var item in (List<Fund>)ViewData["chosenFunds"])
+                {
+
+    <tr>
+        <td> @item.Name</td>
+
+        <td>
+            <input type="checkbox" id="@item.Auth" checked />
+        </td>
+
+        <td hidden> @item.FundID</td>
+    </tr>
+}
+                @foreach (var item in (List<Fund>)ViewData["UnchoosedFunds"])
+                {
+
+    <tr>
+        <td> @item.Name</td>
+
+        <td>
+            <input type="checkbox" id="@item.Auth" />
+        </td>
+
+        <td hidden> @item.FundID</td>
+    </tr>
+}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+   
+    <div class="text-center">
+
+        <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+            <input type="submit" class="btn btn-outline-primary" id="submit" onclick="submit()" />
+            @*<a href="~/GroupsRights/GroupRight/Create" class="btn btn-outline-primary"><i class="fa fa-group"></i> Add New Group</a>*@
+            <a href="~/FundRights/FundRight/Details?Id=@Model.FirstOrDefault().GroupID" class="btn btn-outline-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+        function disableAll(code) {
+            var checked = $("#tbl").find('#' + code).prop("checked") == true;
+
+            if (checked) {
+
+                //checked = false;
+                //document.getElementsByClassName('.' + code).checked = false;
+                $("#tbl").find('.' + code).prop("checked", false);
+
+                $("#tbl ").find('.' + code).attr("disabled", "disabled");
+
+            }
+            else {
+
+
+                $("#tbl ").find('.' + code).attr("disabled", false);
+
+            }
+        };
+
+        $("#grpdrpdwn").change(function () {
+
+            document.getElementById("submit").disabled = false;
+            var drpdwnVal = $("#grpdrpdwn :selected").val();
+
+            document.getElementById("Code").value = drpdwnVal;
+
+            $("#tbl").css('display', 'initial');
+        });
+
+        function submit() {
+            var Code = document.getElementById("Code").value;
+            var GroupID = $("#grpdrpdwn :selected").val();
+            debugger;
+            var Rightslist = [];
+            var table = $("table tbody");
+            table.find('tr').each(function (i) {
+                var $tds = $(this).find('td'),
+                    // objName = $tds.eq(0).text(),
+                    Access = $tds.eq(1).find('input[type=checkbox]').prop("checked") == true,
+                    FundId = $tds.eq(2).text();
+
+
+                var obj = new Object();
+                // obj.name = objName;
+                obj.GroupID = GroupID;
+                obj.Code = Code;
+                obj.Access = Access;
+                obj.FundId = FundId;
+
+                if (obj.Access) {
+                    Rightslist.push(obj);
+                }
+
+            });
+
+            var FundList = JSON.stringify(Rightslist);
+
+            $.ajax({
+                type: "Post",
+                url: '@servername/FundRights/FundRight/Edit', // the method we are calling
+                contentType: "application/x-www-form-urlencoded",
+                data: { Rights: FundList, Code: Code },//, 'Code': Code, 'GroupID': GroupID },
+                //dataType: "json",
+                success: function (result) {
+                    //  alert("success");
+                    //window.location.href = "/FundRights/FundRight";
+                    window.location.href = "@servername/FundRights/FundRight/Details?id=" + GroupID;
+                },
+                error: function (result) {
+                    alert("fffff");
+                }
+            });
+        }
+
+    </script>
+    <script>
+
+    </script>
+}
+

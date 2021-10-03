@@ -1,0 +1,117 @@
+﻿@model ICP_ABC.Areas.ICPrices.Models.CreateViewModel
+
+@{
+    ViewBag.Title = "ICPrice Setup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+
+}
+
+<h2>ICPrice Setup</h2>
+
+@using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", style = "margin-top:50px" }))
+{
+    <div style="margin-bottom:70px;">
+        @Html.AntiForgeryToken()
+
+        <p class="text-danger">@Html.ValidationSummary(true)</p>
+
+        <div class="horizontal">
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Code</label>
+                @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", Value = ViewData["currr"], @readonly = "readonly", Text = ViewData["currr"] } })*@
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">FundName</label>
+                @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", Value = ViewData["currr"], @readonly = "readonly", Text = ViewData["currr"] } })*@
+                <div class="col-md-7">
+                    @Html.TextBoxFor(model => model.FundId, new { @class = "form-control form-control-sm grpdrpdwn", disabled = "disabled" })
+
+                </div>
+            </div>
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4"> Date</label>
+                @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                <div class="col-md-7">
+                    @Html.TextBox("ssss", "", new { @class = "form-control form-control-sm dropdown -toggle", disabled = "disabled" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4"> Processing-Date</label>
+                @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                <div class="col-md-7">
+                    @Html.TextBox("ssss", "", new { @class = "form-control form-control-sm dropdown -toggle", disabled = "disabled" })
+                </div>
+            </div>
+
+
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Price</label>
+                @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", Value = ViewData["currr"], @readonly = "readonly", Text = ViewData["currr"] } })*@
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ButtonsControl">
+
+        <div class="text-center" style="padding-top:15px;">
+
+            <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+                <a href="~/ICprices/ICprice/Create" style="display:none" class="btn btn-primary" id="GetAddButton"><i class="fa fa-plus"></i> Add New ICPrice</a>
+                <a href="~/ICprices/ICprice/Search" style="display:none" class="btn btn-primary" id="GetsearchButton"><i class="fa fa-search"></i> Search</a>
+                <a href="~/Home/Home/Index" class="btn btn-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+            </div>
+        </div>
+    </div>
+}
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '@servername/ChekCalendar',
+                type: 'POST',
+                success: function (Result) {
+                    if (Result.NOtInCalendar == 1) {
+
+                        var GetAdd = document.getElementById("GetAddButton");
+                        var GetSearch = document.getElementById("GetsearchButton");
+                        GetAdd.style.display = "block";
+                        GetSearch.style.display = "block";
+
+                    }
+                    else if (Result.result == 2) {
+
+                        var GetAdd = document.getElementById("GetAddButton");
+                        var GetSearch = document.getElementById("GetsearchButton");
+                        GetAdd.style.display = "block";
+                        GetSearch.style.display = "block";
+
+                    }
+                    else if (Result.result == 1) {
+
+                        var GetSearch = document.getElementById("GetsearchButton");
+                        GetSearch.style.display = "block";
+                    }
+
+
+                }
+            });
+        }
+        );
+
+
+
+    </script>
+}

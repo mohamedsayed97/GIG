@@ -1,0 +1,422 @@
+﻿@model ICP_ABC.Areas.Redemptions.Models.Redemption
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redemption</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/Chosen/chosen.min.css" rel="stylesheet" />
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <style>
+
+        .dropdown-submenu {
+            position: relative;
+        }
+
+            .dropdown-submenu > .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -6px;
+                margin-left: -1px;
+                -webkit-border-radius: 0 6px 6px 6px;
+                -moz-border-radius: 0 6px 6px;
+                border-radius: 0 6px 6px 6px;
+            }
+
+            .dropdown-submenu:hover > .dropdown-menu {
+                display: block;
+            }
+
+            .dropdown-submenu > a:after {
+                display: block;
+                content: " ";
+                float: right;
+                width: 0;
+                height: 0;
+                border-color: transparent;
+                border-style: solid;
+                border-width: 5px 0 5px 5px;
+                border-left-color: #ccc;
+                margin-top: 5px;
+                margin-right: -10px;
+            }
+
+            .dropdown-submenu:hover > a:after {
+                border-left-color: #fff;
+            }
+
+            .dropdown-submenu.pull-left {
+                float: none;
+            }
+
+                .dropdown-submenu.pull-left > .dropdown-menu {
+                    left: -100%;
+                    margin-left: 10px;
+                    -webkit-border-radius: 6px 0 6px 6px;
+                    -moz-border-radius: 6px 0 6px 6px;
+                    border-radius: 6px 0 6px 6px;
+                }
+    </style>
+
+</head>
+<body>
+    <form id="form1" runat="server">
+        <div>
+            <table>
+                <tr>
+                    <td colspan="2" rowspan="2">
+                        <asp:Image ID="Image1" runat="server" ImageUrl="~/Image/Untitled.jpg" />
+                    </td>
+                    <td style="width: 158px; height: 21px; font-weight: bold; font-size: 24px; color: black; text-align: center;" colspan="2">
+                        @*ABC BANK*@
+                    </td>
+                    <td style="width: 100px; height: 21px"></td>
+                    <td style="width: 100px; height: 21px"></td>
+                    <td style="width: 100px; height: 21px"></td>
+                    <td style="width: 100px; height: 21px"></td>
+                </tr>
+                <tr>
+                    <td style="width: 158px; height: 21px; font-weight: bold; font-size: 18px; text-align: center;" colspan="2">
+                        "EGYPT"
+                    </td>
+                    <td style="width: 100px; height: 21px"></td>
+                    <td style="width: 100px; height: 21px"></td>
+                    <td style="width: 100px; height: 21px"></td>
+                    <td style="width: 100px; height: 21px"></td>
+                </tr>
+            </table>
+            <table style="width: 1000px">
+                <tr>
+                    <td align="center" colspan="3" style="height: 109px; width: 973px;">
+                        &nbsp;<table style="width: 504px; vertical-align: middle; direction: ltr; height: 128px; text-align: center;">
+                            <tr>
+                                <td style="font-weight: bold; font-size: 16px; width: 500px">
+                                    Redemption Application
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold; font-size: 16px; width: 500px">
+                                    ABC Bank First Mutual Fund - (Equity Fund)
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold; font-size: 16px; width: 500px">
+                                    (LE 50 up to 250 Million Capital Market Authority
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 500px">
+                                    License No. ________ Date ____________
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 500px">
+                                    Face Value Per Investment Certificate
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="width: 500px">
+                                    L.E. 100
+                                </td>
+                            </tr>
+                        </table>
+                        &nbsp; &nbsp; &nbsp; &nbsp;
+                    </td>
+                </tr>
+            </table><table border="1" cellpadding="0" cellspacing="0" style="width: 1000px" bordercolor="black">
+                <tr>
+                    <td style="width: 500px">
+                        <asp:Label ID="Label1" runat="server" Font-Bold="True" Font-Size="14pt" Font-Underline="True"
+                                   Text="ABC Bank" Width="128px"></asp:Label><br />
+                        Dear sir @Model.Customer.EnName<br />
+                        I would like to redeem to the ABC Bank First Mutual
+                        <br />
+                        Fund for the number of  @Model.units
+                        <asp:Label ID="units" runat="server" Font-Bold="True" Font-Size="14pt" Style="text-align: center"
+                                   Width="136px"></asp:Label>
+                        ICs (say<br />
+                        <br />
+                        investment Certificates) Based on the last ICs price<br />
+                        issued on previous week by the fund on Thursday the<br />
+                        ___/___/______ and amount placed by the subscriber and
+                        <br />
+                        rounded to the lowest.<br />
+                        Value L.E.
+                        <asp:Label ID="total" runat="server" Font-Bold="True" Font-Size="14pt" Style="text-align: center"
+                                   Width="200px"></asp:Label>(Egyption Pounds<br />
+                        @Model.total<br />Only)<br />
+                        <br />
+                        <asp:Label ID="Label2" runat="server" Font-Bold="True" Font-Size="14pt" Font-Underline="True"
+                                   Text="Subscriber Details" Width="216px"></asp:Label><br />
+                        <asp:Label ID="Label3" runat="server" Font-Bold="True" Font-Size="12pt" Font-Underline="False"
+                                   Text="Name" Width="216px"></asp:Label><br />
+                        <asp:Label ID="ename" runat="server" Font-Bold="True" Font-Size="14pt" Style="text-align: center"
+                                   Width="416px"></asp:Label>I.D./PASS/REGISTRATION NO @Model.Customer.IdNumber
+                                <asp:Label ID="idnumber" runat="server" Font-Bold="True" Font-Size="14pt" Style="text-align: center"
+                                           Width="200px"></asp:Label>NATIONALITY:@Model.Customer.Nationality.Name<asp:Label ID="nation" runat="server" Font-Bold="True"
+                                                                                                                            Font-Size="14pt" Style="text-align: center" Width="304px"></asp:Label><br />
+                                        Account @Model.cust_acc_no
+                                        <asp:Label ID="cust_acc_no" runat="server" Font-Bold="True" Font-Size="14pt" Style="text-align: center"
+                                                   Width="152px"></asp:Label>
+                                        Company @Model.Branch.BName
+                                        <asp:Label ID="BName" runat="server" Font-Bold="True" Font-Size="14pt" Style="text-align: center"
+                                                   Width="136px"></asp:Label><br />
+                                        <asp:Label ID="Label9" runat="server" Height="56px" Text="MAILING ADDRESS:"></asp:Label><asp:Label ID="eaddress1" runat="server" Font-Bold="True" Font-Size="14pt" Height="56px"
+                                                                                                                                           Width="264px"></asp:Label><br />
+                                        TEL. No. (s).&nbsp; Home
+                                        <asp:Label ID="tel1" runat="server" Font-Bold="True" Font-Size="14pt" Height="16px"
+                                                   Style="text-align: center" Width="136px"></asp:Label>
+                                        Office
+                                        <asp:Label ID="tel2" runat="server" Font-Bold="True" Font-Size="14pt" Height="16px"
+                                                   Style="direction: rtl; text-align: center" Width="128px"></asp:Label><br />
+                                        Mobile @Model.Customer.tel1
+                                        <asp:Label ID="tel3" runat="server" Font-Bold="True" Font-Size="14pt" Height="16px"
+                                                   Style="direction: rtl; text-align: center" Width="224px"></asp:Label><br />
+                                        Email:@Model.Customer.Email1<asp:Label ID="emaddress1" runat="server" Font-Bold="True" Font-Size="14pt"
+                                                                               Style="text-align: center" Width="400px"></asp:Label><br />
+                                        Note: ICs may be fully redeemed or partially redeemed<br />
+                                        through any of ABC Bank Companies on the last business day of<br />
+                                        the week at a redemption price issued by the fund manage<br />
+                                        accourding to the end of the last business day of the same week.<br />
+                                        The redemption amount will be credited to your account within two<br />
+                                        business days from redemption date. redemption price will be<br />
+                                        published each Sunday 2 widely distributed newspapers<br />
+                                        <br />
+                                        <asp:Label ID="Label7" runat="server" Font-Bold="True" Font-Size="12pt" Font-Underline="True"
+                                                   Text="Declaration:" Width="88px"></asp:Label>
+                                        I/We declare that we have read the<br />
+                                        prospectus thoroughly and agree with the terms and<br />
+                                        conditions set forth including the appointment of Delta<br />
+                                        Rasmala Fund manager to manage the assets of the fund<br />
+                                        in according to the terms and conditions set forth in the
+                                        <br />
+                                        prospectus dated ___/___/______.<br />
+                                    </td>
+                                    <td style="width: 500px" dir="rtl">
+                                        <asp:Label ID="Label4" runat="server" Font-Bold="True" Font-Size="14pt" Font-Underline="True"
+                                                   Text="السادة بنك المؤسسة العربية المصرفية - مصر" Width="336px"></asp:Label><br />
+                                        برجاء الاسترداد في صندوق استثمار بنك المؤسسة العربية<br />
+                                        المصرفية - الاول ذو النمو الرأسمالي في عدد
+                                        <asp:Label ID="units1" runat="server" Font-Bold="True" Font-Size="14pt" Style="text-align: center"
+                                                   Width="96px"></asp:Label>
+                                        وثيقة<br />
+                                        فقط (______________@Model.units _____________) وثيقة<br />
+                                        على اساس اخرسعر معلن من الصندوق عن يوم الخميس الموافق<br />
+                                        __/__/_____ . و المبلغ المودع يقرب الى ادنى عدد من الوثائق<br />
+                                        المبلغ
+                                        <asp:Label ID="total1" runat="server" Font-Bold="True" Font-Size="14pt" Style="text-align: center"
+                                                   Width="240px"></asp:Label>.<br />
+                                        فقط ______________@Model.total ___________<br />
+                                        _____________ جنية مصريا<br />
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <asp:Label ID="Label5" runat="server" Font-Bold="True" Font-Size="14pt" Font-Underline="True"
+                                                   Text="بيانات المكتتب" Width="216px"></asp:Label><br />
+                                        <br />
+                                        الاسم : @Model.Customer.ArName
+                                        <asp:Label ID="aname" runat="server" Font-Bold="True" Font-Size="14pt" Style="direction: rtl;
+                        text-align: center" Width="416px"></asp:Label><br />
+                                        بطاقة رقم قومي @Model.Customer.IdNumber
+                                        <asp:Label ID="idnumber1" runat="server" Font-Bold="True" Font-Size="14pt" Style="text-align: center"
+                                                   Width="368px"></asp:Label><br />
+                                        الجنسية @Model.Customer.Nationality.Name
+                                        <asp:Label ID="nation1" runat="server" Font-Bold="True" Font-Size="14pt" Style="text-align: center"
+                                                   Width="368px"></asp:Label><br />
+                                        حساب رقم @Model.cust_acc_no
+                                        <asp:Label ID="cust_acc_no1" runat="server" Font-Bold="True" Font-Size="14pt" Style="text-align: center"
+                                                   Width="136px"></asp:Label>
+                                        فرع&nbsp; @Model.Branch.BName
+                                        <asp:Label ID="Bname1" runat="server" Font-Bold="True" Font-Size="14pt" Style="text-align: center"
+                                                   Width="152px"></asp:Label><br />
+                                        <asp:Label ID="Label10" runat="server" Height="56px" Text="عنوان المراسلة"></asp:Label>
+                                        <asp:Label ID="aaddress1" runat="server" Font-Bold="True" Font-Size="14pt" Height="56px"
+                                                   Style="direction: rtl" Width="264px"></asp:Label><br />
+                                        تليفون منزل
+                                        <asp:Label ID="tel11" runat="server" Font-Bold="True" Font-Size="14pt" Height="16px"
+                                                   Style="text-align: center" Width="136px"></asp:Label>
+                                        @Model.Customer.tel1 تليفون عمل<asp:Label ID="tel21" runat="server" Font-Bold="True" Font-Size="14pt"
+                                                                                  Height="16px" Style="direction: rtl; text-align: center" Width="128px"></asp:Label><br />
+                                        موبيل
+                                        <asp:Label ID="tel31" runat="server" Font-Bold="True" Font-Size="14pt" Height="16px"
+                                                   Style="direction: rtl; text-align: center" Width="224px"></asp:Label><br />
+                                        بريد الكتروني @Model.Customer.Email1
+                                        <asp:Label ID="emaddress11" runat="server" Font-Bold="True" Font-Size="14pt" Style="text-align: center"
+                                                   Width="400px"></asp:Label><br />
+                                        <br />
+                                        ملاحظة: يمكن استرداد قيمة جزء او كل قيمة الوثائق من خلال اي فرع من فروع
+                                        <br />
+                                        بنك المؤسسة العربية المصرفية في اخر يوم عمل من كل اسبوع على اساس السعر<br />
+                                        المعلن من الصندوق عن اخر يوم عمل من ذات الأسبوع، علما إن قيمة الاسترداد<br />
+                                        سوف تضاف إلى حسابكم الشخصي خلال يومي العمل التاليين.<br />
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <br />
+                                        <asp:Label ID="Label8" runat="server" Font-Bold="True" Font-Size="12pt" Font-Underline="True"
+                                                   Text="تصريح:" Width="48px"></asp:Label>
+                                        أصرح انا الموقع أدناه إني قرأت نشرة الاكتتاب المعلنة في<br />
+                                        جريدة الأهرام و موافق على جميع الشروط المعلنة في النشرة كما أوافق
+                                        <br />
+                                        أيضا على تولي شركة دلتا رسمالية إدارة الصندوق حسب النشرة المعلنة في<br />
+                                        تاريح ___/___/_______<br />
+                                        <br />
+                                    </td>
+                                </tr>
+                            </table>
+                            <br />
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp;&nbsp;
+                            <asp:Label ID="Label6" runat="server" Font-Bold="True" Font-Size="14pt" ForeColor="Black"
+                                       Text="DATE" Width="168px"></asp:Label>
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                            &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+                            <asp:Label ID="Label37" runat="server" Font-Bold="True" Font-Size="14pt" ForeColor="Black"
+                                       Text="SIGNATURE (s):" Width="168px"></asp:Label><br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <br />
+                            <table border="1" cellpadding="0" cellspacing="0" style="width: 1000px" bordercolor="black">
+                                <tr>
+                                    <td style="width: 500px; font-weight: bold; font-size: 16pt; height: 32px;">
+                                        Subscription Terms and Conditions :
+                                    </td>
+                                    <td style="width: 500px; font-weight: bold; font-size: 16pt; height: 32px;" dir="rtl">
+                                        بيانات عامة للاكتتاب في الوثائق:
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 500px; height: 32px">
+                                        During subscription period the Certificate nominal value<br />
+                                        is L.E. 100 (One Hundred Egyption Pounds only).<br />
+                                        <br />
+                                        Minimum Subscription is (5 Cert's) and there is no
+                                        <br />
+                                        Maximum.<br />
+                                        <br />
+                                        Subscribers can deal on each Certificate separately after
+                                        <br />
+                                        subscription period.<br />
+                                        <br />
+                                        The Subscriber or his legal representative is allowed to
+                                        <br />
+                                        redeem the Certificates value only after subscription
+                                        <br />
+                                        period.<br />
+                                    </td>
+                                    <td dir="rtl" style="width: 500px; height: 32px">
+                                        القيمة الاسمية للوثيقة خلال فترة الاكتتاب 100 جم (مائة جنيها مصري لا غير).<br />
+                                        <br />
+                                        <br />
+                                        الحد الأدنى للاكتتاب هى خمسة وثائق و لا يوجد حد اقصى للاكتتاب.<br />
+                                        <br />
+                                        <br />
+                                        يجوز للمكتتبين التعامل مع الصندوق بيعا بوثيقة واحدة بعد إتمام عملية الاكتتاب.<br />
+                                        <br />
+                                        <br />
+                                        لا يحق للمكتتب في الوثيقة او المفوض عنة قانونا ان يسترد قيمة الوثائق المكتتب فيها
+                                        إلا
+                                        <br />
+                                        بعد إتمام عملية الأكتتاب.<br />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; font-size: 16pt; width: 500px; height: 32px">
+                                        Cert's Purchase Terms and Conditions:
+                                    </td>
+                                    <td dir="rtl" style="font-weight: bold; font-size: 16pt; width: 500px; height: 32px">
+                                        شروط الشراء للوثائق
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 500px; height: 32px">
+                                        Purchase orders to be submitted to the bank during<br />
+                                        Banking buiness days and will be processed on the<br />
+                                        following business day at The Certificate price declared by<br />
+                                        the bank at the end of that day.<br />
+                                        <br />
+                                        The Subscriber shall declare that the subscription amount<br />
+                                        is subject to Money Laundering Combat Low, its executive<br />
+                                        statue, and relevant executive resolutions.<br />
+                                    </td>
+                                    <td dir="rtl" style="width: 500px; height: 32px">
+                                        يتم تلقي طلبات شراء وثائق الاستثمار الجديدة في اخر يوم عمل مصرفي من كل أسبوع خلال<br />
+                                        ساعات العمل الرسمية بفروع البنك وتسدد قيمتها في اول يوم العمل التالي على أساس القيمة<br />
+                                        المعلنة في ذلك اليوم.<br />
+                                        <br />
+                                        <br />
+                                        يقر المكتتب بان المبالغ المكتتب بها لا تتعارض مع قانون مكافحة غسل الأموال و لائحتة<br />
+                                        التنفيذية و القرارات المنفذة لة.<br />
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold; font-size: 16pt; width: 500px; height: 32px">
+                                        Cert's redemption Terms and Conditions:
+                                    </td>
+                                    <td dir="rtl" style="font-weight: bold; font-size: 16pt; width: 500px; height: 32px">
+                                        شروط البيع للوثائق
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 500px; height: 32px">
+                                        Subscriber or his Legal representative can submit the<br />
+                                        redemption request to redeem some or all certificates<br />
+                                        during the business days from any Company, the redeemed
+                                        <br />
+                                        certificate(s) will be settled as the value of the certificate at<br />
+                                        the end of day for the submitting redemption request.<br />
+                                        <br />
+                                        The bank undertakes to pay the amount of the redeemed<br />
+                                        certificates within 2 Business days from redemption<br />
+                                        request date.<br />
+                                    </td>
+                                    <td dir="rtl" style="width: 500px; height: 32px">
+                                        يجوز لأي مكتتب في الصندوق أن يسترد بعض أو جميع قيمة وثائق الاستسمار بالكامل بالتقدم<br />
+                                        بطلب الاسترداد خلال ساعات العمل الرسمية في اخر يوم عمل مصرفي من كل أسبوع لدى<br />
+                                        اي فرع من فروع البنك ويتعين حضور حامل الوثيقة او الموكل عنة لإيداع طلب الاسترداد<br />
+                                        على ان يتم الوفاء بقيمة الوثائق المطلوبة استردادها خلال يومين عمل من تاريخ تقديم
+                                        طلب<br />
+                                        الاسترداد و ذلك خلال مواعيد العمل الرسمية على أساس نصيب الوثيقة في صافي القيمة
+                                        <br />
+                                        السوقية لأصول الصندوق في يوم عمل تقديم طلب الاسترداد.<br />
+                                        <br />
+                                        يلتزم البنك بالوفاء بقيمة الوثائق المطلوب استردادها خلال يومي عمل من تاريخ طلب
+                                        <br />
+                                        الاسترداد.
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td style="width: 500px; height: 32px"></td>
+                                    <td dir="rtl" style="width: 500px; height: 32px"></td>
+                                </tr>
+                                <tr>
+                                    <td style="font-size: 14pt; width: 500px; height: 32px">
+                                        All Subscription / Purchase / Redemption Requests will be<br />
+                                        processed through the client's account with the bank.<br />
+                                    </td>
+                                    <td dir="rtl" style="font-size: 14pt; width: 500px; height: 32px">
+                                        جميع طلبات اكتتاب/ شراء/ استرداد وثائق الاستثمار<br />
+                                        تنفذ من خلال حساب العميل المفتوح لدي البنك.
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                </body>
+            </html>

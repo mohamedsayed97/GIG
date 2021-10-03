@@ -1,0 +1,436 @@
+﻿@model ICP_ABC.Areas.Subscriptions.Models.CreateSubscriptionViewModel
+
+@{
+    /**/
+
+    /**/
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+    ViewBag.Title = "Subscription";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+
+}
+
+<h2 style="margin-top:5px">Subscription Setup: (Create)</h2>
+
+@using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "CreateForm", @onsubmit = "return myFunction()", style = "margin-top:50px" }))
+{
+    @Html.AntiForgeryToken()
+
+    <div style="margin-bottom:70px;">
+
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="row">
+            <div class="form-group col-sm-4">
+                @Html.Label("Code", htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.code, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly", Value = ViewData["LastCode"] } })
+                    @Html.ValidationMessageFor(model => model.code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group  col-sm-4 ">
+                <label class="control-label col-md-2">Account</label>
+               <div class="col-md-7">
+
+                    <select class="form-control form-control-sm valid" data-val="true" data-val-required="The Account field is required." id="CustId" name="cust_id" aria-describedby="AccountID-error" aria-invalid="false">
+                        <option>Select Account</option>
+                        <option value="EID202101">Zero Account</option>
+                        <option value="EID202102">Fund Side Account</option>
+
+                    </select>
+                    @Html.ValidationMessageFor(model => model.cust_id, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+
+            <div class="form-group  col-sm-4 ">
+                <label class="control-label col-md-2">Fund</label>
+             <div class="col-md-7">
+
+                    @Html.DropDownListFor(model => model.fund_id, ViewData["Funds"] as SelectList, "Select Fund", new { @class = "form-control form-control-sm  FundsDrpDwn", id = "FundsDrpDwn" })
+                    @Html.ValidationMessageFor(model => model.fund_id, "", new { @class = "text-danger" })
+
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+
+
+            <div class="form-group col-sm-4">
+                @Html.LabelFor(model => model.pay_method, htmlAttributes: new { @class = "control-label Cities col-md-5" })
+                <div class="col-md-7">
+                    <select class="form-control form-control-sm" disabled name="pay_method" id="MethoddDrpDwn">
+                        @{string[] Methods = new string[] { "By Units", "By Amount" };}
+                        <option value="">Select One</option>
+                        @foreach (var Method in Methods)
+                        {
+                            <option name="pay_method" value="@Method">@Method</option>
+                        }
+                    </select>
+                    @Html.ValidationMessageFor(model => model.pay_method, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.units, htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.units, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly", id = "units", @type = "text", onkeyup = "javascript:this.value=Comma(this.value)" } })
+                    @Html.ValidationMessageFor(model => model.units, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.amount_3, htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.amount_3, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly", id = "TotalUnit" } })
+                    @Html.ValidationMessageFor(model => model.amount_3, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.NAV, htmlAttributes: new { @class = "control-label Cities col-md-5" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.NAV, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly", id = "Nav" } })
+                    @Html.ValidationMessageFor(model => model.NAV, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.nav_date, htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.nav_date, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly", id = "NavDate" } })
+                    @Html.ValidationMessageFor(model => model.nav_date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.Nav_Ddate, htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.Nav_Ddate, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly", id = "Nav_Ddate" } })
+                    @Html.ValidationMessageFor(model => model.Nav_Ddate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+
+
+
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.ProcessingDate, htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.ProcessingDate, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly", id = "ProcessingDate" } })
+                    @Html.ValidationMessageFor(model => model.ProcessingDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                @Html.Label("total amount to be debit", htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.total, new { htmlAttributes = new { @class = "form-control form-control-sm ", @readonly = "readonly", id = "TotalAmount" } })
+
+                    @Html.ValidationMessageFor(model => model.total, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <div class="ButtonsControl">
+        <div class="text-center" style="padding-top:15px;">
+            <div class="col-md-2"></div>
+            <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+                <button type="submit" id="CheckCodeMap" class="btn btn-primary"><i class="fa fa-save"></i> Apply</button>
+                <a href="~/Subscriptions/Subscription/Index" class="btn btn-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+            </div>
+        </div>
+    </div>
+        }
+
+        @section scripts{
+
+            @Scripts.Render("~/bundles/jqueryval")
+
+            <script>
+                $(document).ready(function () {
+
+                    setComma();
+                    $('#CreateForm').validate({ 
+                        rules: {
+                            units: {
+                                required: true
+                         }
+                        },
+                        messages: {
+                            units: {
+                                required: "Units Is Required"
+                               
+                            }
+                        },
+                        errorClass: "text-danger"
+                     
+                    })
+
+                    $('[name="units"]').rules('add', {
+                        messages: {
+                           
+                        }
+                    });
+
+
+                });
+
+            </script>
+            <script>
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+
+            "positionClass": 'toast-top-center',
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "300",
+            "timeOut": "2000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        //Fund,and totalAmount and main bussiness Functions
+                $(function () {
+                    debugger
+            //  normal dropdown
+            $(".fundsdrpdwn").chosen({
+                // inherit_select_classes: true,
+               disable_search_threshold: 5,
+               width: "100%"
+            });
+            $('#fundsdrpdwn').prop('disabled', true).trigger("chosen:updated");
+
+        });
+
+        $(function () {
+            var flag = 0;
+            $(".FundsDrpDwn").chosen().change(function () {
+
+                $('#NavDate').val(null);
+                $('#Nav').val(null);
+              
+                $('#TotalUnit').val(null);
+                $('#units').val(null);
+                $('#TotalAmount').val(null);
+
+                if (flag != 0) {
+                    $('[name="units"]').rules("remove", "range");
+                    $("#CreateForm").validate().element("#units");
+                    flag--;
+                }
+                else {
+
+                    flag++;
+                }
+
+                debugger
+                $("#MethoddDrpDwn").attr("disabled", false);
+                debugger
+                var fundId = $("#FundsDrpDwn").val();
+                //--------------
+                var custId = $('#CustId').val();
+
+                //------------
+                $.ajax({
+                    type: "Post",
+                    url: '@servername/Subscriptions/Subscription/GetICPriceInfo', // the method we are calling
+                    contentType: "application/x-www-form-urlencoded",
+                    data: { FundId: fundId },//, 'Code': Code, 'GroupID': GroupID },
+                    dataType: "Json",
+                    success: function (result) {
+                        debugger
+                        if (result.DayNotValid == "1") {
+                            //alert("This Day is Not available to Create");
+                            toastr.error("This Day is Not available to Create");
+
+                            $("#FundsDrpDwn").attr("disabled", "disabled");
+                            $('#NavDate').val(null);
+                            $('#Nav_Ddate').val(null);
+                            $('#Nav').val(null);
+                           
+                        } else if (result.NOPrice == "1") {
+
+                            toastr.error("NO Price .");
+
+                        }
+                        else if (result.NOPrice == "2") {
+
+                            toastr.error("The Fund has no time.");
+
+                        }
+                        else if (result.NOPrice == "3") {
+
+                            toastr.error("There is no Fund ceiling For Subscription.");
+
+                        }
+                        else {
+
+
+                            // alert("y pr");
+                            Fund = JSON.parse(result);
+
+                          
+                                var dateString = Fund.Date;
+                                var d = new Date(dateString);
+                                var Format = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
+
+                                var dateString1 = Fund.Nav_Ddate;
+                                var d = new Date(dateString1);
+                                var Format1 = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
+
+                                var dateString2 = Fund.ProcessingDate;
+                                var d = new Date(dateString2);
+                                var Format2 = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
+
+                                $('#Nav_Ddate').val(Format1);
+                                $('#Nav').val(Comma(Fund.Nav));
+                                $('#NavDate').val(Format);
+                                $('#ProcessingDate').val(Format2);
+                          
+                        }
+
+                    },
+                    error: function (result) {
+
+
+                    }
+                });
+            });
+        });
+
+        $('#units').change(function () {
+            debugger
+            var nav = Fund.Nav; 
+            var Unit = removeCommas($('#units').val()); //Math.floor(totalUnit / nav);
+            var finalTotalUnit = Unit * nav;
+            $('#TotalUnit').val(Comma(finalTotalUnit.toFixed(2)));
+            $('#TotalAmount').val(Comma(finalTotalUnit.toFixed(2)));
+          
+        });
+
+        $('#TotalUnit').change(function () {
+            //debugger;
+            
+            var nav = Fund.Nav;
+           
+            var totalUnit = removeCommas($('#TotalUnit').val());
+            var Unit = Math.floor(totalUnit / nav);
+            var finalTotalUnit = Unit * nav;
+            $('#TotalUnit').val(Comma(finalTotalUnit.toFixed(2)));
+            $('#TotalAmount').val(Comma(finalTotalUnit.toFixed(2)));
+            $('#units').val(Comma(Unit));
+          
+            
+        });
+            </script>
+            <script>
+  
+            </script>
+            <script>
+                //Method Functions
+                $("#MethoddDrpDwn").change(function () {
+                    var selectedVal = $("#MethoddDrpDwn :selected").val();
+
+                    if (selectedVal == "By Units") {
+                        byUnit();
+                    }
+                    else if (selectedVal == "By Amount") {
+
+                        byAmount();
+                    }
+                    else {
+
+                    }
+                });
+
+                function byUnit() {
+                    //debugger;
+                   
+                    $("#units").prop("readonly", false);
+                    $("#TotalUnit").prop("readonly", true);
+                    $('#TotalUnit').val(null);
+                    $('#TotalAmount').val(null);
+                }
+
+                function byAmount() {
+                    //debugger;
+                   
+                    $('#units').val(null);
+                    $("#TotalUnit").prop("readonly", false);
+                    $("#units").prop("readonly", true);
+                    $('#TotalUnit').val(null);
+                    $('#TotalAmount').val(null);
+
+                }
+            </script>
+            <script>
+    
+
+        function Comma(Num) {
+            debugger
+            Num += '';
+            Num = Num.replace(',', '');
+            Num = Num.replace(',', ''); Num = Num.replace(',', '');
+            Num = Num.replace(',', ''); Num = Num.replace(',', ''); Num = Num.replace(',', '');
+            x = Num.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1))
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            return x1 + x2;
+        }
+
+
+
+        function removeCommas(str) {
+            while (str.search(",") >= 0) {
+                str = (str + "").replace(',', '');
+            }
+            return str;
+        }
+            </script>
+            <script type="text/javascript">
+                function myFunction() {
+                    debugger
+                    $('#units').val(removeCommas($('#units').val()));
+                    $('#Nav').val(removeCommas($('#Nav').val()));
+                    $('#TotalUnit').val(removeCommas($('#TotalUnit').val()));
+                  
+                    $('#TotalAmount').val(removeCommas($('#TotalAmount').val()));
+                    return true;
+
+                }
+                function setComma() {
+                    debugger
+                    if ($('#units').val() != null || $('#units').val() != "") $('#units').val(Comma($('#units').val()));
+                    if ($('#Nav').val() != null || $('#Nav').val() != "") $('#Nav').val(Comma($('#Nav').val()));
+                    if ($('#TotalUnit').val() != null || $('#TotalUnit').val() != "") $('#TotalUnit').val(Comma($('#TotalUnit').val()));
+                   if ($('#TotalAmount').val() != null || $('#TotalAmount').val() != "") $('#TotalAmount').val(Comma($('#TotalAmount').val()));
+                    return true;
+
+                }
+            </script>
+
+        }
+        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+

@@ -1,0 +1,314 @@
+﻿@model ICP_ABC.Areas.Funds.Models.CreateFundViewModel
+@using ICP_ABC.Areas.Funds.Models
+@{
+    /**/
+
+    /**/
+
+    /**/
+
+    ViewBag.Title = "Fund Setup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+
+}
+<style>
+
+    body {
+        font-weight: 500;
+        background-color: aliceblue;
+        /*background-image: url(../../Content/Images/vehdb4tur0fg6yphaiumv2bmtplollhqll0gvubgxt58t7znz43m5enjos1cxcdn-.jpg );*/
+    }
+
+    html {
+        font-size: 1rem;
+    }
+
+    @@include media-breakpoint-up(sm) {
+        html {
+            font-size: 0.5rem;
+        }
+    }
+
+    @@include media-breakpoint-up(md) {
+        html {
+            font-size: 0.5rem;
+        }
+    }
+
+    @@include media-breakpoint-up(lg) {
+        html {
+            font-size: 0.5rem;
+        }
+    }
+</style>
+
+<h2>Fund Setup: (Create)</h2>
+
+
+
+
+@using (Html.BeginForm("Create", "Fund", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "Form", style = "margin-top:50px" }))
+{
+    <div style="margin-bottom:70px;">
+        @Html.AntiForgeryToken()
+
+        <p class="text-danger"> @Html.ValidationSummary(true, "", new { @class = "text-danger" })</p>
+
+        <div class="row">
+
+            <div class="form-group col-md-4">
+                @Html.Label("Fund Code", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly", Value = ViewData["LastCode"] } })
+                    @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.Label("Fund Name", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.Label("Fund ceiling ", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                <div class="col-md-7">
+
+                    @Html.EditorFor(model => model.no_ics, new { htmlAttributes = new { @class = "form-control form-control-sm", @type = "text", onkeyup = "javascript:this.value=Comma(this.value)" } })
+                    @Html.ValidationMessageFor(model => model.no_ics, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @*<div class="form-group col-md-4">
+                    @Html.Label("ISIN Code", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.ISIN, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                        @Html.ValidationMessageFor(model => model.ISIN, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+        </div>
+
+        <div class="row">
+
+
+
+
+            @*<div class="form-group col-md-4">
+                    @Html.Label("Min units per individual", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+
+                        @Html.EditorFor(model => model.MinInd, new { htmlAttributes = new { @class = "form-control form-control-sm", @type = "text" , onkeyup = "javascript:this.value=Comma(this.value)", id = "MinInd" } })
+                        @Html.ValidationMessageFor(model => model.MinInd, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+
+
+        </div>
+
+
+
+
+
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.nomval, htmlAttributes: new { @class = "control-label col-md-10 comma" })
+
+                <div class="col-md-7">
+
+                    @Html.EditorFor(model => model.nomval, new { htmlAttributes = new { @class = "form-control form-control-sm", @type = "text", onkeyup = "javascript:this.value=Comma(this.value)" } })
+                    @Html.ValidationMessageFor(model => model.nomval, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                @Html.Label("Sponser", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-7">
+                    @Html.DropDownList("SponsorID", ViewData["Sposors"] as SelectList, new { @class = "form-control form-control-sm" })
+
+                </div>
+            </div>
+
+
+            <div class="form-group col-md-4">
+                @Html.Label("Price Tolerance", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.PriceTol, new { htmlAttributes = new { @class = "form-control form-control-sm", @Min = "0", @Max = "1.00" } })
+                    @Html.ValidationMessageFor(model => model.PriceTol, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.ICprice, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-7">
+                    <br />
+                    @Html.EditorFor(model => model.ICprice, new { htmlAttributes = new { @class = "form-control form-control-sm", @Min = "0", @Max = "5" } })
+                    @Html.ValidationMessageFor(model => model.ICprice, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4  mb-3">
+                @Html.Label("Currency", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-7">
+                    <br />
+                    @Html.DropDownListFor(model => model.CurrencyID, ViewData["Currencies"] as SelectList, new { @class = "form-control form-control-sm" })
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+
+
+
+
+    </div>
+    <div class="ButtonsControl">
+        <div class="text-center" style="padding-top:15px;">
+
+            <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+                @*<button type="submit" class="btn btn-outline-primary" onclick="submit()"><i class="fa fa-save"></i> Apply</button>*@
+                <input type="button" value="Apply" class="btn btn-primary" id="submit" />
+                @*<input type="button" class="btn btn-outline-primary" onclick="test()"/>*@
+                <a href="~/Funds/Fund/Index" class="btn btn-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+            </div>
+        </div>
+    </div>
+        }
+        @section scripts{
+
+            <script>
+
+
+                $(function () {
+                    //   normal dropdown
+                    $(".ddlist").chosen({
+                        disable_search_threshold: 5,
+                        width: "100%"
+                    });
+                });
+            </script>
+            <script>
+
+        $(document).ready(function () {
+
+            $("#submit").click(function () {
+
+                //--------
+
+             
+                var Units = document.getElementById("no_ics");
+
+              
+
+                if ($("#Form").valid()) {
+                    var AllData = $("#Form").serialize();
+
+                    var AddSublist = [];
+                    var AddRedlist = [];
+                    var AddAuthSublist = [];
+                    var AddAuthRedlist = [];
+                    var CreateFundViewModel = new Object();
+                    var FundDaysViewModel = new Object();
+                  
+
+                    debugger
+
+                 
+                    CreateFundViewModel.nomval = removeCommas($("#nomval").val());
+             
+                   
+                   
+
+                    CreateFundViewModel.Code = $("#Code").val();
+                    CreateFundViewModel.Name = $("#Name").val();
+                   
+                    CreateFundViewModel.CurrencyID = $("#CurrencyID").val();
+            
+                    CreateFundViewModel.SponsorID = $("#SponsorID").val();
+               
+                    CreateFundViewModel.nomval = removeCommas($("#nomval").val());
+            
+                    CreateFundViewModel.ICprice = $("#ICprice").val();
+            
+                    CreateFundViewModel.PriceTol = $("#PriceTol").val();
+                    CreateFundViewModel.no_ics = removeCommas($("#no_ics").val());
+
+
+                    FundDaysViewModel.ThisFund = CreateFundViewModel;
+                     $.ajax({
+                            type: "Post",
+                            url: '@servername/Funds/Fund/Create', // the method we are calling
+                            //contentType: "application/x-www-form-urlencoded",
+                            //contentType: 'application/json; charset=utf-8',
+                            data: { FundDaysViewModel: FundDaysViewModel },//, 'Code': Code, 'GroupID': GroupID },
+                            success: function (result) {
+                                debugger
+                                if (result.Checked == "False") {
+                                    alert("Failed to Create .");
+                                }
+                                else {
+                                    alert("success");
+                                    window.location.href = "@servername/Funds/Fund/Search";
+                                }
+
+                            },
+                            error: function (result) {
+                                alert("Failed To Create .");
+                            }
+                        });
+                }
+                else {
+
+                    alert("Complete All Required Failed");
+                }
+
+            
+
+            });
+
+
+
+
+            }
+            );
+
+            function Comma(Num) {
+                debugger//function to add commas to textboxes
+                Num += '';
+                Num = Num.replace(',', '');
+                Num = Num.replace(',', ''); Num = Num.replace(',', '');
+                Num = Num.replace(',', ''); Num = Num.replace(',', ''); Num = Num.replace(',', '');
+                x = Num.split('.');
+                x1 = x[0];
+                x2 = x.length > 1 ? '.' + x[1] : '';
+                var rgx = /(\d+)(\d{3})/;
+                while (rgx.test(x1))
+                    x1 = x1.replace(rgx, '$1' + ',' + '$2');
+                return x1 + x2;
+            }
+
+
+
+            function removeCommas(str) {
+                while (str.search(",") >= 0) {
+                    str = (str + "").replace(',', '');
+                }
+                return str;
+            }
+
+            </script>
+
+        }
+        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

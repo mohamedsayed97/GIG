@@ -1,0 +1,143 @@
+﻿@model ICP_ABC.Areas.Funds.Models.CreateFundViewModel
+@using ICP_ABC.Areas.Funds.Models
+@{
+    /**/
+
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Fund Setup</h2>
+
+<form method="post" action="" style="margin-top:50px">
+    <div style="margin-bottom:70px;">
+        @Html.AntiForgeryToken()
+
+        <div class="form-horizontal">
+
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+
+                <div class="form-group col-md-4">
+                    @Html.Label("Fund Code", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly", Value = ViewData["LastCode"] } })
+                        @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    @Html.Label("Fund Name", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    @Html.Label("Fund ceiling ", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                    <div class="col-md-7">
+
+                        @Html.EditorFor(model => model.no_ics, new { htmlAttributes = new { @class = "form-control form-control-sm", @type = "text", onkeyup = "javascript:this.value=Comma(this.value)", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.no_ics, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+         
+            </div>
+
+        
+
+
+
+
+
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.nomval, htmlAttributes: new { @class = "control-label col-md-10 comma" })
+
+                    <div class="col-md-7">
+
+                        @Html.EditorFor(model => model.nomval, new { htmlAttributes = new { @class = "form-control form-control-sm", @type = "text", onkeyup = "javascript:this.value=Comma(this.value)", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.nomval, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.Label("Sponser", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.SponsorID, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+
+                    </div>
+                </div>
+
+
+                <div class="form-group col-md-4">
+                    @Html.Label("Price Tolerance", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.PriceTol, new { htmlAttributes = new { @class = "form-control form-control-sm", @Min = "0", @Max = "1.00", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.PriceTol, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.ICprice, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        <br />
+                        @Html.EditorFor(model => model.ICprice, new { htmlAttributes = new { @class = "form-control form-control-sm", @Min = "0", @Max = "5", disabled = "disabled" } })
+                        @Html.ValidationMessageFor(model => model.ICprice, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4  mb-3">
+                    @Html.Label("Currency", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        <br />
+                        @Html.EditorFor(model => model.CurrencyID, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                    </div>
+                </div>
+
+
+
+            </div>
+
+
+
+        </div>
+    </div>
+    <div class="ButtonsControl">
+        <div class="text-center" style="padding-top:15px;">
+            <div class="col-md-3"></div>
+            <div class="btn-group col-md-8" role="group" aria-label="Basic example">
+                <a href="~/Funds/Fund/Create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Fund</a>
+                <a href="~/Funds/Fund/Search" class="btn btn-primary"><i class="fa fa-search"></i> Search</a>
+                <a href="~/Home/Home/Index" class="btn btn-primary"><i class="fa fa-home"></i> Back To Home</a>
+
+            </div>
+        </div>
+    </div>
+</form>
+
+
+
+
+@section scripts{
+    <script>
+
+
+        $(function () {
+            //   normal dropdown
+            $(".ddlist").chosen({
+                disable_search_threshold: 5
+            });
+        });
+    </script>
+
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+

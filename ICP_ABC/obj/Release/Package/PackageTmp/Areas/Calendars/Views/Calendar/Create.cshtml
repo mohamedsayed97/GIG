@@ -1,0 +1,199 @@
+﻿@model ICP_ABC.Areas.Calendars.Models.CreateViewModel
+@{
+
+    /**/
+
+    ViewBag.Title = "Calendar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+<style>
+
+    body {
+        font-weight: 500;
+        background-color: aliceblue;
+        /*background-image: url(../../Content/Images/vehdb4tur0fg6yphaiumv2bmtplollhqll0gvubgxt58t7znz43m5enjos1cxcdn-.jpg );*/
+    }
+</style>
+
+<h2>Calendar Setup: (Create)</h2>
+@*<form method="post" action="@Url.Action("REgister", "Account")">*@
+
+@using (Html.BeginForm("Create", "Calendar", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+<div style="height:375px;overflow-y:scroll;overflow-x:hidden;margin:3px;padding:5px; border:solid 1px #ddd;">
+    @Html.AntiForgeryToken()
+
+    <p class="text-danger">@Html.ValidationSummary(true)</p>
+    <div class="horizontal">
+
+        <div class="form-group col-md-5 ">
+            <label for="inputEmail4">Code</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(m => m.Code, new { @class = "form-control form-control-sm", @readonly = "readonly", Value = ViewData["LastCode"], texfgt = ViewData["LastCode"] })
+                @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+        <div class="form-group col-md-5 ">
+            <label for="inputEmail4">Vacation_Name</label>
+            @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+            <div class="col-md-7">
+                @Html.TextBoxFor(m => m.Vacation_Name, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.Vacation_Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group col-md-5 ">
+            <label for="inputEmail4">Vacation Date</label>
+            @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+            <div class="col-md-7">
+                @*@Html.TextBoxFor(m => m.Vacation_date, new { @class = "form-control form-control-sm" })*@
+                @Html.EditorFor(model => model.Vacation_date, new { htmlAttributes = new { @class = "datepicker form-control form-control-sm" } })
+                @Html.ValidationMessageFor(m => m.Vacation_date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+    </div>
+
+
+
+
+</div>
+    <button id="sorry" type="button" hidden="true" class="btn btn-info btn-lg" data-toggle="modal" data-target="#POpUp">Open Modal</button>
+
+    <!-- Modal -->
+
+    <div class="modal fade" id="POpUdsfvdsvsp" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Autherize</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    Are You Sure You Want to Autherize ?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                    @*<a href="~/Calendars/Calendar/AuthorizeCalendar?Code=@Model.Code" class="btn btn-primary">Autherize</a>*@
+                </div>
+            </div>
+
+        </div>
+
+
+       
+    </div>
+
+
+    <div class="modal fade" id="POpUp" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">DateCheck</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        Not Valied Date . Date Must Be in future Or today. 
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" data-dismiss="modal">Close</button>
+                     
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+    <div class="text-center" style="padding-top:15px;">
+
+        <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+            <button type="submit" class="btn btn-outline-primary" id="CheckDate"><i class="fa fa-save"></i> Apply</button>
+            <a href="~/Calendars/Calendar/Index" class="btn btn-outline-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+
+        </div>
+    </div>
+
+}
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+
+        $(function () {
+            //   normal dropdown
+            $(".ddlist").chosen({
+                //  disable_search_threshold: 1
+            });
+        });
+    </script>
+    <script>
+
+        $(document).ready(function () {
+
+            function convertUTCDateToLocalDate(date) {
+                var newDate = new Date(date.getTime() + date.getTimezoneOffset() * 60 * 1000);
+
+                var offset = date.getTimezoneOffset() / 60;
+                var hours = date.getHours();
+
+                newDate.setHours(hours - offset);
+
+                return newDate;
+            }
+            var apply = document.getElementById("CheckDate");
+            apply.style.display = "none";
+            $("#Vacation_date").focusout(function (e) {
+
+                var ThisDate = new Date(Date.parse(document.getElementById("Vacation_date").value));
+                var todaysDate = new Date();
+                var test = convertUTCDateToLocalDate(new Date(ThisDate));
+                var test2 = test.toLocaleDateString();
+                var nd = new Date(test2);
+                if (nd.setHours(0, 0, 0, 0) >= todaysDate.setHours(0, 0, 0, 0)) {
+                    var apply = document.getElementById("CheckDate");
+                    apply.style.display = "Block";
+                } else {
+
+                    $("#sorry").trigger("click");
+                    //alert("Not Valied Date . Date Must Be in future Or today.");
+
+                }
+
+                //var  d = new Date();
+                // var localTime = ThisDate.getTime();
+                // var localOffset = ThisDate.getTimezoneOffset() * 60000;
+                // var utc = localTime + localOffset;
+                // var offset = 5.5;
+                // var bombay = utc + (3600000 * offset);
+
+                // var nd = new Date(bombay);
+                // alert(nd.toLocaleString());
+                // //var ThisDate = document.getElementById("Vacation_date").value;
+                //var test = new Date();
+                //test.setDate(ThisDate);
+                //var test2 = test.toLocaleString();
+                //alert();
+                //var todaysDate = new Date();
+
+            }
+            )
+
+        });
+    </script>
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+

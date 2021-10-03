@@ -1,0 +1,70 @@
+﻿@model ICP_ABC.Areas.UsersSecurity.Models.UserSecurity
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@using (Html.BeginForm())
+{
+    @Html.AntiForgeryToken()
+
+<div class="form-horizontal">
+    <h2>User Security Setup</h2>
+     <div style="margin-bottom:70px;">
+         <div class="horizontal">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.NumberOfTrials, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.NumberOfTrials, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.NumberOfTrials, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.ExpireInterval, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.ExpireInterval, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.ExpireInterval, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.Levels, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-10">
+                    @Html.EnumDropDownListFor(model => model.Levels, htmlAttributes: new { @class = "form-control form-control-sm", disabled = "disabled" })
+                    @Html.ValidationMessageFor(model => model.Levels, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                @Html.Label("Vacation Day Transaction :", htmlAttributes: new { @class = "control-label col-md-9 " })
+                <div class="form-group row-cols-md-4">
+                    <div class="form-group col-md-12">
+                        @Html.CheckBoxFor(model => model.ViewTransaction, new { htmlAttributes = new { @class = "form-control form-control-sm" }, disabled = "disabled" })
+                        <label class="control-label" style="margin-right:5px">View-Transaction</label>
+
+                        @Html.CheckBoxFor(model => model.CreateTransaction, new { htmlAttributes = new { @class = "form-control form-control-sm" }, disabled = "disabled" })
+                        <label class="control-label">Create-Transaction</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        </div>
+      <div class="ButtonsControl">
+    <div class="text-center" style="padding-top:15px;">
+        <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+            @if (ViewBag.FirstTime)
+            {
+    <a href="~/UsersSecurity/UserSecurity/Create" class="btn btn-primary"><i class="fa fa-plus"></i> Add User Security</a>}
+            <a href="~/UsersSecurity/UserSecurity/Edit" class="btn btn-primary"><i class="fa fa-search"></i> Edit UserSecurity</a>
+            <a href="~/Home/Home/Index" class="btn btn-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+        </div>
+    </div>
+    </div>
+    </div>
+}
+

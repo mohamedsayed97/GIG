@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema id="FundBallanceDS1" targetNamespace="http://tempuri.org/FundBallanceDS1.xsd" xmlns:mstns="http://tempuri.org/FundBallanceDS1.xsd" xmlns="http://tempuri.org/FundBallanceDS1.xsd" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata" xmlns:msprop="urn:schemas-microsoft-com:xml-msprop" attributeFormDefault="qualified" elementFormDefault="qualified">
+  <xs:annotation>
+    <xs:appinfo source="urn:schemas-microsoft-com:xml-msdatasource">
+      <DataSource DefaultConnectionIndex="0" FunctionsComponentName="QueriesTableAdapter" Modifier="AutoLayout, AnsiClass, Class, Public" SchemaSerializationMode="IncludeSchema" xmlns="urn:schemas-microsoft-com:xml-msdatasource">
+        <Connections />
+        <Tables />
+        <Sources />
+      </DataSource>
+    </xs:appinfo>
+  </xs:annotation>
+  <xs:element name="FundBallanceDS1" msdata:IsDataSet="true" msdata:UseCurrentLocale="true" msprop:EnableTableAdapterManager="true" msprop:Generator_DataSetName="FundBallanceDS1" msprop:Generator_UserDSName="FundBallanceDS1">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="DataTable1" msprop:Generator_TableClassName="DataTable1DataTable" msprop:Generator_TableVarName="tableDataTable1" msprop:Generator_TablePropName="DataTable1" msprop:Generator_RowDeletingName="DataTable1RowDeleting" msprop:Generator_RowChangingName="DataTable1RowChanging" msprop:Generator_RowEvHandlerName="DataTable1RowChangeEventHandler" msprop:Generator_RowDeletedName="DataTable1RowDeleted" msprop:Generator_UserTableName="DataTable1" msprop:Generator_RowChangedName="DataTable1RowChanged" msprop:Generator_RowEvArgName="DataTable1RowChangeEvent" msprop:Generator_RowClassName="DataTable1Row">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="fund_id" msprop:Generator_ColumnVarNameInTable="columnfund_id" msprop:Generator_ColumnPropNameInRow="fund_id" msprop:Generator_ColumnPropNameInTable="fund_idColumn" msprop:Generator_UserColumnName="fund_id" type="xs:string" minOccurs="0" />
+              <xs:element name="fname" msprop:Generator_ColumnVarNameInTable="columnfname" msprop:Generator_ColumnPropNameInRow="fname" msprop:Generator_ColumnPropNameInTable="fnameColumn" msprop:Generator_UserColumnName="fname" type="xs:string" minOccurs="0" />
+              <xs:element name="units" msprop:Generator_ColumnVarNameInTable="columnunits" msprop:Generator_ColumnPropNameInRow="units" msprop:Generator_ColumnPropNameInTable="unitsColumn" msprop:Generator_UserColumnName="units" type="xs:string" minOccurs="0" />
+              <xs:element name="navDate" msprop:Generator_ColumnVarNameInTable="columnnavDate" msprop:Generator_ColumnPropNameInRow="navDate" msprop:Generator_ColumnPropNameInTable="navDateColumn" msprop:Generator_UserColumnName="navDate" type="xs:string" minOccurs="0" />
+              <xs:element name="totalPos" msprop:Generator_ColumnVarNameInTable="columntotalPos" msprop:Generator_ColumnPropNameInRow="totalPos" msprop:Generator_ColumnPropNameInTable="totalPosColumn" msprop:Generator_UserColumnName="totalPos" type="xs:string" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>

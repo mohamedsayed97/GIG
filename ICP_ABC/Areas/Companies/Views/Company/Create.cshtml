@@ -1,0 +1,332 @@
+﻿@model ICP_ABC.Areas.Policies.Models.PolicyViewModel
+
+@{
+    /**/
+
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+
+}
+
+<div class="row">
+
+    <div class="col-12" id="">
+        <h2>Policy Setup</h2>
+        @using (Html.BeginForm("Create", "Policy", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "containerAllocationRule"}))
+        {
+    <div style="margin-bottom:100px;">
+       
+        <div class="row">
+            <div class="form-group col-3">
+                <label for="PolicyNo" class="control-label">Policy No</label>
+                @Html.EditorFor(model => model.PolicyNo, new { htmlAttributes = new { @placeholder = "Policy No", @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PolicyNo, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group  col-3">
+                <label for="PaymentFrequency" class="control-label">Payment Frequency</label>
+            
+                <select name="PaymentFrequency" id="PaymentFrequency" class="form-control" data-val="true" data-val-number="The field PaymentFrequency must be a number." data-val-required="The PaymentFrequency field is required.">
+                    <option>Select PaymentFrequency</option>
+                    <option value="1">Monthly</option>
+                    <option value="2">Quarter</option>
+                    <option value="3">Annual</option>
+                </select>
+                @Html.ValidationMessageFor(model => model.PaymentFrequency, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-3">
+                <label for="Status" class="control-label">Status</label>
+
+                <select name="Status" id="Status" class="form-control" data-val="true" data-val-number="The field Status must be a number." data-val-required="The Status field is required.">
+                    <option>Select Status</option>
+                    <option value="1">Issued</option>
+
+                </select>
+                @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-3">
+                <label for="BusinessChannel" class="control-label">Business Channel</label>
+                <select name="BusinessChannel" id="BusinessChannel" class="form-control" data-val="true" data-val-number="The field BusinessChannel must be a number." data-val-required="The BusinessChannel field is required.">
+                    <option>Select BusinessChannel</option>
+
+                    <option value="1">Business 1</option>
+
+                </select>
+                @Html.ValidationMessageFor(model => model.BusinessChannel, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group  col-3">
+                <label for="PolicyHolderName" class="control-label">PolicyHolder Name</label>
+                @Html.EditorFor(model => model.PolicyHolderName, new { htmlAttributes = new { @placeholder = "PolicyHolder Name", @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.PolicyHolderName, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group col-3">
+                <label for="EffectiveDate" class="control-label">Effective Date</label>
+                @Html.EditorFor(model => model.EffectiveDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.EffectiveDate, "", new { @class = "text-danger" })
+            </div>
+
+            <div class="form-group col-3">
+                <label for="CalculationBasis" class="control-label">Calculation Basis</label>
+
+                <select name="CalculationBasis" id="CalculationBasis" class="form-control" data-val="true" data-val-number="The field CalculationBasis must be a number." data-val-required="The CalculationBasis field is required.">
+                    <option>select CalculationBasis</option>
+
+                    <option value="1">Normal</option>
+
+                </select>
+                @Html.ValidationMessageFor(model => model.CalculationBasis, "", new { @class = "text-danger" })
+            </div>
+            <div class="form-group col-3">
+                <div class="row">
+                    <div class="form-group offset-1 col-5">
+
+                        <div class="row">
+                            @Html.LabelFor(model => model.HasWithdrawal)
+
+                        </div>
+                        <div class="row">
+                            @Html.CheckBoxFor(model => model.HasWithdrawal)
+
+                        </div>
+
+                    </div>
+                    <div class="form-group col-4 ">
+                        <div class="row">
+                            @Html.LabelFor(model => model.HasBooster)
+
+                        </div>
+                        <div class="row">
+                            @Html.CheckBoxFor(model => model.HasBooster)
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group col-3">
+                <label for="FundId" class="control-label">Fund</label>
+
+                @Html.DropDownList("Funds", new SelectList(Model.Funds, "FundID", "Name"), "Select Fund", new { @class = "form-control ", id = "AllFunds" })
+            </div>
+       
+            <div class="form-group col-9">
+
+                <div class="alert alert-danger" style="display:none" id="ErrorMessage" role="alert">
+
+                </div>
+            </div>
+
+            
+
+        </div>
+        <div class="row">
+            
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+
+                        <th scope="col">Name</th>
+                        <th scope="col">% Of Emp Share</th>
+                        <th scope="col">% Of Company Share</th>
+
+                        <th scope="col">% Of Emp Share(Booster)</th>
+                        <th scope="col">% Of Company Share Booster</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody id="allocationRuleItem">
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+           
+            <div class="ButtonsControl">
+
+
+                <div class="text-center" style="padding-top:15px;">
+
+                    <div class="btn-group col-md-8" role="group" aria-label="Basic example">
+                        <input type="submit" value="Apply" class="btn btn-primary" id="submit" />
+
+                        <a href="~/Policies/Policy/Index" class="btn btn-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+
+@section scripts
+{
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var selectFunds = [];
+            var index = 0;
+            $('#AllFunds').change(function () {
+                debugger
+                if (!selectFunds.includes(this.value)) {
+                    selectFunds.push(this.value);
+
+                    var HasBooster = document.getElementById('HasBooster').checked;
+                    var PercentageOfEmpShareBooster = (HasBooster)
+                        ? '<input class="form-control text-box single-line Booster" data-val="true" data-val-number="The field PercentageOfEmpShareBooster must be a number." data-val-range="0 - 100" data-val-range-max="100" data-val-range-min="0" data-val-required="Required" id="AllocationRules_' + index + '__PercentageOfEmpShareBooster" name="' + 'AllocationRules[' + index + ']' + '.PercentageOfEmpShareBooster"  type="number" aria-describedby="AllocationRules_' + index + '__PercentageOfEmpShareBooster-error"aria-invalid="true">'
+                        : '<input class="form-control text-box single-line Booster" data-val="true" data-val-number="The field PercentageOfEmpShareBooster must be a number." data-val-range="0 - 100" data-val-range-max="100" data-val-range-min="0" data-val-required="Required" id="AllocationRules_' + index + '__PercentageOfEmpShareBooster" name="' + 'AllocationRules[' + index + ']' + '.PercentageOfEmpShareBooster"  type="number" aria-describedby="AllocationRules_' + index + '__PercentageOfEmpShareBooster-error"aria-invalid="true" readonly value="0" >';
+                    
+                    var PercentageOfCompanyShareBooster = (HasBooster)
+                        ? '<input class="form-control text-box single-line Booster" data-val="true" data-val-number="The field PercentageOfCompanyShareBooster must be a number." data-val-range="0 - 100" data-val-range-max="100" data-val-range-min="0" data-val-required="Required" id="AllocationRules_' + index + '__PercentageOfCompanyShareBooster" name="' + 'AllocationRules[' + index + ']' + '.PercentageOfCompanyShareBooster"  type="number"  aria-describedby="AllocationRules_' + index + '__PercentageOfCompanyShareBooster-error"aria-invalid="true" >'
+                        : '<input class="form-control text-box single-line Booster" data-val="true" data-val-number="The field PercentageOfCompanyShareBooster must be a number." data-val-range="0 - 100" data-val-range-max="100" data-val-range-min="0" data-val-required="Required" id="AllocationRules_' + index + '__PercentageOfCompanyShareBooster" name="' + 'AllocationRules[' + index + ']' + '.PercentageOfCompanyShareBooster"  type="number"  aria-describedby="AllocationRules_' + index + '__PercentageOfCompanyShareBooster-error"aria-invalid="true" readonly value="0" >';
+                    
+                    var allocationRuleItem = "<tr>" + '<td>' +
+                        '<input type="hidden" name = "' + 'AllocationRules[' + index + ']' + '.FundId" type ="number" id = "AllocationRules_' + index + '__FundId"  value="' + this.value + '"  >' +
+
+                        '<input class="form-control text-box single-line" data-val="true" data-val-required="Required"   type ="text" aria-describedby="AllocationRules_' + index + '__FundId-error"aria-invalid="true" value="'+$(this).children(":selected").text()+'" readonly >' +
+                        '<span class="field-validation-valid text-danger" data-valmsg-for="' + 'AllocationRules[' + index + ']' + '.FundId" data-valmsg-replace="true"></span>' +
+                        '</td>' +
+
+                        '<td>' +
+                        '<input class="form-control text-box single-line" data-val="true" data-val-number="The field PercentageOfEmpShare must be a number." data-val-range="0 - 100" data-val-range-max="100" data-val-range-min="0" data-val-required="Required" id="AllocationRules_' + index + '__PercentageOfEmpShare" name="' + 'AllocationRules[' + index + ']' + '.PercentageOfEmpShare"  type="number" aria-describedby="AllocationRules_' + index + '__PercentageOfEmpShare-error" aria-invalid="true">' +
+                        '<span class="field-validation-valid text-danger" data-valmsg-for="' + 'AllocationRules[' + index + ']' + '.PercentageOfEmpShare" data-valmsg-replace="true"></span>' +
+                        '</td>' +
+
+                        '<td>' +
+                        '<input class="form-control text-box single-line" data-val="true" data-val-number="The field PercentageOfCompanyShare must be a number." data-val-range="0 - 100" data-val-range-max="100" data-val-range-min="0" data-val-required="Required" id="AllocationRules_' + index + '__PercentageOfCompanyShare" name="' + 'AllocationRules[' + index + ']' + '.PercentageOfCompanyShare"  type="number" aria-describedby="AllocationRules_' + index + '__PercentageOfCompanyShare-error"aria-invalid="true">' +
+                        '<span class="field-validation-valid text-danger" data-valmsg-for="' + 'AllocationRules[' + index + ']' + '.PercentageOfCompanyShare" data-valmsg-replace="true"></span>' +
+                        '</td>' +
+
+                        '<td>' +
+                        PercentageOfEmpShareBooster +
+                        '<span class="field-validation-valid text-danger" data-valmsg-for="' + 'AllocationRules[' + index + ']' + '.PercentageOfEmpShareBooster" data-valmsg-replace="true"></span>' +
+                        '</td>' +
+
+                        '<td>' +
+                        PercentageOfCompanyShareBooster +
+                        '<span class="field-validation-valid text-danger" data-valmsg-for="' + 'AllocationRules[' + index + ']' + '.PercentageOfCompanyShareBooster" data-valmsg-replace="true"></span>' +
+                        '</td>' +
+
+                        '<td>' +
+                        '<button type="button" class="btn btn-danger removeAllocationRule" style="width:85%;">' +
+                        '<i class="fa fa-times" aria-hidden="true"></i>' +
+                        '</button>' +
+                        '</td>' +'</tr>';
+
+
+
+
+
+
+                    $('#allocationRuleItem').append(allocationRuleItem);
+
+                    $("#containerAllocationRule").removeData("validator");
+                    $("#containerAllocationRule").removeData("unobtrusiveValidation");
+                    $.validator.unobtrusive.parse("#containerAllocationRule");
+                    index++;
+
+                }
+
+
+            });
+
+            $(document).on('click', '.removeAllocationRule', function () {
+
+                    var node = this.parentNode.parentNode.children[0];
+                    var i = (node.children[0].id).replace(/\D/g, '');
+                         selectFunds.splice(i, 1);
+                        this.parentNode.parentNode.remove();
+                        index--;
+            });
+
+            $("#containerAllocationRule").submit(function (e) {
+                debugger
+                e.preventDefault(); // avoid to execute the actual submit of the form.
+                var valid = $("#containerAllocationRule").valid();
+                if ($("#containerAllocationRule").valid()) {
+                     var tableObj = document.getElementById("allocationRuleItem");
+                var rules = [];
+                var allTRs = tableObj.getElementsByTagName("tr");
+                for (var trCounter = 0; trCounter < allTRs.length; trCounter++) {
+
+                    var allTDsInTR = allTRs[trCounter].getElementsByTagName("td");
+                    var rule = {
+                        FundId: allTDsInTR[0].children[0].value,
+                        PercentageOfEmpShare: allTDsInTR[1].children[0].value,
+                        PercentageOfCompanyShare: allTDsInTR[2].children[0].value,
+                        PercentageOfEmpShareBooster: allTDsInTR[3].children[0].value,
+                        PercentageOfCompanyShareBooster: allTDsInTR[4].children[0].value
+                    };
+                   
+                    rules.push(rule);
+                }
+                var Policy = {
+                    PolicyNo: document.getElementById("PolicyNo").value,
+                    PolicyHolderName: document.getElementById("PolicyHolderName").value,
+                    PaymentFrequency: $('#PaymentFrequency :selected').val(),
+                    EffectiveDate: document.getElementById("EffectiveDate").value,
+                    Status: $('#Status :selected').val(),
+                    BusinessChannel: $('#BusinessChannel :selected').val(),
+                    CalculationBasis: $('#CalculationBasis :selected').val(),
+                    HasBooster : document.getElementById('HasBooster').checked,
+                    HasWithdrawal : document.getElementById('HasWithdrawal').checked,
+                    AllocationRules: rules
+                };
+                $.ajax({
+                    type: "POST",
+                    url: '@servername/Policies/Policy/Create',
+                    data: { model: Policy }, // serializes the form's elements.
+                    success: function (result) {
+                        debugger
+                        if (!result.success) {
+                            document.getElementById("ErrorMessage").style.display = '';
+                            var markupErrors = "";
+                            var errors = result.errors.split("&");
+                            for (var i = 0; i < errors.length; i++) {
+                                if (i == 0)
+                                    markupErrors = markupErrors + errors[i];
+                                else
+                                    markupErrors = markupErrors + '<br>' + errors[i];
+
+                            }
+
+                            document.getElementById('ErrorMessage').innerHTML = markupErrors;
+                        }
+                        else {
+                            window.location.href = '@servername/Policies/Policy/Details?PolicyNo=' + result.policyNo;
+                        }
+                        
+                    }
+                });
+
+                }
+               
+
+
+            });
+
+            $('#HasBooster').change(function () {
+                if (this.checked) {
+                    $('.Booster').removeAttr('readonly');
+                    $('.Booster').prop("value", null);
+
+                }
+                else {
+                    
+                    $('.Booster').prop('readonly', true);
+                    $('.Booster').prop("value", 0);
+                }
+            });
+        })
+
+
+
+
+    </script>
+}

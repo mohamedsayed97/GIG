@@ -1,0 +1,142 @@
+﻿@model PagedList.IPagedList<ICP_ABC.Areas.Calendars.Models.Calendar>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    ViewBag.Title = "Calendar";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    TempData.Keep("CalendarForExc");
+}
+
+<h2>Calendar Setup: (Search)</h2>
+
+<form class="form-inline" id="SearchForm">
+    <label class="sr-only" for="inlineFormInputName2">Name</label>
+    <input type="text" class="form-control form-control-sm" name="Code" value="@ViewData["Code"]" id="Code" placeholder="By Code">
+    <input type="text" class="form-control form-control-sm" name="searchString" value="@ViewData["searchString"]" id="searchString" placeholder="By Name">
+    <input type="date" class="form-control form-control-sm" name="searchDate" value="@ViewData["searchDate"]" id="searchDate" placeholder="By Date">
+    @* <input type="date" class="form-control form-control-sm" name="Date" id="NavDateFrom" value="@ViewData["NavDateFrom"]" placeholder="Nav Date From">*@
+    @{
+        var chk = ViewData["radioCHeck"] as string;
+        var AuthorizeCHK = chk == "1" ? "checked" : "";
+        var CheckerCHK = chk == "2" ? "checked" : "";
+        var MakerCHK = chk == "3" ? "checked" : "";
+        var AllCHK = chk == "4" ? "checked" : "";
+
+    }
+    <input id="Authorize"
+           name="RadioCHeck"
+           type="radio"
+           value="1"
+           @AuthorizeCHK />Authorize&nbsp;
+    @{
+        if (ViewBag.SecuLevel == 3)
+        {
+            <input style="display:inline-block" id="Checker"
+                   name="RadioCHeck"
+                   type="radio"
+                   value="2" @CheckerCHK /><label style="display:inline-block" for="Check">Checker&nbsp;</label>
+        }
+    }
+
+    <input id="Maker"
+           name="RadioCHeck"
+           type="radio"
+           value="3"
+           @MakerCHK />Maker&nbsp;
+
+    <input id="All"
+           name="RadioCHeck"
+           type="radio"
+           value="4"
+           @AllCHK />All&nbsp;
+    <button type="submit" class="btn btn-outline-primary mb-2 mr-sm-4" style="margin-left:5px;"><i class="fa fa-search"></i> Search</button>
+</form>
+
+<p>
+    @if (Model.TotalItemCount != 0)
+    {
+        <a target="_blank" rel="noopener noreferrer" href="~/Calendars/Calendar/ExportToPDF">Print Result To PDF</a>
+        @Html.ActionLink("Print Result To Excel", "ExportToExcel", "Calendar")
+    }
+
+</p>
+
+<div style="height:295px;overflow-y:scroll;overflow-x:hidden;margin:3px;padding:5px; border:solid 1px #ddd;">
+    <table class="table">
+        <tr style="font-family:initial;color:blue">
+
+
+            <th>
+                Code
+            </th>
+            <th>
+                Calendar Name
+            </th>
+            <th>
+                Calendar Date
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Code)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vacation_Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Vacation_date)
+                </td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        @Html.ActionLink("Details", "Details", new { Code = item.Code }, new { @class = " btn btn-outline-primary" })
+                        @*@Html.ActionLink("Details", "Details", new { id = item.GroupID }, new { @class = " btn btn-outline-primary" })*@
+                    </div>
+                </td>
+            </tr>
+            <div class="modal fade" id=Delete_@item.Code tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Unlock User</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            Are You Sure You Want to Delete @item.Vacation_Name ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a href="~/Calendars/Calendar/Delete?Code=@item.Code" class="btn btn-primary ">Confirm</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </table>
+
+</div>
+
+@*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Index",
+        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
+@Html.PagedListPager(Model, page => Url.Action("Search",
+    new { page, RadioCHeck= Request.QueryString["RadioCHeck"] , searchDate = Request.QueryString["searchDate"], Code= Request.QueryString["CodeString"], searchString = Request.QueryString["searchString"] }))
+
+<div class="text-center">
+
+    <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+        <a href="~/Calendars/Calendar/Create" class="btn btn-outline-primary"><i class="fa fa-plus"></i> Add New Calendar</a>
+        <a href="~/Calendars/Calendar/Index" class="btn btn-outline-primary"><i class="fa fa-backward"></i> Back </a>
+
+    </div>
+</div>

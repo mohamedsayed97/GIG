@@ -1,0 +1,274 @@
+﻿@model ICP_ABC.Areas.Customers.Models.CreateViewModel
+@using ICP_ABC.Extentions
+
+@{
+
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 style="margin-top:5px">Employee Setup: (Details)</h2>
+
+@using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", style = "margin-top:50px" }))
+{
+
+    <div style="margin-bottom:70px;">
+
+        @Html.AntiForgeryToken()
+
+        <p class="text-danger">@Html.ValidationSummary(true)</p>
+        <div class="row">
+
+
+
+            <div class="form-group col-md-4">
+                @Html.Label("Employee Code", htmlAttributes: new { @class = "control-label  col-md-5" })
+
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.CustomerID, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.CustomerID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4 ">
+                @Html.Label("Arabic Name", htmlAttributes: new { @class = "control-label  col-md-5" })
+
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.ArName, new { htmlAttributes = new { @class = "form-control form-control-sm ", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.ArName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group  col-md-4 ">
+                @Html.Label("English Name", htmlAttributes: new { @class = "control-label  col-md-5" })
+
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.EnName, new { htmlAttributes = new { @class = "form-control form-control-sm ", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.EnName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+        </div>
+        <div class="row">
+
+
+
+            <div class="form-group col-md-4">
+                @Html.Label("Phone Number", htmlAttributes: new { @class = "control-label  col-md-5" })
+
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.tel1, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.tel1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4 ">
+                @Html.Label("English Address", htmlAttributes: new { @class = "control-label  col-md-5" })
+
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.EnAddress1, new { htmlAttributes = new { @class = "form-control form-control-sm ", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.EnAddress1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group  col-md-4 ">
+                @Html.Label("Arabic Address", htmlAttributes: new { @class = "control-label  col-md-5" })
+
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.ArAddress1, new { htmlAttributes = new { @class = "form-control form-control-sm ", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.ArAddress1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+        </div>
+        <div class="row">
+
+            <div class="form-group col-md-4">
+                @Html.Label("Date of hiring", htmlAttributes: new { @class = "control-label col-md-5" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.DateOfHiring, new { htmlAttributes = new { @class = "datepicker form-control form-control-sm", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.DateOfHiring, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                @Html.Label("Date of Contribute", htmlAttributes: new { @class = "control-label col-md-7" })
+
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.DateOfContribute, new { htmlAttributes = new { @class = "datepicker form-control form-control-sm", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.DateOfContribute, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.Label("Date of birth", htmlAttributes: new { @class = "control-label col-md-7" })
+
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.DateOfBirth, new { htmlAttributes = new { @class = "datepicker form-control form-control-sm", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.DateOfBirth, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                <Label class=" control-label col-md-2"> Salary</Label>
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.Salary, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.Salary, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <Label class=" control-label col-md-2"> Email</Label>
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.Email1, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.Email1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.IdNumber, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.IdNumber, new { htmlAttributes = new { @class = "form-control form-control-sm", @type = "number", @min = "0", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(model => model.IdNumber, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <div class="ButtonsControl">
+        <div class="text-center" style="padding-top:15px;">
+            <div class="col-lg-1"></div>
+            <div class="btn-group col-md-11" role="group" aria-label="Basic example">
+                @if (User.Identity.HasTheRights("Customers", "Create"))
+                {
+                    <a href="~/Employees/Create" class="btn btn-primary"><i class="fa fa-group"></i> Add Customer</a>
+                }
+                @if (User.Identity.HasTheRights("Customers", "Update"))
+                {
+                    if (!Model.AuthForEditAndDelete.Value)
+                    {
+                        <a href="~/Employees/Edit?CustomerID=@Model.CustomerID" class="btn btn-primary"><i class="fa fa-edit"></i> Edit </a>
+                    }
+                    @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+                }
+                @if (User.Identity.HasTheRights("Customers", "Delete"))
+                {
+                    if (!Model.AuthForEditAndDelete.Value)
+                    {
+                        @*<a href="~/Customers/Customer/Delete?Id=@Model.AccountNO" class="btn btn-outline-primary"><i class="fa fa-remove"></i> Delete </a>*@
+                        <a href="#" data-toggle="modal" data-target="#Delete" class="btn btn-primary"><i class="fa fa-remove"></i> Delete </a>
+                    }
+                    @*@Html.ActionLink("Delete", "Delte", "Account", new { Code = Model.Code, }, new { @class = " btn btn-outline-primary fa fa-remove" })*@
+                }
+                @if (User.Identity.HasTheRights("Customers", "Check"))
+                {
+                    if (!Model.Check.Value)
+                    {
+                        <a href="~/Employees/Check?Id=@Model.CustomerID" class="btn btn-primary"><i class="fa fa-check"></i> Check </a>
+                    }
+                    @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+                }
+                @if (User.Identity.HasTheRights("Customers", "Authorized"))
+                {
+                    if (Model.Check.Value && !Model.Auth.Value)
+                    {
+                        @*<a href="~/Customers/Customer/Authorize?Id=@Model.AccountNO" class="btn btn-outline-primary"><i class="fa fa-user-secret"></i> Autherize </a>*@
+                        <a href="#" data-toggle="modal" data-target="#Auth" class="btn btn-primary"><i class="fa fa-user-secret"></i> Autherize </a>
+                    }
+
+                    @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+                }
+                <a href="~/Employees/Search" class="btn btn-primary"><i class="fa fa-search"></i> Search</a>
+                <a href="~/Employees/Previous?Id=@Model.CustomerID" id="Prev" class="btn btn-primary"><i class="fa fa-backward"></i> Previous </a>
+                <a href="~/Employees/Next?Id=@Model.CustomerID" id="Next" class="btn btn-primary"><i class="fa fa-forward"></i> Next </a>
+                <a href="~/Home/Home/Index" class="btn btn-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+            </div>
+        </div>
+
+
+        <div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        Are You Sure You Want to Delete ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="~/Employees/Delete?Id=@Model.CustomerID" class="btn btn-danger ">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="Auth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Autherize</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        Are You Sure You Want to Autherize ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="~/Employees/Authorize?Id=@Model.CustomerID" class="btn btn-primary">Autherize</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        </div>
+        }
+        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+        <script>
+        $(function () {
+
+            var last=  "@TempData["Last"]" ;
+
+            if (last != null) {
+                if ("@TempData["Last"]" == "Last") {
+
+                    document.getElementById("Next").classList.add('disabled');
+                }
+            }
+            /////////////////////////
+           var last=  "@TempData["First"]" ;
+
+            if (last != null) {
+
+                if ("@TempData["First"]" == "First") {
+
+                    document.getElementById("Prev").classList.add('disabled');
+                }
+
+            }
+            /////////////////////
+        });
+
+        </script>

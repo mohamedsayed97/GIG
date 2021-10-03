@@ -1,0 +1,339 @@
+﻿@model ICP_ABC.Areas.Redemptions.Models.CreateRedemptionViewModel
+@using ICP_ABC.Extentions
+@{
+    /**/
+
+    ViewBag.Title = "Redemptions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+
+
+}
+<h2>Redemption Setup: (Details)</h2>
+@using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "CreateForm", style = "margin-top:50px" }))
+{
+    <div style="margin-bottom:70px;">
+        @Html.AntiForgeryToken()
+
+        <p class="text-danger">@Html.ValidationSummary(true)</p>
+        <div class="horizontal">
+            <div class="row">
+
+                <div class="form-group col-sm-4">
+                    @Html.LabelFor(model => model.code, htmlAttributes: new { @class = "control-label Cities" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.code, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                        @Html.ValidationMessageFor(model => model.code, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-sm-4 ">
+                    @Html.LabelFor(model => model.CustomerName, htmlAttributes: new { @class = "control-label " })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control ", id = "CustName", @readonly = "readonly" } })
+                    </div>
+                </div>
+                <div class="form-group col-md-4 ">
+                    @Html.LabelFor(model => model.fund_id, htmlAttributes: new { @class = "control-label " })
+                    <div class="col-md-7">
+                        @Html.TextBoxFor(model => model.fund_id, new { @class = "form-control  ", Value = ViewData["Funds"], disabled = "disabled" })
+                        @Html.ValidationMessageFor(model => model.fund_id, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-sm-4">
+                    @Html.LabelFor(model => model.pay_method, htmlAttributes: new { @class = "control-label Cities" })
+                    <div class="col-md-7">
+                        <select class="form-control" name="pay_method" id="MethoddDrpDwn" disabled>
+                            <option name="pay_method" value="@ViewData["PayMethod"]">@ViewData["PayMethod"]</option>
+                        </select>
+                        @Html.ValidationMessageFor(model => model.pay_method, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.units, htmlAttributes: new { @class = "control-label " })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.units, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled", id = "units", type = "Number" } })
+                        @Html.ValidationMessageFor(model => model.units, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.amount_3, htmlAttributes: new { @class = "control-label " })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.amount_3, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled", id = "TotalUnit" } })
+                        @Html.ValidationMessageFor(model => model.amount_3, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.NAV, htmlAttributes: new { @class = "control-label Cities" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.NAV, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled", id = "Nav" } })
+                        @Html.ValidationMessageFor(model => model.NAV, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.nav_date, htmlAttributes: new { @class = "control-label " })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.nav_date, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled", id = "NavDate" } })
+                        @Html.ValidationMessageFor(model => model.nav_date, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.Nav_Ddate, htmlAttributes: new { @class = "control-label " })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.Nav_Ddate, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled", id = "Nav_Ddate" } })
+                        @Html.ValidationMessageFor(model => model.Nav_Ddate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+
+
+
+
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.ProcessingDate, htmlAttributes: new { @class = "control-label " })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.ProcessingDate, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled", id = "ProcessingDate" } })
+                        @Html.ValidationMessageFor(model => model.ProcessingDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.Label("total amount to be debit", htmlAttributes: new { @class = "control-label " })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.total, new { htmlAttributes = new { @class = "form-control form-control-sm ", disabled = "disabled", id = "TotalAmount" } })
+
+                        @Html.ValidationMessageFor(model => model.total, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+            </div>
+
+        </div>
+
+    </div>
+    <div class="ButtonsControl">
+        <div class="text-center" style="padding-top:15px;">
+            <div class="col-lg-2"></div>
+            <div class="btn-group col-md-10" role="group" aria-label="Basic example">
+           
+                    @if (User.Identity.HasTheRights("Redemption", "Create"))
+                    {
+                        <a href="~/Redemptions/Redemption/Create" class="btn btn-primary AllCondition"><i class="fa fa-plus"></i> Add Redemption</a>
+                    }
+                    @if (User.Identity.HasTheRights("Redemption", "Update"))
+                    {
+
+                        if (Model.EditBtn)
+                        {
+                            <a href="~/Redemptions/Redemption/Edit?Code=@Model.code" class="btn btn-primary AllCondition"><i class="fa fa-edit"></i> Edit </a>
+                        }
+                        @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+                    }
+                    @if (User.Identity.HasTheRights("Redemption", "Delete"))
+                    {
+                        if (Model.DeleteBtn)
+                        {
+                            @*<a href="~/Redemptions/Redemption/Delete?Code=@Model.code" class="btn btn-outline-primary"><i class="fa fa-remove"></i> Delete </a>*@
+                            <a href="#" data-toggle="modal" data-target="#Delete" class="btn btn-primary AllCondition"><i class="fa fa-remove"></i> Delete </a>
+                        }
+                        @*@Html.ActionLink("Delete", "Delte", "Account", new { Code = Model.Code, }, new { @class = " btn btn-outline-primary fa fa-remove" })*@
+                    }
+                    @if (User.Identity.HasTheRights("Redemption", "Check"))
+                    {
+                        if (Model.CheckBtn)
+                        {
+                            <a href="~/Redemptions/Redemption/CheckRedemptions?Code=@Model.code" class="btn btn-primary AllCondition"><i class="fa fa-check"></i> Check </a>
+                        }
+                        @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+                    }
+                    @if (User.Identity.HasTheRights("Redemption", "Authorized"))
+                    {
+                        if (Model.AuthBtn)
+                        {
+                            @*<a href="~/Redemptions/Redemption/AuthorizeRedemption?Code=@Model.code" class="btn btn-outline-primary"><i class="fa fa-user-secret"></i> Autherize </a>*@
+                            <a href="#" data-toggle="modal" data-target="#Auth" class="btn btn-primary AllCondition"><i class="fa fa-user-secret"></i> Autherize </a>
+                        }
+
+                        @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+                    }
+                    @if (User.Identity.HasTheRights("Redemption", "Authorized"))
+                    {
+                        if (Model.UnAuthBtn)
+                        {
+                            <a href="#" data-toggle="modal" data-target="#UnAuth" class="btn btn-primary AllCondition"><i class="fa fa-user-secret"></i> UnAutherize </a>
+                            @*<a href="~/Subscriptions/Subscription/AuthorizeSubscription?Code=@Model.code" class="btn btn-outline-primary" id="GetAuthButton"><i class="fa fa-user-secret"></i> Autherize </a>*@
+                        }
+
+                        @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+                    }
+               
+                <a href="~/Redemptions/Redemption/Search" class="btn btn-primary AllCondition"><i class="fa fa-search"></i> Search</a>
+                <a href="~/Redemptions/Redemption/Previous?id=@Model.code" id="Prev" class="btn btn-primary AllCondition"><i class="fa fa-backward"></i> Previous </a>
+                <a href="~/Redemptions/Redemption/Next?id=@Model.code" id="Next" class="btn btn-primary AllCondition"><i class="fa fa-forward"></i> Next </a>
+                <a href="~/Home/Home/Index" class="btn btn-primary AllCondition"><i class="fa fa-home"></i> Back to Home</a>
+            </div>
+        </div>
+
+        @*<br />
+        <div class="text-center ">
+            <div class="col-lg-3"></div>
+            <div class="btn-group col-md-6" role="group" aria-label="Basic example">
+
+                @if (User.Identity.HasTheRights("Redemption", "Delete"))
+                {
+                    <a target="_blank" rel="noopener noreferrer" class="btn btn-primary AllCondition" href="/Redemptions/Redemption/Recipt/@Model.code"><i class="fa fa-receipt"></i>Recipt</a>
+
+                }
+                <a target="_blank" rel="noopener noreferrer" class="btn btn-primary AllCondition" href="/Redemptions/Redemption/Application/@Model.code"><i class="fa fa-money-bill"></i>Application</a>
+
+            </div>
+        </div>*@
+    </div>
+        }
+        <div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        Are You Sure You Want to Delete ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="~/Redemptions/Redemption/Delete?Code=@Model.code" class="btn btn-danger ">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="Auth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Autherize</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        Are You Sure You Want to Autherize ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="~/Redemptions/Redemption/AuthorizeRedemption?Code=@Model.code" class="btn btn-primary">Autherize</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal fade" id="UnAuth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Autherize</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        Are You Sure You Want to UnAutherize ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="~/Redemptions/Redemption/UnAuthorizeSubscription?Code=@Model.code" class="btn btn-primary">UnAutherize</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @section scripts{
+            @Scripts.Render("~/bundles/jqueryval")
+            <script>
+        $(function () {
+            //   normal dropdown
+            $(".ddlist").chosen({
+                disable_search_threshold: 5,
+                width: "100%"
+            });
+         
+            $("#FundId").val(@Model.fund_id).trigger("chosen:updated");
+            //$("#BlockCMB").val(@Model.).trigger("chosen:updated");
+            //$("#branch_id").chosen().change(function () {
+            //    $('span[data-valmsg-for="branchId"]').text(null);
+            //});
+
+            $("#FundId").chosen().change(function () {
+                $('span[data-valmsg-for="fund_Id"]').text(null);
+            });
+        });
+
+
+            </script>
+
+            <script>
+        $(document).ready(function () {
+                 debugger
+            var errorMessage = '@Session["FailedAuthorizeRed"]';
+            if (errorMessage != null && errorMessage != "") {
+                alert(errorMessage);
+            }
+              var errorMessage = '@Session["FailedUnAuthorizeRed"]';
+            if (errorMessage != null && errorMessage != "") {
+                alert(errorMessage);
+            }
+            
+        }
+        );
+
+
+            </script>
+
+        }
+        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+        <script>
+        $(function () {
+
+            var last=  "@TempData["Last"]" ;
+
+            if (last != null) {
+                if ("@TempData["Last"]" == "Last") {
+
+                    document.getElementById("Next").classList.add('disabled');
+                }
+            }
+            /////////////////////////
+           var last=  "@TempData["First"]" ;
+
+            if (last != null) {
+
+                if ("@TempData["First"]" == "First") {
+
+                    document.getElementById("Prev").classList.add('disabled');
+                }
+
+            }
+            /////////////////////
+        });
+
+        </script>

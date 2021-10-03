@@ -1,0 +1,35 @@
+﻿@using Microsoft.AspNet.Identity
+@if (Request.IsAuthenticated)
+{
+
+    using (Html.BeginForm("LogOff","Account",new {area="Account" }, FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @*<a href="/Manage/Index" class="text-light" style="margin:5px;" id="loginLink" role="button">Hello @User.Identity.GetUserName()! </a>*@
+
+                @*@Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage", @class = "text-light", style = @margin = "5px" })*@
+            </li>
+            <li><a class="btn btn-primary" href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        </ul>
+    }
+}
+else
+{
+
+    @*<li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+        <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>*@
+    <li class="nav-item">
+        @*<a href="/Account/Login" class="btn btn-success" style="margin:5px;" id="loginLink" role="button">Log in</a>*@
+    </li>
+    if (User.Identity.IsAuthenticated)
+    {
+        <li class="nav-item">
+            <a href="~/Account/Register" class="btn btn-success" style="margin:5px;" id="registerLink" role="button">Register</a>
+        </li>
+    }
+
+
+}

@@ -1,0 +1,236 @@
+﻿@model ICP_ABC.Areas.ICPrices.Models.DetailsViewModel
+@using ICP_ABC.Extentions
+@{
+                /**/
+
+                ViewBag.Title = "ICPrice Setup";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+                string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+
+}
+@*<style>
+        body {
+            font-weight: 500;
+            background-color: aliceblue;
+            /*background-image: url(../../Content/Images/vehdb4tur0fg6yphaiumv2bmtplollhqll0gvubgxt58t7znz43m5enjos1cxcdn-.jpg );*/
+        }
+    </style>*@
+<h2>ICPrice Setup: (Details)</h2>
+
+@using (Html.BeginForm("Create", "ICPrice", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", style = "margin-top:50px" }))
+{
+    <div style="margin-bottom:70px;">
+
+        @Html.AntiForgeryToken()
+
+        <p class="text-danger">@Html.ValidationSummary(true)</p>
+
+        <div class="horizontal">
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Code</label>
+                @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", Value = ViewData["currr"], @readonly = "readonly", Text = ViewData["currr"] } })*@
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Name</label>
+                @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", Value = ViewData["currr"], @readonly = "readonly", Text = ViewData["currr"] } })*@
+                <div class="col-md-7">
+                    @Html.DropDownListFor(model => model.FundId, ViewData["Funds"] as SelectList, new { @class = "form-control form-control-sm grpdrpdwn", disabled = "disabled" })
+
+
+                </div>
+            </div>
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4"> Date</label>
+                @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                <div class="col-md-7">
+                    @Html.EditorFor(m => m.Date, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                    @Html.ValidationMessageFor(m => m.Date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4"> ProcessingDate</label>
+                @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.ProcessingDate, "", new { @class = "form-control form-control-sm", id = "Date", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.ProcessingDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Price</label>
+                @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", Value = ViewData["currr"], @readonly = "readonly", Text = ViewData["currr"] } })*@
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Price, new { htmlAttributes = new { value = Model.Price }, disabled = "disabled", @class = "form-control form-control-sm" })
+
+                    @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ButtonsControl">
+        <div class="text-center" style="padding-top:15px;">
+            <div class="col-md-2"></div>
+            <div class="btn-group col-md-10" role="group" aria-label="Basic example">
+                <div style="display:none;" id="AllCondition">
+                    @if (User.Identity.HasTheRights("ICPrice", "Create"))
+                    {
+                        <a href="~/ICPrices/ICPrice/Create" class="btn btn-primary"><i class="fa fa-plus"></i> Add ICPrice </a>
+
+
+                    }
+                    @if (User.Identity.HasTheRights("ICPrice", "Update"))
+                    {
+                        if (!Model.AuthForEditAndDelete)
+                        {
+
+                            <a href="~/ICPrices/ICPrice/Edit?Code=@Model.Code" class="btn btn-primary"><i class="fa fa-edit"></i> Edit </a>
+                        }
+                        @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+                    }
+                    @if (User.Identity.HasTheRights("ICPrice", "Delete"))
+                    {
+                        if (!Model.AuthForEditAndDelete)
+                        {
+                            @*<a href="~/ICPrices/ICPrice/Delete?Code=@Model.Code" class="btn btn-outline-primary"><i class="fa fa-remove"></i> Delete </a>*@
+                            <a href="#" data-toggle="modal" data-target="#Delete" class="btn btn-primary"><i class="fa fa-remove"></i> Delete </a>
+                        }
+                        @*@Html.ActionLink("Delete", "Delte", "Account", new { Code = Model.Code, }, new { @class = " btn btn-outline-primary fa fa-remove" })*@
+                    }
+                    @if (User.Identity.HasTheRights("ICPrice", "Check"))
+                    {
+                        if (!Model.Check)
+                        {
+                            <a href="~/ICPrices/ICPrice/CheckICPrice?Code=@Model.Code" class="btn btn-primary"><i class="fa fa-check"></i> Check </a>
+                        }
+                        @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+                    }
+                    @if (User.Identity.HasTheRights("ICPrice", "Authorized"))
+                    {
+                        if (Model.Check && !Model.Auth)
+                        {
+                            @*<a href="~/ICPrices/ICPrice/AuthorizeICPrice?Code=@Model.Code" class="btn btn-outline-primary"><i class="fa fa-user-secret"></i> Autherize </a>*@
+                            <a href="#" data-toggle="modal" data-target="#Auth" class="btn btn-primary"><i class="fa fa-user-secret"></i> Autherize </a>
+                        }
+
+                        @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+                    }
+                </div>
+                <a href="~/ICPrices/ICPrice/Search" class="btn btn-primary"><i class="fa fa-search"></i> Search</a>
+                <a href="~/ICPrices/ICPrice/Previous?Code=@Model.Code" id="Prev" class="btn btn-primary"><i class="fa fa-backward"></i> Previous </a>
+                <a href="~/ICPrices/ICPrice/Next?Code=@Model.Code" id="Next" class="btn btn-primary"><i class="fa fa-forward"></i> Next </a>
+                <a href="~/Home/Home/Index" class="btn btn-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+            </div>
+        </div>
+        </div>
+        }
+        <div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        Are You Sure You Want to Delete ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="~/ICPrices/ICPrice/Delete?Code=@Model.Code" class="btn btn-danger ">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="Auth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Autherize</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        Are You Sure You Want to Autherize ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="~/ICPrices/ICPrice/AuthorizeICPrice?Code=@Model.Code" class="btn btn-primary">Autherize</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        @section scripts{
+
+
+
+            @Scripts.Render("~/bundles/jqueryval")
+            <script>
+        $(document).ready(function () {
+            $.ajax({
+                url: '@servername/ChekCalendar',
+                type: 'POST',
+                success: function (Result) {
+
+
+                    if (Result.NOtInCalendar == 1) {
+
+                        //var GetAdd = document.getElementById("GetAddButton");
+                        //var GetSearch = document.getElementById("GetsearchButton");
+                        //GetAdd.style.display = "block";
+                        //GetSearch.style.display = "block";
+
+                        var AllCond = document.getElementById("AllCondition");
+                        AllCond.style.display = "block";
+
+                    }
+                    else if (Result.result == 2) {
+
+                        var AllCond = document.getElementById("AllCondition");
+                        AllCond.style.display = "block";
+
+                    }
+                }
+            });
+        }
+        );
+
+
+            </script>
+            <script>
+        $(function () {
+
+            var last=  "@TempData["Last"]" ;
+
+            if (last != null) {
+                if ("@TempData["Last"]" == "Last") {
+
+                    document.getElementById("Next").classList.add('disabled');
+                }
+            }
+            /////////////////////////
+           var last=  "@TempData["First"]" ;
+
+            if (last != null) {
+
+                if ("@TempData["First"]" == "First") {
+
+                    document.getElementById("Prev").classList.add('disabled');
+                }
+
+            }
+            /////////////////////
+        });
+
+            </script>
+        }

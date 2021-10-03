@@ -1,0 +1,93 @@
+﻿@model PagedList.IPagedList<ICP_ABC.Areas.NavRpt.Models.Report>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+
+    ViewBag.Title = "Report";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2> VAVRpt</h2>
+
+<form class="form-inline" id="SearchForm">
+    <label class="sr-only" for="inlineFormInputName2">Name</label>
+    @Html.Editor("From", new { htmlAttributes = new { @class = "form-control timepicker  ", autocomplete = "off" } })
+    @Html.Editor("To", new { htmlAttributes = new { @class = "form-control timepicker  ", autocomplete = "off" } })
+
+    @Html.DropDownList("FundId", ViewData["Funds"] as SelectList, new { @class = "form-control " })
+
+
+    <button type="submit" class="btn btn-outline-primary mb-2 mr-sm-4"><i class="fa fa-search"></i> Search</button>
+</form>
+<table class="table">
+    <tr>
+
+
+        <th>
+            Code
+        </th>
+        <th>
+            From
+        </th>
+        <th>
+            To
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FundId)
+            </td>
+
+            <td>
+                @Html.DisplayFor(modelItem => item.From)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.To)
+            </td>
+            <td>
+                <div class="btn-group" role="group" aria-label="Basic example">
+                    @*@Html.ActionLink("Details", "Details", new { Code = item.Code }, new { @class = " btn btn-outline-primary" })*@
+                    @*@Html.ActionLink("Details", "Details", new { id = item.GroupID }, new { @class = " btn btn-outline-primary" })*@
+                </div>
+            </td>
+        </tr>
+        <div class="modal fade" id=Delete_@item.To tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Unlock User</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
+</table>
+
+<p>
+    <a target="_blank" rel="noopener noreferrer" href="/Cities/City/ExportToPDF">Print Result To PDF</a>
+
+
+</p>
+
+
+
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))

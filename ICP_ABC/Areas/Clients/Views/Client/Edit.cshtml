@@ -1,0 +1,592 @@
+﻿@model ICP_ABC.Areas.Clients.Models.CreateClient
+@{ ViewBag.Title = "Clients";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+}
+<h2>Edit</h2>
+@using (Html.BeginForm())
+{
+    <div style="height:375px; border:solid 1px #ddd;margin:3px;padding:5px; overflow-y:scroll;overflow-x:hidden">
+
+        @Html.AntiForgeryToken()
+        <div class="row">
+            <div class="form-horizontal col-md-4">
+                <h4>ICPro INFO.</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group  ">
+                    @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ClientNo, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                        @Html.ValidationMessageFor(model => model.ClientNo, "", new { @class = "text-danger" })
+                        <input type="button" class="btn btn-info" value="GetInfo." id="GetInformation" style="margin-top:2px;" />
+                        <input type="hidden" name="Code" value="@Model.Code" />
+                    </div>
+                </div>
+                <div class="form-group  ">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group  ">
+                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Address, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group  ">
+                    @Html.LabelFor(model => model.EMail, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.EMail, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EMail, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.IdNumber, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.IdNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.IdNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IdType, htmlAttributes: new { @class = "control-label  col-md-4" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.IdType, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.IdType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.CRNumber, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.CRNumber, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CRNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.NationalityId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.NationalityId, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.NationalityId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.ClientType, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ClientType, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ClientType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.BranchId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.BranchId, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.Telephone, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.FAX, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FAX, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FAX, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            </div>
+            <div class="form-horizontal col-md-4">
+                <h4>V8 INFO.</h4>
+                <hr />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                <div class="form-group  ">
+                    @Html.LabelFor(model => model.Code, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ClientNoV8, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ClientNoV8, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group  ">
+                    @Html.LabelFor(model => model.Name, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.NameV8, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group  ">
+                    @Html.LabelFor(model => model.Address, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.AddressV8, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Address, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group  ">
+                    @Html.LabelFor(model => model.EMail, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.EMailV8, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.EMail, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.City, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.CityV8, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.IdNumber, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.IdNumberV8, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.IdNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.LabelFor(model => model.IdType, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.IdTypeV8, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.IdType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.CRNumber, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.CRNumberV8, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.CRNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.NationalityId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.NationalityIdV8, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.NationalityId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.ClientType, htmlAttributes: new { @class = "control-label col-md-4" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.ClientTypeV8, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.ClientType, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.BranchId, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        <div class="checkbox">
+                            @Html.EditorFor(model => model.BranchIdV8, new { htmlAttributes = new { @class = "form-control" } })
+                            @Html.ValidationMessageFor(model => model.BranchId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.Telephone, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.TelephoneV8, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.Telephone, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group ">
+                    @Html.LabelFor(model => model.FAX, htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.FAXV8, new { htmlAttributes = new { @class = "form-control" } })
+                        @Html.ValidationMessageFor(model => model.FAX, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <div class="text-center" style="padding-top:15px;">
+        <div class="col-md-2"></div>
+        <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+            @*<button type="submit" value="validate" class="btn btn-outline-primary" onclick="return Validate()"><i class="fa fa-save"></i> Apply</button>*@
+            @*<button type="submit"  class="btn btn-outline-primary"><i class="fa fa-save"></i> Apply</button>*@
+            <button type="submit" id="Apply" class="btn btn-outline-primary"><i class="fa fa-save"></i> Apply</button>
+            <a href="~/Clients/Client/Details?Code=@Model.Code" class="btn btn-outline-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+        </div>
+    </div>
+
+
+
+}
+@section scripts {
+
+    @*<script>
+            $(document).ready(function () {
+
+                $('#ClientNo').on('change', function () {
+                    debugger;
+                    $('#Apply').attr("disabled", "disabled");
+                    var Code = $("#ClientNo").val();
+
+                    $.ajax({
+
+                        type: "Post",
+                         url: '@servername/Clients/Client/GetCustomerName', // the method we are calling
+                         contentType: "application/x-www-form-urlencoded",
+                         data: { Code: Code },//, 'Code': Code, 'GroupID': GroupID },
+                        //dataType: "String",
+                         success: function (result) {
+                             if (result.CustomerName) {
+
+                                 $('#Name').val(result.CustomerName);
+                                 $('#Name').prop('readonly', true);
+                                 $('#Apply').prop('readonly', true);
+                             } else {
+                                 $('#Name').val(null);
+                                 $('#Name').attr("disabled", false);
+                                 $('#Apply').attr("disabled", "disabled");
+
+                                 //$('#Apply').attr("disabled", "disabled");
+                                 //$('#Apply').attr("disabled", false);
+                                 //$("Name").prop("disabled", false);
+
+                                 //alert(result.Message);
+
+                             }
+
+                        }
+
+                    });
+
+
+
+                })
+
+            });
+
+
+
+            //$('#NavDate').val(null);
+            //$('#Nav').val(null);
+            //$('#SubFees').val(null);
+            //$('#OtherFees').val(null);
+            //$('#TotalUnit').val(null);
+            //$('#units').val(null);
+            //$('#TotalAmount').val(null);
+        </script>*@
+
+
+    <script>
+        $(document).ready(function () {
+
+            $('#Apply').prop("disabled", true);
+        }
+
+        );
+    </script>
+    <script>
+
+
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+
+            "positionClass": 'toast-top-center',
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "300",
+            "timeOut": "2000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        };
+        $(document).ready(function () {
+
+            $('#GetInformation').on('click', function () {
+
+
+                var Code = $("#ClientNo").val();
+                var CoreCID = $("#ClientNoV8").val();
+                //var Name = $("#Name").val();
+                //var IdNumber = $("#IdNumber").val();
+                //var BranchId = $("#BranchId").val();
+                //var Telephone = $("#Telephone").val();
+                debugger;
+                if (Code == "") {
+
+                }
+                else if (CoreCID.length > 0) {
+                    if (Code != CoreCID) {
+                        toastr.info("Client Code And V8-Code Must be Same.");
+                        //alert("Client Code And V8-Code Must be Same.");
+                    }
+                    else {
+                          $.ajax({
+
+                        async: false,
+                        type: "Post",
+                        url: '@servername/Clients/Client/GetCustomerData', // the method we are calling
+                        contentType: "application/x-www-form-urlencoded",
+                        data: { Code: Code },//, 'Code': Code, 'GroupID': GroupID },
+                        //, Name: Name, IdNumber: IdNumber, BranchId: BranchId, Telephone: Telephone
+
+                        //dataType: "String",
+                        success: function (result) {
+                            if (result.CustomerCode == Code) {
+                                //SetData
+                                //$('#Name').val(result.CustomerName);
+                                //$('#ClientNo').val(result.CustomerCode);
+                                $('#IdNumber').val(result.CustomerIdNumber);
+                                $('#BranchId').val(result.CustomerBranchId);
+                                $('#Telephone').val(result.CustomerTelephone);
+                                $('#Address').val(result.CustomerAddress);
+                                $('#EMail').val(result.CustomerEmail);
+                                $('#City').val(result.CustomerCity);
+                                $('#CRNumber').val(result.CustomerCRNumber);
+                                $('#NationalityId').val(result.CustomerNationality);
+                                $('#ClientType').val(result.CustomerClientType);
+                                $('#FAX').val(result.CustomerFax);
+                                $('#IdType').val(result.CustomerIdType);
+                                //Make TestBox Disabled
+                                $('#Name').prop('readonly', true);
+                                $('#ClientNo').prop('readonly', true);
+                                $('#IdNumber').prop('readonly', true);
+                                $('#BranchId').prop('readonly', true);
+                                $('#Telephone').prop('readonly', true);
+                                $('#Address').prop('readonly', true);
+                                $('#EMail').prop('readonly', true);
+                                $('#City').prop('readonly', true);
+                                $('#CRNumber').prop('readonly', true);
+                                $('#NationalityId').prop('readonly', true);
+                                $('#ClientType').prop('readonly', true);
+                                $('#FAX').attr('readonly', true);
+                                $('#IdType').prop('readonly', true);
+                                //Make ApplyButton Disabled
+                                //$('#Apply').attr("disabled", "disabled");
+
+                            } else {
+
+                                toastr.error("Error GetClientData");
+                            }
+
+                        }
+
+                        });
+
+
+                         //Get Core V8 Data
+                    debugger;
+                    //var CoreCID = $("#CodeV8").val();
+                    var NameV8 = $("#NameV8").val();
+                    var IdNumberV8 = $("#IdNumberV8").val();
+                    var BranchIdV8 = $("#BranchIdV8").val();
+                    var TelephoneV8 = $("#TelephoneV8").val();
+
+
+                    $.ajax({
+
+                        async: false,
+                        type: "Post",
+                        url: '@servername/Clients/Client/GetCoreTESTData', // the method we are calling
+                        //url: '@servername/Clients/Client/CoreGetUserInfo', // the method we are calling
+                        contentType: "application/x-www-form-urlencoded",
+
+                        data: { Code: Code, CoreCID: CoreCID, V8ename: NameV8, V8idnumber: IdNumberV8, V8branch: BranchIdV8, V8tel: TelephoneV8 },//, 'Code': Code, 'GroupID': GroupID },
+                        //dataType: "String",
+                        success: function (result) {
+                            debugger;
+                            if (result != null) {
+                                //SetData
+                                $('#NameV8').val(result.CustomerCoreName);
+                                $('#ClientNoV8').val(result.CustomerCoreCode);
+                                $('#IdNumberV8').val(result.CustomerCoreIdNumber);
+                                $('#BranchIdV8').val(result.CustomerCoreBranchId);
+                                $('#TelephoneV8').val(result.CustomerCoreTelephone);
+                                $('#AddressV8').val(result.CustomerCoreAddress);
+                                $('#EMailV8').val(result.CustomerCoreEmail);
+                                $('#CityV8').val(result.CustomerCoreCity);
+                                $('#CRNumberV8').val(result.CustomerCoreCRNumber);
+                                $('#NationalityIdV8').val(result.CustomerCoreNationality);
+                                $('#ClientTypeV8').val(result.CustomerCoreClientType);
+                                $('#FAXV8').val(result.CustomerCoreFax);
+                                $('#IdTypeV8').val(result.CustomerCoreIdType);
+
+                                //Make TestBox Disabled
+                                $('#NameV8').prop('readonly', true);
+                                $('#ClientNoV8').prop('readonly', true);
+                                $('#IdNumberV8').prop('readonly', true);
+                                $('#BranchIdV8').prop('readonly', true);
+                                $('#TelephoneV8').prop('readonly', true);
+                                $('#AddressV8').prop('readonly', true);
+                                $('#EMailV8').prop('readonly', true);
+                                $('#CityV8').prop('readonly', true);
+                                $('#CRNumberV8').prop('readonly', true);
+                                $('#NationalityIdV8').prop('readonly', true);
+                                $('#ClientTypeV8').prop('readonly', true);
+                                $('#FAXV8').prop('readonly', true);
+                                $('#IdTypeV8').prop('readonly', true);
+
+                                //Make ApplyButton Disabled
+                                //$('#Apply').attr("disabled", false);
+                                //$('#Code').attr("disabled", false);
+
+                                if (result.CustomerCoreCode == Code) {
+
+                                    var IdTypeV8Check = $('#IdTypeV8').val();
+                                    var ClientTypeV8Check = $('#ClientTypeV8').val();
+                                    //var CodeV8Check = $('#ClientNoV8').val();
+                                    var IdNumberV8Check = $('#IdNumberV8').val();
+
+
+                                    var IdTypeCheck = $('#IdType').val();
+                                    var ClientTypeCheck = $('#ClientType').val();
+                                    //var CodeCheck = $('#ClientNo').val();
+                                    var IdNumberCheck = $('#IdNumber').val();
+                                    debugger;
+                                    if (IdTypeV8Check == IdTypeCheck && ClientTypeV8Check == ClientTypeCheck && /*CodeV8Check == CodeCheck &&*/ IdNumberV8Check == IdNumberCheck) {
+                                        debugger;
+                                        $('#Apply').prop("disabled", false);
+                                        //$('#ClientNo').prop('readonly', true);
+                                        $('#GetInformation').prop("disabled", true);
+                                    }
+                                    else {
+                                        if (IdTypeV8Check != IdTypeCheck) {
+                                            //$('#ClientNo').prop('readonly', false);
+                                            $('#Apply').prop("disabled", true);
+                                            $('#GetInformation').prop("disabled", true);
+                                            toastr.error("Error : Client.INFO IdType Not equal to V8.INFO IdType .");
+                                        }
+                                        if (ClientTypeV8Check != ClientTypeCheck) {
+                                            //$('#ClientNo').prop('readonly', false);
+                                            $('#Apply').prop("disabled", true);
+                                            $('#GetInformation').prop("disabled", true);
+                                            toastr.error("Error : Client.INFO ClientType Not equal to V8.INFO ClientType .");
+                                        }
+                                        if (IdNumberV8Check != IdNumberCheck) {
+                                            //$('#ClientNo').prop('readonly', false);
+                                            $('#Apply').prop("disabled", true);
+                                            $('#GetInformation').prop("disabled", true);
+                                            toastr.error("Error : Client.INFO IdNumber Not equal to V8.INFO IdNumber .");
+                                        }
+
+                                    }
+                                } else {
+                                    //$('#ClientNo').prop('readonly', true);
+                                    $('#GetInformation').prop("disabled", true);
+                                    $('#Apply').prop("disabled", true);
+                                    toastr.error("Error :Code of Client.INFO Not Exists in V8.INFO Data .");
+                                }
+                            } else {
+                                //$('#ClientNo').prop('readonly', true);
+                                $('#GetInformation').prop("disabled", true);
+                                $('#Apply').prop("disabled", true);
+                                toastr.error("Error :Code of Client.INFO Not Exists in V8.INFO Data .");
+                            }
+
+                        }
+
+                    });
+
+                    }
+                }
+                else
+                {
+
+
+
+
+
+
+                }
+
+
+
+            }
+
+            );
+
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            debugger;
+            if (@Html.Raw(Json.Encode(ViewData["InsertCase"])) != null) {
+
+                $('#Name').prop('readonly', true);
+                $('#ClientNo').prop('readonly', true);
+                $('#IdNumber').prop('readonly', true);
+                $('#BranchId').prop('readonly', true);
+                $('#Telephone').prop('readonly', true);
+                $('#Address').prop('readonly', true);
+                $('#EMail').prop('readonly', true);
+                $('#City').prop('readonly', true);
+                $('#CRNumber').prop('readonly', true);
+                $('#NationalityId').prop('readonly', true);
+                $('#ClientType').prop('readonly', true);
+                $('#FAX').attr('readonly', true);
+                $('#IdType').prop('readonly', true);
+                $('#NameV8').prop('readonly', true);
+                $('#ClientNoV8').prop('readonly', true);
+                $('#IdNumberV8').prop('readonly', true);
+                $('#BranchIdV8').prop('readonly', true);
+                $('#TelephoneV8').prop('readonly', true);
+                $('#AddressV8').prop('readonly', true);
+                $('#EMailV8').prop('readonly', true);
+                $('#CityV8').prop('readonly', true);
+                $('#CRNumberV8').prop('readonly', true);
+                $('#NationalityIdV8').prop('readonly', true);
+                $('#ClientTypeV8').prop('readonly', true);
+                $('#FAXV8').prop('readonly', true);
+                $('#IdTypeV8').prop('readonly', true);
+
+                $('#GetInformation').prop("disabled", true);
+                $('#Apply').prop("disabled", true);
+                if (@Html.Raw(Json.Encode(ViewData["InsertCase"])) == "Client Already Map.") {
+
+
+                    toastr.error(@Html.Raw(Json.Encode(ViewData["InsertCase"])));
+
+                }
+                else if (@Html.Raw(Json.Encode(ViewData["InsertCase"])) == "V8-CODE Already Exisit.") {
+
+                    toastr.info(@Html.Raw(Json.Encode(ViewData["InsertCase"])));
+
+                } else if (@Html.Raw(Json.Encode(ViewData["InsertCase"])) == "Client Already Exisit. ") {
+
+                    toastr.info(@Html.Raw(Json.Encode(ViewData["InsertCase"])));
+
+                } else {
+                    toastr.error(@Html.Raw(Json.Encode(ViewData["InsertCase"])));
+                }
+
+            }
+
+
+        });
+    </script>
+
+
+
+}

@@ -1,0 +1,395 @@
+﻿@model List<ICP_ABC.Areas.GroupsRights.Models.GroupRight>
+@using ICP_ABC.Areas.GroupsRights.Models
+@using ICP_ABC.Extentions
+@{
+                /**/
+
+                ViewBag.Title = "Details";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+                string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+
+}
+<h2>Group Rights Setup: (Details) </h2>
+<div>
+    @using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <p class="text-danger">@Html.ValidationSummary(true)</p>
+
+        <div class="row">
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Group Code</label>
+                @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", Value = ViewData["currr"], @readonly = "readonly", Text = ViewData["currr"] } })*@
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.FirstOrDefault().Code, new { @class = "form-control form-control-sm", id = "txtbxCode", @Value = ViewData["Code"], text = ViewData["Code"], disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.FirstOrDefault().Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Group Name</label>
+                @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                <div class="col-md-7">
+                    @Html.TextBoxFor(model => model.FirstOrDefault().UserGroups.Name, new { @class = "form-control form-control-sm", id = "grpdrpdwn", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.FirstOrDefault().GroupId, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+        </div>
+
+
+    }
+
+    <div style="width:95%;height:300px;overflow-y:scroll;overflow-x:hidden;border:solid 1px #ddd;margin:3px;padding:5px;">
+
+        <div id="tbl" class="row">
+            <table class="table table-xl table-responsive-md table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Screen name</th>
+                        <th scope="col">Insert</th>
+                        <th scope="col">Update</th>
+                        <th scope="col">Delete</th>
+                        <th scope="col">Read Only</th>
+                        <th scope="col">Authorize</th>
+                        @if (ViewBag.SecuLevel == 3)
+                        {
+                            <th scope="col">Check</th>
+                        }
+
+                        <th scope="col">None</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in (List<GroupRight>)ViewData["GrpRightsScreens"])
+                    {
+                        <tr>
+                            <td> @item.Screen.Name</td>
+                            @if (item.Create)
+                            {
+                                <td>
+
+                                    <input type="checkbox" id="create @item" checked disabled />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" id="create @item" disabled />
+                                </td>
+                            }
+                            @if (item.Update)
+                            {
+                                <td>
+                                    <input type="checkbox" id="update @item" checked disabled />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" id="update @item" disabled />
+                                </td>
+                            }
+                            @if (item.Delete)
+                            {
+                                <td>
+                                    <input type="checkbox" id="update @item" checked disabled />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" id="update @item" disabled />
+                                </td>
+                            }
+
+                            @if (item.Read)
+                            {
+                                <td>
+                                    <input type="checkbox" id="update @item" checked disabled />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" id="update @item" disabled />
+                                </td>
+                            }
+                            @if (item.Authorized)
+                            {
+                                <td>
+                                    <input type="checkbox" id="update @item" checked disabled />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" id="update @item" disabled />
+                                </td>
+                            }
+                            @if (item.Check)
+                            {
+                                <td>
+                                    <input type="checkbox" id="update @item" checked disabled />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" id="update @item" disabled />
+                                </td>
+                            }
+                            @if (item.None)
+                            {
+                                <td>
+                                    <input type="checkbox" id="update @item" checked disabled />
+                                </td>
+                            }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" id="update @item" disabled />
+                                </td>
+                            }
+
+                            <td hidden> @item.FormID</td>
+                        </tr>
+
+                    }
+                </tbody>
+            </table>
+        </div>
+
+
+    </div>
+
+
+</div>
+<div class="text-center" style="padding-top:10px;">
+    <div class="col-lg-2"></div>
+    <div class="btn-group col-md-12" role="group" aria-label="Basic example">
+        @if (User.Identity.HasTheRights("Grouprightes", "Create"))
+        {
+            <a href="~/GroupsRights/GroupRight/Create" class="btn btn-outline-primary"><i class="fa fa-plus"></i> Add Right</a>
+        }
+        @if (User.Identity.HasTheRights("Grouprightes", "Update"))
+        {
+            if (!ViewBag.Actualy_auth)
+            {
+                <a href="~/GroupsRights/GroupRight/Edit/@Model.FirstOrDefault().GroupId" class="btn btn-outline-primary"><i class="fa fa-edit"></i> Edit </a>
+            }
+            @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+        }
+        @if (User.Identity.HasTheRights("Grouprightes", "Delete"))
+        {
+            if (!ViewBag.Actualy_auth)
+            {
+                <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#delete"><i class="fa fa-remove"></i> Delete </a>
+
+            }
+        }
+
+
+        @if (User.Identity.HasTheRights("Grouprightes", "Check"))
+        {
+            //var THisUser = User.Identity.GetUserId();
+
+            if (!Model.FirstOrDefault().Chk)
+            {
+                <a href="~/GroupsRights/GroupRight/CheckRights?ID=@Model.FirstOrDefault().GroupId" class="btn btn-outline-primary"><i class="fa fa-check"></i> Check </a>
+            }
+            @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+        }
+        @if (User.Identity.HasTheRights("Grouprightes", "Authorized"))
+        {
+            if (Model.FirstOrDefault().Chk && !Model.FirstOrDefault().Auth)
+            {
+                <a href="#" class="btn btn-outline-primary" data-toggle="modal" data-target="#Auth"><i class="fa fa-user-secret"></i> Autherize </a>
+                @*<a href="~/GroupsRights/GroupRight/AuthorizeRights?Code=@Model.FirstOrDefault().Code" class="btn btn-outline-primary"><i class="fa fa-user-secret"></i> Autherized </a>*@
+            }
+            @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+        }
+
+        <a href="~/GroupsRights/GroupRight/Search" class="btn btn-outline-primary"><i class="fa fa-search"></i> Search</a>
+        <a href="~/GroupsRights/GroupRight/Previous?id=@Model.FirstOrDefault().GroupId" id="Prev" class="btn btn-outline-primary"><i class="fa fa-backward"></i> Previous </a>
+        <a href="~/GroupsRights/GroupRight/Next?id=@Model.FirstOrDefault().GroupId" id="Next" class="btn btn-outline-primary"><i class="fa fa-forward"></i> Next </a>
+        <a href="~/Home/Home/Index" class="btn btn-outline-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+    </div>
+</div>
+<div class="modal fade" id="delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                Are You Sure You Want to delete ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="~/GroupsRights/GroupRight/Delete?id=@Model.FirstOrDefault().GroupId" class="btn btn-danger ">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Auth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Autherize</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                Are You Sure You Want to Autherize ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="~/GroupsRights/GroupRight/AuthorizeRights?ID=@Model.FirstOrDefault().GroupId" class="btn btn-primary">Autherize</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+        //$("#grpdrpdwn").change(function () {
+
+        //    document.getElementById("submit").disabled = false;
+        //    var drpdwnVal = $("#grpdrpdwn :selected").val();
+        //    document.getElementById("txtbxCode").value = drpdwnVal;
+        //    $.ajax({
+        //        type: "Get",
+        //        url: '/GroupsRights/GroupRight/Edit', // the method we are calling
+        //        contentType: "application/x-www-form-urlencoded",
+        //        data: { Id: drpdwnVal },//, 'Code': Code, 'GroupID': GroupID },
+        //        //dataType: "json",
+        //        success: function (result) {
+        //            alert("success");
+
+        //        },
+        //        error: function (result) {
+        //            alert("fffff");
+        //        }
+        //    });
+        //    if (drpdwnVal != undefined) {
+        //        $("#tbl").css('display', 'initial');
+        //    }
+        //    else {
+        //        $("#tbl").css('display', 'none');
+        //    }
+        //});
+
+        //jQuery('#txtbxCode').on('input', function () {
+
+        //    var txtCode = document.getElementById("txtbxCode").value;
+
+        //    $("#grpdrpdwn").val(txtCode);
+        //    //document.getElementById("grpdrpdwn").sel;
+        //    var drpdwnVal = $("#grpdrpdwn :selected").val();
+        //    //alert(drpdwnVal);
+        //    document.getElementById("txtbxCode").value = drpdwnVal;
+        //    alert(drpdwnVal);
+        //    if (drpdwnVal != undefined) {
+        //        $("#tbl").css('display', 'initial');
+        //    }
+        //    else {
+        //        $("#tbl").css('display', 'none');
+        //    }
+
+        //});
+
+        function submit() {
+
+            var Code = document.getElementById("txtbxCode").value;
+            var GroupID = $("#grpdrpdwn :selected").val();
+
+            var Rightslist = [];
+            var table = $("table tbody");
+            table.find('tr').each(function (i) {
+                var $tds = $(this).find('td'),
+                    objName = $tds.eq(0).text(),
+                    hasCreate = $tds.eq(1).find('input[type=checkbox]').prop("checked") == true,
+                    hasUpdate = $tds.eq(2).find('input[type=checkbox]').prop("checked") == true,
+                    hasDelete = $tds.eq(3).find('input[type=checkbox]').prop("checked") == true,
+                    hasRead = $tds.eq(4).find('input[type=checkbox]').prop("checked") == true,
+                    Authorize = $tds.eq(5).find('input[type=checkbox]').prop("checked") == true,
+                    Check = $tds.eq(6).find('input[type=checkbox]').prop("checked") == true,
+                    noneOfAll = $tds.eq(7).find('input[type=checkbox]').prop("checked") == true,
+                    FormID = $tds.eq(8).text();
+
+                var obj = new Object();
+                obj.name = objName;
+                obj.hasCreate = hasCreate;
+                obj.hasUpdate = hasUpdate;
+                obj.hasDelete = hasDelete;
+                obj.hasRead = hasRead;
+                obj.Authorize = Authorize;
+                obj.Check = Check;
+                obj.noneOfAll = noneOfAll;
+                obj.FormID = FormID;
+                obj.GroupID = GroupID;
+                obj.Code = Code;
+
+                Rightslist.push(obj);
+            });
+
+            var GRList = JSON.stringify(Rightslist);
+            console.log(GRList);
+            $.ajax({
+                type: "Post",
+                url: '@servername/GroupsRights/GroupRight/Edit', // the method we are calling
+                contentType: "application/x-www-form-urlencoded",
+                data: { Rights: GRList },//, 'Code': Code, 'GroupID': GroupID },
+                //dataType: "json",
+                success: function (result) {
+                    alert("success");
+                    window.location.href = "@servername/Home";
+                },
+                error: function (result) {
+                    alert("Error");
+                }
+            });
+        }
+
+    </script>
+    <script>
+        $(function () {
+
+            var last=  "@TempData["Last"]" ;
+
+            if (last != null) {
+                if ("@TempData["Last"]" == "Last") {
+
+                    document.getElementById("Next").classList.add('disabled');
+                }
+            }
+            /////////////////////////
+           var last=  "@TempData["First"]" ;
+
+            if (last != null) {
+
+                if ("@TempData["First"]" == "First") {
+
+                    document.getElementById("Prev").classList.add('disabled');
+                }
+
+            }
+            /////////////////////
+        });
+
+    </script>
+}
+

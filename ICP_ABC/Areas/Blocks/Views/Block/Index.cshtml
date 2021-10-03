@@ -1,0 +1,162 @@
+﻿@model ICP_ABC.Areas.Blocks.Models.BlockViewModel
+@using ICP_ABC.Extentions
+@{
+    /**/
+
+    ViewBag.Title = "Blocks";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+
+}
+
+
+<h2>Block Setup</h2>
+
+
+@using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "CreateForm", style = "margin-top:50px" }))
+{
+    <div style="margin-bottom:70px;">
+        @Html.AntiForgeryToken()
+
+        <p id="valsum" class="text-danger"> @Html.ValidationSummary(true)</p>
+
+        <div class="horizontal">
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.code, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.code, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                        @Html.ValidationMessageFor(model => model.code, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.cust_id, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.cust_id, new { htmlAttributes = new { @class = "form-control form-control-sm", id = "cust_id", disabled = "disabled" } })
+                        @*@Html.ValidationMessageFor(model => model.cust_id, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+                    <div class="form-group col-md-4  mb-3">
+                    @Html.Label("Customer Name", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.Editor("EnName", new { htmlAttributes = new { @class = "form-control form-control-sm", id = "EnName", @readonly = "readonly", Value = ViewData["EName"] } })
+                        @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.fund_id, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.Editor("fundid", "fundId", new { htmlAttributes = new { @class = "form-control form-control-sm", Value = @ViewData["Funds"], disabled = "disabled" } })
+                        @Html.ValidationMessage("fund_Id", "", new { @class = "text-danger", id = "fund_Id" })
+
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.block_date, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.block_date, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                        @Html.ValidationMessageFor(model => model.block_date, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.BlockCmb, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @foreach (var item in ViewData["CMB"] as SelectList)
+                        {
+                            <div style="display:inline-block" id="@item.Value">
+                                @*<input type="radio" name="BlockRadio" value="@item.Text" />*@
+
+                                @Html.RadioButtonFor(model => model.BlockCmb, @item.Value, new { htmlAttributes = new { @class = "form-control form-control-sm" }, id = "BlockCMB", disabled = "disabled" })
+                                <lable>@item.Value</lable>
+                            </div>
+                        }
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="row">
+                
+                <div class="form-group col-md-4">
+                    @Html.Label("Qty ", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.qty_block, new { htmlAttributes = new { @class = "form-control form-control-sm", id = "qty_block", type = "number", @readonly = "readonly" } })
+                    </div>
+                </div>
+
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.block_reson, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        <textarea name="block_reson" class="form-control col-md-12" disabled> </textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="ButtonsControl">
+        <div class="text-center" style="padding-top:15px;">
+            <div class="col-md-3"></div>
+            <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+
+                <a href="~/Blocks/Block/Create" style="display:none" class="btn btn-primary" id="GetAddButton"><i class="fa fa-plus"></i> Add New Block</a>
+                <a href="~/Blocks/Block/Search" style="display:none" class="btn btn-primary" id="GetsearchButton"><i class="fa fa-search"></i> Search</a>
+                <a href="~/Home/Home/Index" class="btn btn-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+            </div>
+        </div>
+    </div>
+
+}
+
+
+@section scripts{
+    <script>
+            $(document).ready(function () {
+                $.ajax({
+
+
+                    url: '@servername/ChekCalendar',
+                    type: 'POST',
+                    success: function (Result) {
+                        if (Result.NOtInCalendar == 1) {
+
+                            var GetAdd = document.getElementById("GetAddButton");
+                            var GetSearch = document.getElementById("GetsearchButton");
+                            GetAdd.style.display = "block";
+                            GetSearch.style.display = "block";
+
+                        }
+                        else if (Result.result == 2) {
+
+                            var GetAdd = document.getElementById("GetAddButton");
+                            var GetSearch = document.getElementById("GetsearchButton");
+                            GetAdd.style.display = "block";
+                            GetSearch.style.display = "block";
+
+                        }
+                        else if (Result.result == 1) {
+
+                            var GetSearch = document.getElementById("GetsearchButton");
+                            GetSearch.style.display = "block";
+                        }
+
+
+                    }
+                });
+            }
+            );
+
+
+
+    </script>
+
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

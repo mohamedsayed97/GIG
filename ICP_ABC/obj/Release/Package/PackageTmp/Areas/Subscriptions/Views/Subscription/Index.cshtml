@@ -1,0 +1,326 @@
+﻿@model ICP_ABC.Areas.Subscriptions.Models.CreateSubscriptionViewModel
+
+@{
+    /**/
+
+    ViewBag.Title = "Subscription";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+
+}
+
+<h2 style="margin-top:5px">Subscription Setup</h2>
+
+@using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "CreateForm", style = "margin-top:50px" }))
+{
+<div style="margin-bottom:70px;">
+    @Html.AntiForgeryToken()
+
+    <p class="text-danger">@Html.ValidationSummary(true)</p>
+    <div class="row">
+        <div class="form-group col-sm-4">
+            @Html.Label("Code", htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.code, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly", Value = ViewData["LastCode"] } })
+                @Html.ValidationMessageFor(model => model.code, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group  col-sm-4 ">
+            <label class="control-label col-md-2">Account</label>
+            @*<div class="col-md-7">
+                    @Html.EditorFor(model => model.cust_id, new { htmlAttributes = new { @class = "form-control form-control-sm", id = "CustId", @min = 1 } })
+                </div>*@
+            <div class="col-md-7">
+
+                <select class="form-control form-control-sm valid" data-val="true" disabled data-val-number="The field Issuer must be a number." data-val-required="The Issuer field is required." id="SponsorID" name="SponsorID" aria-describedby="SponsorID-error" aria-invalid="false">
+                    <option value="1">Zero Account</option>
+                    <option value="2">Fund Side Account</option>
+
+                </select>
+
+            </div>
+        </div>
+
+        <div class="form-group  col-sm-4 ">
+            <label class="control-label col-md-2">Fund</label>
+            @*<div class="col-md-7">
+                    @Html.EditorFor(model => model.cust_id, new { htmlAttributes = new { @class = "form-control form-control-sm", id = "CustId", @min = 1 } })
+                </div>*@
+            <div class="col-md-7">
+
+                <select class="form-control form-control-sm valid" data-val="true" disabled data-val-number="The field Issuer must be a number." data-val-required="The Issuer field is required." id="SponsorID" name="SponsorID" aria-describedby="SponsorID-error" aria-invalid="false">
+                    <option value="1">First Fund</option>
+                    <option value="2">Second Fund</option>
+
+                </select>
+
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+
+
+        <div class="form-group col-sm-4">
+            @Html.LabelFor(model => model.pay_method, htmlAttributes: new { @class = "control-label Cities col-md-5" })
+            <div class="col-md-7">
+                <select disabled class="form-control form-control-sm" name="pay_method" id="MethoddDrpDwn">
+                    @{string[] Methods = new string[] { "By Units", "By Amount" };}
+                    <option value="">Select One</option>
+                    @foreach (var Method in Methods)
+                    {
+                        <option name="pay_method" value="@Method">@Method</option>
+                    }
+                </select>
+                @Html.ValidationMessageFor(model => model.pay_method, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.units, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.units, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled", id = "units", @type = "text", onkeyup = "javascript:this.value=Comma(this.value)" } })
+                @Html.ValidationMessageFor(model => model.units, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.amount_3, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.amount_3, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled", id = "TotalUnit" } })
+                @Html.ValidationMessageFor(model => model.amount_3, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.NAV, htmlAttributes: new { @class = "control-label Cities col-md-5" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.NAV, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled", id = "Nav" } })
+                @Html.ValidationMessageFor(model => model.NAV, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.nav_date, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.nav_date, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly", id = "NavDate" } })
+                @Html.ValidationMessageFor(model => model.nav_date, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.Nav_Ddate, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.Nav_Ddate, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly", id = "Nav_Ddate" } })
+                @Html.ValidationMessageFor(model => model.Nav_Ddate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+
+
+
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.ProcessingDate, htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.ProcessingDate, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly", id = "ProcessingDate" } })
+                @Html.ValidationMessageFor(model => model.ProcessingDate, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group col-md-4">
+            @Html.Label("total amount to be debit", htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.total, new { htmlAttributes = new { @class = "form-control form-control-sm ", disabled = "disabled", id = "TotalAmount" } })
+
+                @Html.ValidationMessageFor(model => model.total, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+    </div>
+
+
+</div>
+    <div class="ButtonsControl">
+
+
+        <div class="text-center">
+            <div class="col-md-2"></div>
+            <div class="btn-group col-md-7" role="group" aria-label="Basic example">
+
+                <a href="~/Subscriptions/Subscription/Create" style="display:none" class="btn btn-primary " id="GetAddButton"><i class="fa fa-plus"></i> Add New Subscription</a>
+                <a href="~/Subscriptions/Subscription/Search" style="display:none" class="btn btn-primary " id="GetsearchButton"><i class="fa fa-search"></i>Search</a>
+
+                <a href="~/Home/Home/Index" class="btn btn-primary"><i class="fa fa-home"></i> Back To Home</a>
+
+            </div>
+        </div>
+    </div>
+
+}
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(document).ready(function () {
+
+                    $.ajax({
+                        url: '@servername/ChekCalendar',
+                        type: 'POST',
+                        success: function (Result) {
+                            if (Result.NOtInCalendar == 1) {
+
+                                var GetAdd = document.getElementById("GetAddButton");
+                                var GetSearch = document.getElementById("GetsearchButton");
+                                GetAdd.style.display = "block";
+                                GetSearch.style.display = "block";
+
+                            }
+                            else if (Result.result == 2) {
+
+                                var GetAdd = document.getElementById("GetAddButton");
+                                var GetSearch = document.getElementById("GetsearchButton");
+                                GetAdd.style.display = "block";
+                                GetSearch.style.display = "block";
+
+                            }
+                            else if (Result.result == 1) {
+
+                                var GetSearch = document.getElementById("GetsearchButton");
+                                GetSearch.style.display = "block";
+                            }
+
+
+                        }
+                    });
+                }
+                );
+
+
+
+    </script>
+    <script>
+
+                //Fund,and totalAmount and main bussiness Functions
+                $(function () {
+
+                    //   normal dropdown
+                    $(".FundsDrpDwn").chosen({
+                        // inherit_select_classes: true,
+                        disable_search_threshold: 5,
+                        width: "100%"
+                    });
+                    $('#FundsDrpDwn').prop('disabled', true).trigger("chosen:updated");
+
+                });
+
+                $(function () {
+                    $(".FundsDrpDwn").chosen().change(function () {
+                        $('#NavDate').val(null);
+                        $('#Nav').val(null);
+                        $('#SubFees').val(null);
+                        $('#OtherFees').val(null);
+                        // alert("fund changed");
+
+                        $("#MethoddDrpDwn").attr("disabled", false);
+                        var fundId = $("#FundsDrpDwn :selected").val();
+                        $.ajax({
+                            type: "Post",
+                            url: '@servername/Subscriptions/Subscription/GetICPriceInfo', // the method we are calling
+                            contentType: "application/x-www-form-urlencoded",
+                            data: { FundId: fundId },//, 'Code': Code, 'GroupID': GroupID },
+                            dataType: "Json",
+                            success: function (result) {
+                                if (result == 'No Price') {
+                                    //alert("No price");
+                                    $("#FundsDrpDwn").attr("disabled", "disabled");
+                                    $('#NavDate').val(null);
+                                    $('#Nav').val(null);
+                                    $('#SubFees').val(null);
+                                    $('#OtherFees').val(null);
+                                }
+                                else {
+                                    // alert("y pr");
+                                    Fund = JSON.parse(result);
+                                    //Date
+                                    var dateString = Fund.Date;
+                                    var d = new Date(dateString);
+                                    var Format = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
+                                    $('#NavDate').val(Format);
+                                    $('#Nav').val(Fund.Nav);
+                                    // $('#SubFees').val(Fund.SubFees);
+                                    // $('#OtherFees').val(Fund.OtherFees);
+                                }
+
+                            },
+                            error: function (result) {
+                                alert(result);
+
+                            }
+                        });
+                    });
+                });
+
+                $('#units').change(function () {
+                    //alert("uniiit");
+                    $('#SubFees').val(null);
+                    $('#OtherFees').val(null);
+                    var nav = Fund.Nav; //$('#Nav').val();
+                    var subFees = Fund.SubFees; //Math.round(Fund.SubFees * 100) / 100;//Fund.SubFees; //$('#SubFees').val();
+                    var otherFees = Fund.OtherFees; //Fund.OtherFees.toFixed(2);// Math.round(Fund.OtherFees * 100) / 100; // $('#OtherFees').val();
+                    //var totalUnit = $('#TotalUnit').val();
+                    var Unit = $('#units').val(); //Math.floor(totalUnit / nav);
+                    var finalTotalUnit = Unit * nav;
+                    $('#TotalUnit').val(finalTotalUnit.toFixed(2));
+                    //$('#Unit').val(Unit);
+                    //$('#Nav').val();
+                    subFees = finalTotalUnit * (Fund.SubFees / 100); //$('#SubFees').val();
+                    otherFees = finalTotalUnit * (Fund.OtherFees / 100); // $('#OtherFees').val();
+                    //var x = Number(otherFees);
+                    //x = x.toFixed(2);
+
+                    $('#OtherFees').val(otherFees.toFixed(2));
+                    $('#SubFees').val(subFees.toFixed(2));
+                    var total = finalTotalUnit + subFees + otherFees; //(finalTotalUnit * subFees / 100) + (finalTotalUnit * otherFees / 100);
+                    $('#TotalAmount').val(total.toFixed(2));
+                    unitChange();
+
+                });
+
+                $('#TotalUnit').change(function () {
+
+                    //alert(dateString);
+                    $('#SubFees').val(null);
+                    $('#OtherFees').val(null);
+                    var nav = Fund.Nav; //$('#Nav').val();
+                    var subFees = Fund.SubFees; //$('#SubFees').val();
+                    var otherFees = Fund.OtherFees; // $('#OtherFees').val();
+                    var totalUnit = $('#TotalUnit').val();
+                    var Unit = Math.floor(totalUnit / nav);
+                    var finalTotalUnit = Unit * nav;
+                    $('#TotalUnit').val(finalTotalUnit.toFixed(2));
+                    $('#units').val(Unit);
+                    //$('#Nav').val();
+                    var subFees = finalTotalUnit * (Fund.SubFees / 100); //$('#SubFees').val();
+                    var otherFees = finalTotalUnit * (Fund.OtherFees / 100); // $('#OtherFees').val();
+                    $('#OtherFees').val(otherFees.toFixed(2));
+                    $('#SubFees').val(subFees.toFixed(2));
+                    var total = finalTotalUnit + subFees + otherFees; //(finalTotalUnit * subFees / 100) + (finalTotalUnit * otherFees / 100);
+                    $('#TotalAmount').val(total.toFixed(2));
+                    unitChange();
+                });
+    </script>
+
+
+
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+

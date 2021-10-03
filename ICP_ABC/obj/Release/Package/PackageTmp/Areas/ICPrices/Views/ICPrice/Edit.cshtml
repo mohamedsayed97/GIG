@@ -1,0 +1,184 @@
+﻿@model ICP_ABC.Areas.ICPrices.Models.CreateViewModel
+
+@{
+    ViewBag.Title = "ICPrice Setup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+
+
+}
+@*<style>
+        body {
+            font-weight: 500;
+            background-color: aliceblue;
+            /*background-image: url(../../Content/Images/vehdb4tur0fg6yphaiumv2bmtplollhqll0gvubgxt58t7znz43m5enjos1cxcdn-.jpg );*/
+        }
+    </style>*@
+<h2>ICPrice Setup: (Update)</h2>
+
+@using (Html.BeginForm("Edit", "ICPrice", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", style = "margin-top:50px" }))
+{
+
+    <div style="margin-bottom:70px;">
+
+        @Html.AntiForgeryToken()
+
+        <p class="text-danger">@Html.ValidationSummary(true)</p>
+
+        <div class="horizontal">
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Code</label>
+                @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", Value = ViewData["currr"], @readonly = "readonly", Text = ViewData["currr"] } })*@
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Name</label>
+                @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", Value = ViewData["currr"], @readonly = "readonly", Text = ViewData["currr"] } })*@
+                <div class="col-md-7">
+                    @Html.DropDownListFor(model => model.FundId, ViewData["Funds"] as SelectList, new { @class = "form-control form-control-sm grpdrpdwn", id = "FundId", disabled = "disabled" })
+                    @*    @Html.DropDownListFor(model => model.FundId, ViewData["Funds"] as SelectList, new { @class = "form-control form-control-sm grpdrpdwn", disabled = "disabled" })*@
+                </div>
+            </div>
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4"> Date</label>
+                @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Date, "", new { @class = "form-control form-control-sm", id = "Date", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.Date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4"> ProcessingDate</label>
+                @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.ProcessingDate, "", new { @class = "form-control form-control-sm", id = "Date", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.ProcessingDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Price</label>
+                @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", Value = ViewData["currr"], @readonly = "readonly", Text = ViewData["currr"] } })*@
+                @{ var x = Model.Price.ToString();}
+                <div class="col-md-7">
+                    @*<input type="text" value="@x" />*@
+                    @*@Html.EditorFor(m => m.Price, new { htmlAttributes = new {type="text", @class = "form-control form-control-sm" ,value= x } })*@
+                    @Html.TextBoxFor(m => m.Price, new { htmlAttributes = new { value = @x }, @class = "form-control form-control-sm " })
+                    @*<input class="form-control form-control-sm valid" data-val="true" id="Price" name="Price" readonly="readonly" type="text" value="@Model.Price" aria-invalid="false">*@
+                    @Html.ValidationMessageFor(m => m.Price, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ButtonsControl">
+
+        <div class="text-center" style="padding-top:15px;">
+            <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+                <button type="submit" id="Applybutton" class="btn btn-primary"><i class="fa fa-save"></i> Apply</button>
+                <a href="~/ICPrices/ICPrice/Details?Code=@Model.Code" class="btn btn-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+
+            </div>
+        </div>
+    </div>
+}
+@section scripts
+    {
+    <script>
+        //Customer Functions
+        $("#Price").change(function () {
+
+            var Price = $('#Price').val();
+            var FundId = document.getElementById("FundId").value;
+            $.ajax({
+
+                type: "Post",
+                url: '@servername/CheckPrice',
+                //contentType: "application/x-www-form-urlencoded",
+                data: { Price: Price, FundId: FundId },
+                success: function (result) {
+
+
+                    if (result.status == 0) {
+
+                        var Apply = document.getElementById("Applybutton");
+                        Apply.style.display = "none";
+                        alert("Wrong ICprice Number for this Fund , Check Number and try Again");
+                    }
+                    else if (result.status == 1) {
+                        var Apply = document.getElementById("Applybutton");
+                        Apply.style.display = "block";
+                    } else if (result.status == 2) {
+
+                        var Apply = document.getElementById("Applybutton");
+                        Apply.style.display = "none";
+                        alert("Length After Dot in Price must be equal to ICprice Number ("+ result.ICpriceFund +") for this Fund");
+
+                    }else if (result.status == 3) {
+                        var Apply = document.getElementById("Applybutton");
+                        Apply.style.display = "none";
+                        alert("Price Must be Less than or equal to (" + result.Max + ") OR Greater than or equal to ("+result.Min+")");
+
+                    }else if (result.status == 4) {
+                        var Apply = document.getElementById("Applybutton");
+                        Apply.style.display = "none";
+                        alert("Tolerance Error !");
+
+                    }
+
+                   // if (result.status != 2) {
+
+                   //    if (result.status == 1) {
+                   //        debugger;
+                   //        var Apply = document.getElementById("Applybutton");
+                   //        Apply.style.display = "block";
+                   //    }
+                   //    else {
+
+                   //        alert("Price is wrong for this fund Price Must Be Between " + result.Min + " And " + result.Max);
+                   //        //$("#Applybutton").attr("disabled", "disabled");
+                   //        var Apply = document.getElementById("Applybutton");
+                   //        Apply.style.display = "none";
+                   //    }
+                   // } else {
+
+                   //    alert("Tolerance Error !");
+                   //    var Apply = document.getElementById("Applybutton");
+                   //    Apply.style.display = "none";
+                   //}
+                }
+            });
+        });
+    </script>
+    <script>
+
+        @*$(function () {
+
+            var FundId = document.getElementById("FundId").value;
+
+            $.ajax({
+                type: "Post",
+                url: '@servername/ICPrices/ICPrice/CheckDate', // the method we are calling
+                contentType: "application/x-www-form-urlencoded",
+                data: { FundId: FundId },//, 'Code': Code, 'GroupID': GroupID },
+                //dataType: "json",
+                success: function (result) {
+                    // alert("success");
+                    // window.location.href = "/GroupsRights/GroupRight";
+
+                    document.getElementById("Date").value = result.Date;
+
+                },
+                error: function (result) {
+                    alert("Failed To Get Time");
+                }
+            });
+        });*@
+
+    </script>
+}

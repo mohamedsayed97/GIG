@@ -1,0 +1,68 @@
+﻿@model ICP_ABC.Reports.FundBallance.Model.FundBallanceVM
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+<link rel="stylesheet" href="/resources/demos/style.css">
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+@using (Html.BeginForm("Action", "FundBallance"))
+{
+    <div style="width:95%;height:450px;overflow-y:scroll;overflow-x:hidden;border:solid 1px #ddd;margin:3px;padding:5px;">
+
+
+        <div class="row">
+            <div class="form-group col-lg-4 col-md-4">
+                <label>Fund Name</label>
+                @Html.DropDownListFor(m => m.Fund, new SelectList(Model.Funds, "code", "name"), "All Funds", new { @class = "form-control" })
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-4 col-md-4">
+                <label>Fund Type</label>
+                @Html.DropDownListFor(m => m.FundType, new SelectList(Model.Types, "Id", "Name"), "", new { @class = "form-control" })
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-lg-4 col-md-4">
+                <label>From Date</label>
+                @Html.TextBoxFor(m => m.FromDate, new { type = "Date", @class = "form-control" })
+                @Html.ValidationMessageFor(m => m.FromDate)
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-4 col-md-4">
+                <label>To Date</label>
+
+                @Html.TextBoxFor(m => m.ToDate, new { type = "Date", @class = "datepicker form-control" })
+                @Html.ValidationMessageFor(m => m.ToDate)
+            </div>
+        </div>
+    </div>
+    <div class="text-center" style="padding-top:15px;">
+        <button type="submit" class="btn btn-primary">Preview</button>
+        </div>
+        }
+        @section scripts
+    {
+            @Scripts.Render("~/bundles/jqueryval")
+            @*<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+                <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+                <script>
+                  $( function() {
+                      $("#ToDate").datepicker();
+                      $("#FromDate").datepicker();
+                  });
+                </script>
+                    <script>
+                        $(document).ready(function () {
+                            $("#ToDate").val("");
+                            $("#FromDate").val("");
+                        })
+                    </script>*@
+
+        }

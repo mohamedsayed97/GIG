@@ -1,0 +1,381 @@
+﻿@model ICP_ABC.Areas.Policies.Models.PolicyDetailsViewModel
+@using ICP_ABC.Extentions
+@{
+                /**/
+
+                ViewBag.Title = "Details";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+
+    <div class="col-12" id="">
+        <h2>Policy Setup</h2>
+    
+
+            <div style="margin-bottom:100px;">
+
+                <div class="row">
+                    <div class="form-group col-3">
+                        <label for="PolicyNo" class="control-label">Policy No</label>
+                        @Html.EditorFor(model => model.PolicyNo, new { htmlAttributes = new { @placeholder = "Policy No", @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.PolicyNo, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group  col-3">
+                        <label for="PolicyHolderName" class="control-label">PolicyHolder Name</label>
+                        @Html.EditorFor(model => model.PolicyHolderName, new { htmlAttributes = new { @placeholder = "PolicyHolder Name", @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.PolicyHolderName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-3">
+                        <label for="CompanyId" class="control-label">Company</label>
+                        @Html.DropDownListFor(model => model.CompanyId, new SelectList(Model.Companies, "Id", "Name"), "Select Company", new { @class = "form-control ", @readonly = "readonly" })
+                        @Html.ValidationMessageFor(model => model.CompanyId, "", new { @class = "text-danger" })
+
+                    </div>
+
+
+                    <div class="form-group  col-3">
+                        <label for="PaymentFrequency" class="control-label">Payment Frequency</label>
+
+                        <select name="PaymentFrequency" id="PaymentFrequency" disabled class="form-control" data-val="true" data-val-number="The field PaymentFrequency must be a number." data-val-required="The PaymentFrequency field is required.">
+                            <option>Select PaymentFrequency</option>
+                            <option value="1">Monthly</option>
+                            <option value="2">Quarter</option>
+                            <option value="3">Annual</option>
+                        </select>
+                        @Html.ValidationMessageFor(model => model.PaymentFrequency, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-3">
+                        <div class="row">
+                            <div class="form-group offset-1 col-5">
+
+                                <div class="row">
+                                    @Html.LabelFor(model => model.HasWithdrawal, new { @disabled = "disabled" })
+
+                                </div>
+                                <div class="row">
+                                    @Html.CheckBoxFor(model => model.HasWithdrawal, new { @disabled = "disabled" })
+
+                                </div>
+
+                            </div>
+                            <div class="form-group col-4 ">
+                                <div class="row">
+                                    @Html.LabelFor(model => model.HasBooster, new { @disabled = "disabled" })
+
+                                </div>
+                                <div class="row">
+                                    @Html.CheckBoxFor(model => model.HasBooster, new { @disabled = "disabled" })
+
+                                </div>
+
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group col-3">
+                        <label for="BusinessChannel" class="control-label">Business Channel</label>
+                        <select name="BusinessChannel" disabled id="BusinessChannel" class="form-control" data-val="true" data-val-number="The field BusinessChannel must be a number." data-val-required="The BusinessChannel field is required.">
+                            <option>Select BusinessChannel</option>
+
+                            <option value="1">Business 1</option>
+
+                        </select>
+                        @Html.ValidationMessageFor(model => model.BusinessChannel, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="form-group col-2">
+                        <label for="Status" class="control-label">Status</label>
+
+                        <select name="Status" disabled id="Status" class="form-control" data-val="true" data-val-number="The field Status must be a number." data-val-required="The Status field is required.">
+                            <option>Select Status</option>
+                            <option value="1">Issued</option>
+
+                        </select>
+                        @Html.ValidationMessageFor(model => model.Status, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <div class="form-group col-2">
+                        <label for="EffectiveDate" class="control-label">Effective Date</label>
+                        @Html.EditorFor(model => model.EffectiveDate, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.EffectiveDate, "", new { @class = "text-danger" })
+                    </div>
+
+                    <div class="form-group col-2">
+                        <label for="CalculationBasis"  class="control-label">Calculation Basis</label>
+
+                        <select name="CalculationBasis" disabled id="CalculationBasis" class="form-control" data-val="true" data-val-number="The field CalculationBasis must be a number." data-val-required="The CalculationBasis field is required.">
+                            <option>select CalculationBasis</option>
+
+                            <option value="1">Normal</option>
+
+                        </select>
+                        @Html.ValidationMessageFor(model => model.CalculationBasis, "", new { @class = "text-danger" })
+                    </div>
+
+
+                    <div class="form-group col-3">
+                        <label for="FundId" class="control-label">Fund</label>
+
+                        @Html.DropDownList("Funds", new SelectList(Model.Funds, "FundID", "Name"), "Select Fund", new { @class = "form-control ", id = "AllFunds", @readonly = "readonly" })
+                    </div>
+
+                    <div class="form-group col-9">
+
+                        <div class="alert alert-danger" style="display:none" id="ErrorMessage" role="alert">
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+                <div class="row">
+
+                    <table class="table table-sm">
+                        <thead>
+                            <tr>
+
+                                <th scope="col">Name</th>
+                                <th scope="col">% Of Emp Share</th>
+                                <th scope="col">% Of Company Share</th>
+
+                                <th scope="col">% Of Emp Share(Booster)</th>
+                                <th scope="col">% Of Company Share Booster</th>
+                               
+                            </tr>
+                        </thead>
+                        <tbody id="allocationRuleItem">
+
+
+                            @for (int i = 0; i < Model.AllocationRules.Count; i++)
+                            {
+
+                                <tr>
+
+                                    <td>
+                                        @Html.HiddenFor(model => Model.AllocationRules[i].FundId)
+
+                                        @Html.EditorFor(model => Model.AllocationRules[i].Fund.Name, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => Model.AllocationRules[i].FundId, "", new { @class = "text-danger" })
+
+                                    </td>
+
+
+                                    <td>
+                                        @Html.EditorFor(model => Model.AllocationRules[i].PercentageOfEmpShare, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => Model.AllocationRules[i].PercentageOfEmpShare, "", new { @class = "text-danger" })
+
+
+                                    </td>
+
+
+                                    <td>
+                                        @Html.EditorFor(model => Model.AllocationRules[i].PercentageOfCompanyShare, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                        @Html.ValidationMessageFor(model => Model.AllocationRules[i].PercentageOfCompanyShare, "", new { @class = "text-danger" })
+
+
+                                    </td>
+
+
+                                    <td>
+                                        @if (Model.HasBooster)
+                                        {
+                                            @Html.EditorFor(model => Model.AllocationRules[i].PercentageOfEmpShareBooster, new { htmlAttributes = new { @class = "form-control Booster", @readonly = "readonly" } })
+
+                                        }
+                                        else
+                                        {
+                                            @Html.EditorFor(model => Model.AllocationRules[i].PercentageOfEmpShareBooster, new { htmlAttributes = new { @class = "form-control Booster", @readonly = "readonly" } })
+
+                                        }
+                                        @Html.ValidationMessageFor(model => Model.AllocationRules[i].PercentageOfEmpShareBooster, "", new { @class = "text-danger" })
+
+
+                                    </td>
+
+
+                                    <td>
+                                        @if (Model.HasBooster)
+                                        {
+                                            @Html.EditorFor(model => Model.AllocationRules[i].PercentageOfCompanyShareBooster, new { htmlAttributes = new { @class = "form-control Booster", @readonly = "readonly" } })
+                                        }
+                                        else
+                                        {
+                                            @Html.EditorFor(model => Model.AllocationRules[i].PercentageOfCompanyShareBooster, new { htmlAttributes = new { @class = "form-control Booster", @readonly = "readonly" } })
+
+                                        }
+                                        @Html.ValidationMessageFor(model => Model.AllocationRules[i].PercentageOfCompanyShareBooster, "", new { @class = "text-danger" })
+
+
+                                    </td>
+
+
+             
+                                </tr>
+                            }
+
+
+                        </tbody>
+                    </table>
+
+
+
+                </div>
+            </div>
+            <div class="ButtonsControl">
+
+
+                <div class="text-center" style="padding-top:15px;">
+
+                    <div class="btn-group col-md-10" role="group" aria-label="Basic example">
+
+                        @if (User.Identity.HasTheRights("Policy", "Create"))
+                        {
+                            <a href="~/Policies/Policy/Create" class="btn btn-primary AllCondition" id="GetAddButton"><i class="fa fa-plus"></i> Add Policy</a>
+                        }
+                        @if (User.Identity.HasTheRights("Policy", "Update"))
+                        {
+                            if (Model.EditBtn)
+                            {
+                                <a href="~/Policies/Policy/Edit?PolicyNo=@Model.PolicyNo" class="btn btn-primary AllCondition" id="GetEditButton"><i class="fa fa-edit"></i> Edit </a>
+                            }
+                        }
+                        @if (User.Identity.HasTheRights("Policy", "Delete"))
+                        {
+                            if (Model.DeleteBtn)
+                            {
+                                <a href="#" data-toggle="modal" data-target="#Delete" class="btn btn-primary AllCondition"><i class="fa fa-remove"></i> Delete </a>
+                            }
+                        }
+                        @if (User.Identity.HasTheRights("Policy", "Check"))
+                        {
+                            if (Model.CheckBtn)
+                            {
+
+                                <a href="~/Policies/Policy/Check?PolicyNo=@Model.PolicyNo" class="btn btn-primary AllCondition" id="GetCheckButton"><i class="fa fa-check"></i> Check </a>
+                            }
+                        }
+                        @if (User.Identity.HasTheRights("Policy", "Authorized"))
+                        {
+                            if (Model.AuthBtn)
+                            {
+                                <a href="#" data-toggle="modal" data-target="#Auth" class="btn btn-primary AllCondition"><i class="fa fa-user-secret"></i> Autherize </a>
+                            }
+
+                        }
+                        @if (User.Identity.HasTheRights("Policy", "Authorized"))
+                        {
+                            if (Model.UnAuthBtn)
+                            {
+                                <a href="#" data-toggle="modal" data-target="#UnAuth" class="btn btn-primary AllCondition"><i class="fa fa-user-secret"></i> UnAutherize </a>
+                            }
+                        }
+
+
+                        <a href="~/Policies/Policy/Search" class="btn btn-primary"><i class="fa fa-search"></i> Search</a>
+                        <a href="~/Policies/Policy/Previous?id=@Model.code" id="Prev" class="btn btn-primary"><i class="fa fa-backward"></i> Previous </a>
+                        <a href="~/Policies/Policy/Next?id=@Model.code" id="Next" class="btn btn-primary"><i class="fa fa-forward"></i> Next </a>
+                        <a href="~/Home/Home/Index" class="btn btn-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+                    </div>
+                </div>
+            </div>
+        
+    </div>
+</div>
+
+<div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                Are You Sure You Want to Delete ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="~/Policies/Policy/Delete?PolicyNo=@Model.PolicyNo" class="btn btn-danger ">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Auth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Autherize</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                Are You Sure You Want to Autherize ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="~/Policies/Policy/AuthorizePolicy?PolicyNo=@Model.PolicyNo" class="btn btn-primary">Autherize</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="UnAuth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Autherize</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                Are You Sure You Want to UnAutherize ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="~/Policies/Policy/UnAuthorizePolicy?PolicyNo=@Model.PolicyNo" class="btn btn-primary">UnAutherize</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section scripts
+{
+    <script>
+        $(function () {
+
+            var last=  "@TempData["Last"]" ;
+
+            if (last != null) {
+                if ("@TempData["Last"]" == "Last") {
+
+                    document.getElementById("Next").classList.add('disabled');
+                }
+            }
+            /////////////////////////
+           var last=  "@TempData["First"]" ;
+
+            if (last != null) {
+
+                if ("@TempData["First"]" == "First") {
+
+                    document.getElementById("Prev").classList.add('disabled');
+                }
+
+            }
+            /////////////////////
+        });
+
+    </script>
+}
+
+

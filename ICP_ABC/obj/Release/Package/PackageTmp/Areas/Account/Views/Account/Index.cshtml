@@ -1,0 +1,170 @@
+﻿@model ICP_ABC.Areas.Account.Models.EditViewModel
+@{
+    /**/
+
+    /**/
+
+    ViewBag.Title = "Index";
+}
+<style>
+
+
+    body {
+        font-weight: 500;
+        background-color: aliceblue;
+        /*background-image: url(../../Content/Images/vehdb4tur0fg6yphaiumv2bmtplollhqll0gvubgxt58t7znz43m5enjos1cxcdn-.jpg );*/
+    }
+</style>
+<h2>User Profile Setup </h2>
+@*<form method="post" action="@Url.Action("REgister", "Account")">*@
+@using (Html.BeginForm("Register", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+
+    <div style="width:95%;height:375px;overflow-y:scroll;overflow-x:hidden;border:solid 1px #ddd;margin:3px;padding:5px;">
+
+
+        @Html.AntiForgeryToken()
+
+        <p class="text-danger">@Html.ValidationSummary(true)</p>
+
+        <div class="row">
+            <div class="form-group col-md-4 ">
+                <label for="inputEmail4"> Code</label>
+                @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", Value = ViewData["currr"], @readonly = "readonly", Text = ViewData["currr"] } })*@
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4 ">
+                <label for="inputEmail4">Password</label>
+                @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.Password, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputPassword4">ConfirmPassword</label>
+                @*@Html.EditorFor(model => model.ConfirmPassword, new { htmlAttributes = new { @class = "form-control" } })*@
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.ConfirmPassword, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger", disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label for="inputPassword4"> Name</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.UserName, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                    @Html.HiddenFor(m => m.OldUserName)
+                    @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputPassword4">Email</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control form-control-sm", placeholder = "name@example.com", disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputPassword4">Full Name</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="dropdown col-md-4">
+                <label for="inputPassword4">Branch</label><br />
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.GroupID, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputPassword4">Position</label><br />
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.PositionID, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="dropdown col-md-4">
+                <label for="inputPassword4">Group</label><br />
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.GroupID, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputPassword4">Close Due Date</label><br />
+                <div class="col-md-9">
+                    @Html.TextBoxFor(model => model.CloseDueDate, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputPassword4">Expire Date</label><br />
+                <div class="col-md-9">
+                    @Html.Editor("Expire Date", new { htmlAttributes = new { @class = "form-control form-control-sm", @readinly = "readonly", Value = ViewData["expiredate"], text = ViewData["expiredate"], @readonly = "readonly" } })
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputPassword4">Branch Right&nbsp;&nbsp;UnBlock Right</label><br />
+
+                <div class="col-md-9" style="display:inline">
+                    @Html.CheckBoxFor(model => model.BranchRight, new { htmlAttributes = new { @class = "form-control form-control-sm" }, disabled = "disabled" })
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    @Html.CheckBoxFor(model => model.UnBlockRight, new { htmlAttributes = new { @class = "form-control form-control-sm"} ,disabled = "disabled" })
+                </div>
+            </div>
+            @*<div class="form-group col-md-4">
+                <label for="inputPassword4">Branch Right</label><br />
+                <div class="col-md-9">
+                    <input type="checkbox" name="Branch Right" disabled />
+                </div>
+            </div>
+            <div class="form-group col-md-4">
+                <label for="inputPassword4">UnBlock Right</label><br />
+                <div class="col-md-9">
+                    <input type="checkbox" name="UnBlock Right" disabled />
+                </div>
+            </div>*@
+
+
+
+
+        </div>
+        </div>
+
+        <div class="text-center" style="padding-top:15px;">
+            <div class="col-md-3"></div>
+            <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+                <a href="~/Account/Account/Register" class="btn btn-outline-primary"><i class="fa fa-group"></i> Add User</a>
+                <a href="~/Account/Account/Search" class="btn btn-outline-primary"><i class="fa fa-search"></i> Search</a>
+                <a href="~/Home/Home/Index" class="btn btn-outline-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+            </div>
+
+
+        </div>
+        }
+        @*</form>*@
+
+        @section scripts{
+            @Scripts.Render("~/bundles/jqueryval")
+            <script>
+
+                $(function () {
+                    //   normal dropdown
+                    $(".ddlist").chosen({
+                        //  disable_search_threshold: 1
+                    });
+                });
+            </script>
+        }
+        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

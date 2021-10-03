@@ -1,0 +1,348 @@
+﻿@model PagedList.IPagedList<ICP_ABC.Areas.Redemptions.Models.Redemption>
+@using PagedList.Mvc;
+
+
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/bootstrap.css" />
+<style>
+
+    th {
+        font-size: 0.8em;
+        padding: 1px !important;
+        height: 15px;
+    }
+</style>
+@{
+
+
+    ViewBag.Title = "Redemptions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+    TempData.Keep();
+}
+
+<h2>Redemption Setup: (Search)</h2>
+
+<form class="form-inline" id="SearchForm">
+   
+        
+            <input type="number" class="form-control form-control-sm" min="0" step=".0000000001" title="Customer ID" name="CustomerID" id="CustomerID" value="@ViewData["CustomerID"]" placeholder="Customer ID">
+        
+       @Html.DropDownList("Funds", ViewData["Funds"] as SelectList, "Select Fund", new { @class = "form-control form-control-sm", id = "FundId", name = "FundId" })
+        <input type="number" title="Code From" class="form-control form-control-sm" min="0" name="CodeFrom" id="CodeFrom" value="@ViewData["CodeFrom"]" data-tip="dsfdsfs" placeholder="Code From">
+        <input type="number" class="form-control form-control-sm" title="Code To" min="0" name="CodeTo" id="CodeTo" value="@ViewData["CodeTo"]" placeholder="Code To">
+        <input type="number" class="form-control form-control-sm" title="Total Amount From" min="0" step=".0000000001" name="TotalAmountFrom" id="TotalAmountFrom" value="@ViewData["TotalAmountFrom"]" placeholder="Total Amount From">
+        <input type="number" class="form-control form-control-sm" title="Total Amount To" min="0" step=".0000000001" name="TotalAmountTo" id="TotalAmountTo" value="@ViewData["TotalAmountTo"]" placeholder="Total Amount To">
+
+    <br />
+
+
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span style="height:29px" class="input-group-text" id="basic-addon3">Nav date from</span>
+            </div>
+            <input type="date" class="form-control form-control-sm" title="Nav Date From" name="NavDateFrom" id="NavDateFrom" value="@ViewData["NavDateFrom"]" placeholder="Nav Date From">
+
+        </div>
+        <div class="input-group">
+            <div class="input-group-prepend">
+                <span style="height:29px" class="input-group-text" id="basic-addon3">Nav date To</span>
+            </div>
+            <input type="date" class="form-control form-control-sm" title="Nav Date From" name="NavDateTo" id="NavDateTo" value="@ViewData["NavDateTo"]" placeholder="Nav Date From">
+
+        </div>
+
+        <input type="number" class="form-control form-control-sm" title="Number Of Units" step="" name="NumberOfUnits" id="NumberOfUnits" min="0" step=".0000000001" value="@ViewData["NumberOfUnits"]" placeholder="Number Of Units">
+
+
+        @{
+            var chk = ViewData["radioCHeck"] as string;
+            var AuthorizeCHK = chk == "1" ? "checked" : "";
+            var CheckerCHK = chk == "2" ? "checked" : "";
+            var MakerCHK = chk == "3" ? "checked" : "";
+            var AllCHK = chk == "4" ? "checked" : "";
+
+        }
+        <input id="Authorize"
+               name="RadioCHeck"
+               type="radio"
+               value="1"
+               @AuthorizeCHK />Authorize&nbsp;
+        @{
+            if (ViewBag.SecuLevel == 3)
+            {
+                <input style="display:inline-block" id="Checker"
+                       name="RadioCHeck"
+                       type="radio"
+                       value="2" @CheckerCHK /><label style="display:inline-block" for="Check">Checker&nbsp;</label>
+            }
+        }
+
+        <input id="Maker"
+               name="RadioCHeck"
+               type="radio"
+               value="3"
+               @MakerCHK />Maker&nbsp;
+
+        <input id="All"
+               name="RadioCHeck"
+               type="radio"
+               value="4"
+               @AllCHK />All&nbsp;
+
+
+        <button type="submit" class="btn btn-primary mb-3 btn-sm"><i class="fa fa-search"></i> Search</button>
+
+   
+
+    <p style="margin-left:50px;">
+        @if (Model.TotalItemCount != 0)
+        {
+            <a target="_blank" style="margin-right:20px;" rel="noopener noreferrer" href="/Redemptions/Redemption/ExportToPDF">Print Result To PDF</a>
+
+            @Html.ActionLink("Print Result To Excel", "ExportToExcel", "Redemption")
+        }
+
+
+
+    </p>
+</form>
+<div style="width:95%;height:245px;overflow-y:scroll;overflow-x:hidden;border:solid 1px #ddd;margin:3px;padding:5px;">
+    <table class="table table-sm  table-bordered table-hover table-responsive" id="normalTbl">
+        <thead>
+            <tr style="font-family:initial;color:blue">
+
+                <th style="width:5%">
+                    Code
+                </th>
+
+                <th style="width:15%">
+                    Customer Name
+                </th>
+                <th style="width:10%">
+                    Customer ID
+                </th>
+                <th style="width:10%">
+                    NO. of Units
+                </th>
+
+
+                <th style="width:15%">
+                    Fund Name
+                </th>
+                <th style="width:5%">
+                    Auth
+                </th>
+                <th style="width:10%">
+                    NAV Date
+                </th>
+                <th style="width:10%">
+                    NAV
+                </th>
+                <th style="width:15%">
+                    Total
+                </th>
+
+                <th style="width:5%">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.code)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Customer.EnName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.cust_id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.amount_3)
+                    </td>
+                 
+                   
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Fund.Name)
+                    </td>
+                    <td>
+                        @{var isAuth = item.auth.HasValue ? Convert.ToBoolean(item.auth.Value) : false;}
+                        @Html.CheckBoxFor(modelItem => isAuth, new { @disabled = "disabled" })
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.nav_date)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.NAV)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.total)
+                    </td>
+                  
+                    <td>
+                        <div class="btn-group" role="group" aria-label="Basic example">
+                            @Html.ActionLink("Details", "Details", new { Code = item.code }, new { @class = " btn btn-outline-primary" })
+
+                            @*@Html.ActionLink("Details", "Details", new { id = item.GroupID }, new { @class = " btn btn-outline-primary" })*@
+                        </div>
+                    </td>
+                </tr>
+
+            }
+        </tbody>
+    </table>
+
+    <table class="table   table-bordered  table-hover table-responsive" id="gridTbl" style="display:none;">
+
+        <tr style="font-family:initial;color:blue">
+            <th>
+                Transaction Date
+            </th>
+            <th>
+                Customer ID
+            </th>
+
+            <th>
+                Total
+            </th>
+            <th>
+                NO. of Units
+            </th>
+            <th>
+                Branch ID
+            </th>
+            <th>
+                NAV Date
+            </th>
+            <th>
+                IC Price
+            </th>
+            <th>
+                Branch ID
+            </th>
+
+            <th></th>
+        </tr>
+
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.pur_date)
+                </td>
+
+                <td>
+                    @Html.DisplayFor(modelItem => item.cust_id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.units)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.branch_id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.nav_date)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.NAV)
+                </td>
+
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        @Html.ActionLink("Details", "Details", new { Code = item.code }, new { @class = " btn btn-outline-primary" })
+
+                        @*@Html.ActionLink("Details", "Details", new { id = item.GroupID }, new { @class = " btn btn-outline-primary" })*@
+                    </div>
+                </td>
+            </tr>
+
+        }
+
+    </table>
+</div>
+
+
+
+
+@*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+    @Html.PagedListPager(Model, page => Url.Action("Search",
+        new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@
+@Html.PagedListPager(Model, page => Url.Action("Search",
+    new { page,
+        RadioCHeck = Request.QueryString["RadioCHeck"] ,
+       
+        CustomerID = Request.QueryString["CustomerID"],
+        Funds = Request.QueryString["Funds"],
+       
+        CodeFrom = Request.QueryString["CodeFrom"],
+        CodeTo = Request.QueryString["CodeTo"],
+        TotalAmountFrom = Request.QueryString["TotalAmountFrom"],
+        TotalAmountTo = Request.QueryString["TotalAmountTo"],
+        NavDateFrom = Request.QueryString["NavDateFrom"],
+        NavDateTo = Request.QueryString["NavDateTo"],
+        NumberOfUnits = Request.QueryString["NumberOfUnits"],
+        inlineRadioOptions = Request.QueryString["inlineRadioOptions"]
+    }))
+
+<div class="text-center">
+    <div class="col-lg-3"></div>
+    <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+        <a href="~/Redemptions/Redemption/Create" style="display:none" class="btn btn-outline-primary" id="GetAddButton"><i class="fa fa-plus"></i> Add New Redemption</a>
+        <a href="~/Redemptions/Redemption/Index" class="btn btn-outline-primary"><i class="fa fa-backward"></i> Back </a>
+
+    </div>
+</div>
+
+@section scripts{
+
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+            $(document).ready(function () {
+                $.ajax({
+                    url: '@servername/ChekCalendar',
+                    type: 'POST',
+                    success: function (Result) {
+                        if (Result.NOtInCalendar == 1) {
+
+                            var GetAdd = document.getElementById("GetAddButton");
+
+                            GetAdd.style.display = "block";
+
+
+                        }
+                        else if (Result.result == 2) {
+                            var GetAdd = document.getElementById("GetAddButton");
+                            GetAdd.style.display = "block";
+
+                        }
+                    }
+                });
+            }
+            );
+
+    </script>
+
+
+    <script>
+        $('#Normal').click(function () {
+            document.getElementById('gridTbl').style.display = 'none';
+            document.getElementById('normalTbl').style.display = 'inline';
+        });
+        $('#Grid').click(function () {
+            document.getElementById('normalTbl').style.display = 'none';
+            document.getElementById('gridTbl').style.display = 'inline';
+        });
+    </script>
+}
+
+
+

@@ -1,0 +1,431 @@
+﻿@model ICP_ABC.Areas.Funds.Models.EditFundViewModel
+@using ICP_ABC.Areas.Funds.Models
+@{
+    /**/
+
+    ViewBag.Title = "Register";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+    var Days = (List<Day>)ViewData["Days"];
+    var FundDayList_Sub = (List<FundDay>)ViewData["FundDays_sub"];
+    var FundDayList_Red = (List<FundDay>)ViewData["FundDays_Red"];
+    var FundAuthDayList_Sub = (List<FundAuthDay>)ViewData["FundAuthDays_Sub"];
+    var FundAuthDayList_Red = (List<FundAuthDay>)ViewData["FundAuthDays_Red"];
+}
+
+
+<h2>Fund Setup: (Update) </h2>
+
+
+
+@using (Html.BeginForm("Edit", "Fund", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "Form", style = "margin-top:50px" }))
+{
+    <div style="margin-bottom:70px;">
+        @Html.AntiForgeryToken()
+
+        <p class="text-danger"> @Html.ValidationSummary(true)</p>
+
+        <div class="row">
+
+            <div class="form-group col-md-4">
+                @Html.Label("Fund Code", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control form-control-sm", @readonly = "readonly" } })
+                    @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.Label("Fund Name", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control form-control-sm" } })
+                    @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.Label("Fund ceiling ", htmlAttributes: new { @class = "control-label col-md-6" })
+
+                <div class="col-md-7">
+                    <br />
+                    @Html.EditorFor(model => model.no_ics, new { htmlAttributes = new { @class = "form-control form-control-sm", @type = "text", onkeyup = "javascript:this.value=Comma(this.value)", id = "No_ICs" } })
+                    @Html.ValidationMessageFor(model => model.no_ics, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.nomval, htmlAttributes: new { @class = "control-label col-md-6" })
+
+                <div class="col-md-7">
+
+                    @Html.EditorFor(model => model.nomval, new { htmlAttributes = new { @class = "form-control form-control-sm", @type = "text", onkeyup = "javascript:this.value=Comma(this.value)" } })
+                    @Html.ValidationMessageFor(model => model.nomval, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.Label("Sponser", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-7">
+                    @*@Html.DropDownList("issuer", ViewData["Sposors"] as SelectList, new { htmlAttributes = new { @class = "form-control ddlist", disabled = "disabled" } })*@
+                    @Html.DropDownList("SponsorID", ViewData["Sposors"] as SelectList, new { @class = "form-control form-control-sm" })
+
+                </div>
+            </div>
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.PriceTol, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-7">
+                    @Html.EditorFor(model => model.PriceTol, new { htmlAttributes = new { @class = "form-control form-control-sm", @Min = "0", @Max = "1.00" } })
+                    @Html.ValidationMessageFor(model => model.PriceTol, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+
+        </div>
+
+
+
+
+
+
+
+        <div class="row">
+
+            <div class="form-group col-md-4">
+                @Html.LabelFor(model => model.ICprice, htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-7">
+                    <br />
+                    @Html.EditorFor(model => model.ICprice, new { htmlAttributes = new { @class = "form-control form-control-sm", @Min = "0", @Max = "5" } })
+                    @Html.ValidationMessageFor(model => model.ICprice, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4  mb-3">
+                @Html.Label("Currency", htmlAttributes: new { @class = "control-label col-md-6" })
+                <div class="col-md-7">
+                    <br />
+                    @Html.DropDownListFor(model => model.CurrencyID, ViewData["Currencies"] as SelectList, new { @class = "form-control form-control-sm" })
+                </div>
+            </div>
+
+        </div>
+
+
+
+
+
+
+
+    </div>
+    <div class="ButtonsControl">
+
+        <div class="text-center" style="padding-top:15px;">
+            <div class="col-md-3"></div>
+            <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+                <input type="button" value="Apply" class="btn btn-primary" id="submit" />
+                @*<button type="submit" class="btn btn-outline-primary"><i class="fa fa-save"></i> Apply</button>*@
+                <a href="~/Funds/Fund/Details?Code=@Model.Code" class="btn btn-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+            </div>
+        </div>
+    </div>
+
+        }
+
+
+
+        @section scripts{
+            <script>
+                $(function () {
+                    //   normal dropdown
+                    $(".ddlist").chosen({
+                        disable_search_threshold: 5,
+                        width: "100%"
+                    });
+                });
+            </script>
+            <script>
+
+        $(document).ready(function () {
+            debugger
+            var c= document.getElementById("nomval").value;
+            var c = document.getElementById("No_ICs").value;
+            //var c = document.getElementById("MaxInd").value;
+            //var c = document.getElementById("MinInd").value;
+            //var c = document.getElementById("MaxCor").value;
+            //var c = document.getElementById("MinCor").value;
+            //var c = document.getElementById("min_pos").value;
+
+            document.getElementById("nomval").value  = Comma(document.getElementById("nomval").value);
+            document.getElementById("No_ICs").value  = Comma(document.getElementById("No_ICs").value);
+            //document.getElementById("MaxInd").value  = Comma(document.getElementById("MaxInd").value);
+            //document.getElementById("MinInd").value  = Comma(document.getElementById("MinInd").value);
+            //document.getElementById("MaxCor").value  = Comma(document.getElementById("MaxCor").value);
+            //document.getElementById("MinCor").value  = Comma(document.getElementById("MinCor").value);
+            //document.getElementById("min_pos").value = Comma(document.getElementById("min_pos").value);
+
+            $("#submit").click(function () {
+                debugger;
+                //--------
+
+                //var MaxInd = document.getElementById("MaxInd");
+                //var MinInd = document.getElementById("MinInd");
+
+                //var MaxCor = document.getElementById("MaxCor");
+                //var Mincor = document.getElementById("MinCor");
+                var Units = document.getElementById("No_ICs");
+
+
+
+                //switch (Units.value) {
+
+                //}
+
+                //individual
+                //if (parseInt(removeCommas(MaxInd.value)) <= parseInt(removeCommas(MinInd.value))) {
+
+                //    alert("MaxInd must be greater than MinInd. ");
+
+                //}
+                //else if (parseInt(removeCommas(MaxInd.value)) > parseInt(removeCommas(Units.value))) {
+                //    alert("MaxInd Can't be greater than No_ICs. ");
+
+                //}
+                //else if (parseInt(removeCommas(MinInd.value)) >= parseInt(removeCommas(Units.value))) {
+                //    alert("No_ICs must be greater than MinInd. ");
+
+                //}
+                ////--------------------------------------------------------------
+                ////Corporate
+                //else if (parseInt(removeCommas(MaxCor.value)) <= parseInt(removeCommas(Mincor.value))) {
+                //    alert("MaxCor must be greater than MinCor. ");
+
+                //}
+                //else if (parseInt(removeCommas(MaxCor.value)) > parseInt(removeCommas(Units.value))) {
+
+
+
+                //    alert("MaxCor Can't be greater than No_ICs. ");
+
+                //}
+                //else if (parseInt(removeCommas(Mincor.value)) >= parseInt(removeCommas(Units.value))) {
+                //    alert("No_ICs must be greater than MinCor. ");
+
+                //}
+                ////---------
+                //else {
+
+                if ($("#Form").valid()) {
+
+
+
+                    var AllData = $("#Form").serialize();
+
+                    //var AddSublist = [];
+                    //var AddRedlist = [];
+                    //var AddAuthSublist = [];
+                    //var AddAuthRedlist = [];
+                    var CreateFundViewModel = new Object();
+                    var FundDaysViewModel = new Object();
+
+
+
+                    //var TableForSub = $('#ForSub tbody');
+                    //TableForSub.find('tr').each(function (i) {
+                    //    var $tds = $(this).find('td'),
+                    //        // objName = $tds.eq(0).text(),
+                    //        checked = $tds.eq(0).find('input[type=checkbox]').prop("checked") == true,
+                    //        DayI = $tds.eq(1).find('input[type=text]').val();
+                    //    DayI2 = $tds.eq(1).text();
+                    //    //DayId = $tds.eq(1).text();
+
+                    //    var FundDay = new Object();
+                    //    FundDay.checked = checked;
+                    //    FundDay.Day_Id = parseInt(DayI, 10);
+                    //    FundDay.Sub_Red = "0";
+
+                    //    if (FundDay.checked) {
+                    //        AddSublist.push(FundDay);
+                    //    }
+
+                    //});
+
+                    //var TableForRed = $('#ForRed tbody');
+                    //TableForRed.find('tr').each(function (i) {
+                    //    var $tds = $(this).find('td'),
+                    //        // objName = $tds.eq(0).text(),
+                    //        checked = $tds.eq(0).find('input[type=checkbox]').prop("checked") == true,
+                    //        DayI = $tds.eq(1).find('input[type=text]').val();
+                    //    var obj2 = new Object();
+                    //    obj2.checked = checked;
+                    //    //obj2.DayId = DayId;
+                    //    obj2.Day_Id = parseInt(DayI, 10);
+                    //    obj2.Sub_Red = "1";
+
+                    //    if (obj2.checked) {
+                    //        AddRedlist.push(obj2);
+                    //    }
+
+                    //});
+
+                    //var TableForAuthRed = $('#ForAuthRed tbody');
+                    //TableForAuthRed.find('tr').each(function (i) {
+                    //    var $tds = $(this).find('td'),
+                    //        checked = $tds.eq(0).find('input[type=checkbox]').prop("checked") == true,
+                    //        DayI = $tds.eq(1).find('input[type=text]').val();
+
+                    //    var obj3 = new Object();
+                    //    obj3.checked = checked;
+                    //    //obj3.Day_Id = DayId;
+                    //    obj3.Day_Id = parseInt(DayI, 10);
+                    //    obj3.Sub_Red = "1";
+
+                    //    if (obj3.checked) {
+                    //        AddAuthRedlist.push(obj3);
+                    //    }
+
+                    //});
+
+                    //var TableForAuthSub = $('#ForAuthSub tbody');
+                    //TableForAuthSub.find('tr').each(function (i) {
+                    //    var $tds = $(this).find('td'),
+                    //        // objName = $tds.eq(0).text(),
+                    //        checked = $tds.eq(0).find('input[type=checkbox]').prop("checked") == true,
+                    //        DayI = $tds.eq(1).find('input[type=text]').val();
+
+                    //    var obj4 = new Object();
+                    //    obj4.checked = checked;
+                    //    obj4.Sub_Red = "0";
+                    //    obj4.Day_Id = parseInt(DayI, 10);
+
+                    //    if (obj4.checked) {
+                    //        AddAuthSublist.push(obj4);
+                    //    }
+
+                    //});
+
+                    //if (AddSublist.length != 0 && AddRedlist.length != 0 && AddAuthRedlist.length != 0 && AddAuthSublist.length != 0)
+                    //{
+                        //ADD ALL LIST TO MODEL
+                        //FundDaysViewModel.FundDayForSub = AddSublist;
+                        //FundDaysViewModel.FundDayForRed = AddRedlist;
+                        //FundDaysViewModel.FundAuthDayRed = AddAuthRedlist;
+                        //FundDaysViewModel.FundAuthDaySub = AddAuthSublist;
+                        // END ------------
+                        //Collect Data----d
+                        //debugger;
+                        //CreateFundViewModel.cper_flag = $("#cper_flag").val();
+                        CreateFundViewModel.nomval = removeCommas($("#nomval").val());
+                        //CreateFundViewModel.min_pos = removeCommas($("#min_pos").val());
+                        //CreateFundViewModel.Min_hold_units = $("#Min_hold_units").val();
+                        //CreateFundViewModel.FUNSDND = $("#FUNSDND").val();
+                        //CreateFundViewModel.StartDate = $("#StartDate").val();
+                        //CreateFundViewModel.EndDate = $("#EndDate").val();
+                        //CreateFundViewModel.ceiling = $("#ceiling").val();
+
+                        CreateFundViewModel.Code = $("#Code").val();
+                        CreateFundViewModel.Name = $("#Name").val();
+                        //CreateFundViewModel.ISIN = $("#ISIN").val();
+                        CreateFundViewModel.CurrencyID = $("#CurrencyID").val();
+                        //CreateFundViewModel.MinInd = removeCommas($("#MinInd").val());
+                        //CreateFundViewModel.MaxInd = removeCommas($("#MaxInd").val());
+                        //CreateFundViewModel.MinCor = removeCommas($("#MinCor").val());
+                        //CreateFundViewModel.MaxCor = removeCommas($("#MaxCor").val());
+                        CreateFundViewModel.SponsorID = $("#SponsorID").val();
+                        //CreateFundViewModel.SubFeesBar = $("#SubFeesBar").val();
+                        //CreateFundViewModel.RedFeesBar = $("#RedFeesBar").val();
+                        //CreateFundViewModel.SubFeesAcc = $("#SubFeesAcc").val();
+                        //CreateFundViewModel.RedemFeesAcc = $("#RedemFeesAcc").val();
+                        //CreateFundViewModel.OtherSubFees = $("#OtherSubFees").val();
+                        //CreateFundViewModel.OtherRedFees = $("#OtherRedFees").val();
+                        //CreateFundViewModel.CustTypeID = $("#CustTypeID").val();
+                        //CreateFundViewModel.FundAcc = $("#FundAcc").val();
+                        //CreateFundViewModel.OtherSubAcc = $("#OtherSubAcc").val();
+                        //CreateFundViewModel.OtherRedAcc = $("#OtherRedAcc").val();
+                        //CreateFundViewModel.CboType = $("#CboType").val();
+                        CreateFundViewModel.ICprice = $("#ICprice").val();
+                       // CreateFundViewModel.SpecialCase = $("#SpecialCase").val();
+                        CreateFundViewModel.PriceTol = $("#PriceTol").val();
+                        CreateFundViewModel.no_ics = removeCommas($("#No_ICs").val());
+
+                        //eND---------
+                        //var myJSON = JSON.stringify(AddSublist);
+                        FundDaysViewModel.ThisFund = CreateFundViewModel;
+
+                        $.ajax({
+                            type: "Post",
+                            url: '@servername/Funds/Fund/Edit', // the method we are calling
+                            //contentType: "application/x-www-form-urlencoded",
+                            //contentType: 'application/json; charset=utf-8',
+                            data: { FundDaysViewModel: FundDaysViewModel },//, 'Code': Code, 'GroupID': GroupID },
+                            success: function (result) {
+                                if (result.Checked == "False") {
+                                    alert("Failed to Create .");
+                                }
+                                else {
+                                    alert("success");
+                                    window.location.href = "@servername/Funds/Fund/Search";
+                                }
+
+                            },
+                            error: function (result) {
+                                alert("Failed To Create .");
+                            }
+                        });
+                    //}
+                    //else {
+                    //    alert("Select Days For Each List of Sub&Red lists");
+                    //}
+
+                }
+                else {
+
+                    alert("Complete All Required Failed");
+                }
+
+            
+
+            });
+
+
+
+
+            }
+            );
+
+        function Comma(Num) {
+            debugger//function to add commas to textboxes
+            Num += '';
+            Num = Num.replace(',', '');
+            Num = Num.replace(',', ''); Num = Num.replace(',', '');
+            Num = Num.replace(',', ''); Num = Num.replace(',', ''); Num = Num.replace(',', '');
+            x = Num.split('.');
+            x1 = x[0];
+            x2 = x.length > 1 ? '.' + x[1] : '';
+            var rgx = /(\d+)(\d{3})/;
+            while (rgx.test(x1))
+                x1 = x1.replace(rgx, '$1' + ',' + '$2');
+            return x1 + x2;
+        }
+
+
+
+        function removeCommas(str) {
+            while (str.search(",") >= 0) {
+                str = (str + "").replace(',', '');
+            }
+            return str;
+        }
+
+
+
+
+            </script>
+
+        }
+        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

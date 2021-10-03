@@ -1,0 +1,276 @@
+﻿@model ICP_ABC.Areas.Funds.Models.DetailsFundViewModel
+@using ICP_ABC.Extentions
+@using ICP_ABC.Areas.Funds.Models
+@{
+    /**/
+
+    /**/
+
+    ViewBag.Title = "Fund Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+    var Days = (List<Day>)ViewData["Days"];
+    var FundDayList_Sub = (List<FundDay>)ViewData["FundDays_sub"];
+    var FundDayList_Red = (List<FundDay>)ViewData["FundDays_Red"];
+    var FundAuthDayList_Sub = (List<FundAuthDay>)ViewData["FundAuthDays_Sub"];
+    var FundAuthDayList_Red = (List<FundAuthDay>)ViewData["FundAuthDays_Red"];
+}
+
+
+<h2>Fund Setup: (Details) </h2>
+
+
+@using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", style = "margin-top:50px" }))
+{
+<div style="margin-bottom:70px;">
+    @Html.AntiForgeryToken()
+
+    <p class="text-danger"> @Html.ValidationSummary(true)</p>
+
+    <div class="row">
+
+        <div class="form-group col-md-4">
+            @Html.Label("Fund Code", htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.Code, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.Label("Fund Name", htmlAttributes: new { @class = "control-label col-md-6" })
+
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.Label("Fund ceiling ", htmlAttributes: new { @class = "control-label col-md-6" })
+
+            <div class="col-md-7">
+                <br />
+                @Html.EditorFor(model => model.no_ics, new { htmlAttributes = new { @class = "form-control form-control-sm", @type = "text",disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.no_ics, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.nomval, htmlAttributes: new { @class = "control-label col-md-6 comma" })
+
+            <div class="col-md-7">
+
+                @Html.EditorFor(model => model.nomval, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.nomval, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.SponsorID, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-7">
+                @*@Html.DropDownList("issuer", ViewData["Sposors"] as SelectList, new { htmlAttributes = new { @class = "form-control ddlist", disabled = "disabled" } })*@
+                @Html.TextBoxFor(model => model.SponsorID, new { @class = "form-control form-control-sm", disabled = "disabled" })
+
+            </div>
+        </div>
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.PriceTol, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-7">
+                @Html.EditorFor(model => model.PriceTol, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.PriceTol, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+
+    </div>
+
+
+    <div class="row">
+
+        <div class="form-group col-md-4">
+            @Html.LabelFor(model => model.ICprice, htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-7">
+                <br />
+                @Html.EditorFor(model => model.ICprice, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                @Html.ValidationMessageFor(model => model.ICprice, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="form-group col-md-4  mb-3">
+            @Html.Label("Currency", htmlAttributes: new { @class = "control-label col-md-6" })
+            <div class="col-md-7">
+                <br />
+                @Html.TextBoxFor(model => model.CurrencyID, new { @class = "form-control form-control-sm", disabled = "disabled" })
+            </div>
+        </div>
+    </div>
+
+
+</div>
+    <div class="ButtonsControl">
+        <div class="text-center" style="padding-top:15px;">
+            <div class="col-lg-2"></div>
+            <div class="btn-group col-md-10" role="group" aria-label="Basic example">
+                @if (User.Identity.HasTheRights("FundSetup", "Create"))
+                {
+                    <a href="~/Funds/Fund/Create" class="btn btn-primary"><i class="fa fa-plus"></i> Add Fund</a>
+                }
+                @if (User.Identity.HasTheRights("FundSetup", "Update"))
+                {
+                    if (!Model.AuthForEditAndDelete)
+                    {
+                        <a href="~/Funds/Fund/Edit?Code=@Model.Code" class="btn btn-primary"><i class="fa fa-edit"></i> Edit </a>
+                    }
+                    @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+                }
+                @if (User.Identity.HasTheRights("FundSetup", "Delete"))
+                {
+                    if (!Model.AuthForEditAndDelete)
+                    {
+                        <a href="#" data-toggle="modal" data-target="#Delete" class="btn btn-primary"><i class="fa fa-remove"></i> Delete </a>
+                        @*<a href="~/Funds/Fund/Delete?Code=@Model.Code" class="btn btn-outline-primary"><i class="fa fa-edit"></i> Delete </a>*@
+                    }
+                    @*@Html.ActionLink("Delete", "Delte", "Account", new { Code = Model.Code, }, new { @class = " btn btn-outline-primary fa fa-remove" })*@
+                }
+                @if (User.Identity.HasTheRights("FundSetup", "Check"))
+                {
+                    if (!Model.Check)
+                    {
+                        <a href="~/Funds/Fund/CheckFund?Code=@Model.Code" class="btn btn-primary"><i class="fa fa-check"></i> Check </a>
+                    }
+                    @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+                }
+                @if (User.Identity.HasTheRights("FundSetup", "Authorized"))
+                {
+                    if (Model.Check && !Model.Auth)
+                    {
+                        @*<a href="~/Funds/Fund/AuthorizeFund?Code=@Model.Code" class="btn btn-outline-primary"><i class="fa fa-user-secret"></i> Autherize </a>*@
+                        <a href="#" data-toggle="modal" data-target="#Auth" class="btn btn-primary"><i class="fa fa-user-secret"></i> Autherize </a>
+                    }
+
+                    @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+                }
+                <a href="~/Funds/Fund/Search" class="btn btn-primary"><i class="fa fa-search"></i> Search</a>
+                <a href="~/Funds/Fund/Previous?Code=@Model.Code" id="Prev" class="btn btn-primary"><i class="fa fa-backward"></i> Previous </a>
+                <a href="~/Funds/Fund/Next?Code=@Model.Code" id="Next" class="btn btn-primary"><i class="fa fa-forward"></i> Next </a>
+                <a href="~/Home/Home/Index" class="btn btn-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+            </div>
+        </div>
+    </div>
+        <div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Delete User</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        Are You Sure You Want to Delete ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="~/Funds/Fund/Delete?Code=@Model.Code" class="btn btn-danger ">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="Auth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Autherize</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        Are You Sure You Want to Autherize ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="~/Funds/Fund/AuthorizeFund?Code=@Model.Code" class="btn btn-primary">Autherize</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        }
+
+
+        @section scripts{
+            <script>
+                $(function () {
+                    //   normal dropdown
+                    $(".ddlist").chosen({
+                        disable_search_threshold: 5,
+                        width: "100%"
+                    });
+                });
+            </script>
+
+        }
+        <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+        <script src="~/Scripts/jquery.validate.min.js"></script>
+        <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+    $(document).ready(function () {
+        debugger
+        
+        if ($('#nomval').val() != null || $('#nomval').val() != "") $('#nomval').val(Comma($('#nomval').val()));
+        if ($('#no_ics').val() != null || $('#no_ics').val() != "") $('#no_ics').val(Comma($('#no_ics').val()));
+    });
+</script>
+        <script>
+        $(function () {
+
+            var last=  "@TempData["Last"]" ;
+
+            if (last != null) {
+                if ("@TempData["Last"]" == "Last") {
+
+                    document.getElementById("Next").classList.add('disabled');
+                }
+            }
+            /////////////////////////
+           var last=  "@TempData["First"]" ;
+
+            if (last != null) {
+
+                if ("@TempData["First"]" == "First") {
+
+                    document.getElementById("Prev").classList.add('disabled');
+                }
+
+            }
+            /////////////////////
+        });
+
+        </script>
+<script>
+    function Comma(Num) {
+        debugger//function to add commas to textboxes
+        Num += '';
+        Num = Num.replace(',', '');
+        Num = Num.replace(',', ''); Num = Num.replace(',', '');
+        Num = Num.replace(',', ''); Num = Num.replace(',', ''); Num = Num.replace(',', '');
+        x = Num.split('.');
+        x1 = x[0];
+        x2 = x.length > 1 ? '.' + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+        while (rgx.test(x1))
+            x1 = x1.replace(rgx, '$1' + ',' + '$2');
+        return x1 + x2;
+    }
+</script>

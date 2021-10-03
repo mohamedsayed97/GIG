@@ -1,0 +1,264 @@
+﻿@*@model ICP_ABC.Areas.GroupsRights.Models.CreateViewModel*@
+@model ICP_ABC.Areas.GroupsRights.Models.EditViewModel
+@using ICP_ABC.Areas.GroupsRights.Models
+@{ ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+
+}
+<h2>Group Rights Setup: (Update) </h2>
+<div>
+    @using (Html.BeginForm("Edit", "GroupRight", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <p class="text-danger">@Html.ValidationSummary(true)</p>
+
+        <div class="row">
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Group Code</label>
+                @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", Value = ViewData["currr"], @readonly = "readonly", Text = ViewData["currr"] } })*@
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => Model.Code, new { @class = "form-control form-control-sm", id = "txtbxCode", @Value = ViewData["Code"], text = ViewData["Code"], disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => Model.Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Group Name</label>
+                @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                <div class="col-md-7">
+                    @Html.DropDownListFor(model => Model.GId, ViewData["Groups"] as SelectList, new { @class = "form-control form-control-sm", id = "grpdrpdwn", disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => Model.GId, "", new { @class = "text-danger" })
+
+                </div>
+            </div>
+        </div>
+
+    }
+    <div style="width:95%;height:375px;overflow-y:scroll;overflow-x:hidden;border:solid 1px #ddd;margin:3px;padding:5px;">
+
+        <div id="tbl" class="row">
+            <table class="table table-xl table-responsive-md table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">Screen name</th>
+                        <th scope="col">Insert</th>
+                        <th scope="col">Update</th>
+                        <th scope="col">Delete</th>
+                        <th scope="col">Read Only</th>
+                        <th scope="col">Auther</th>
+                        @if (ViewBag.SecuLevel == 3)
+                        {
+                            <th scope="col">Check</th>}
+                        <th scope="col">None</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    @foreach (var item in Model.GroupRight)
+                    {
+
+                        <tr>
+
+
+                            <td> @item.Screen.Name</td>
+                            @if (item.Create)
+                            {
+                                <td>
+                                    <input type="checkbox" class="@item.Screen.Name" onclick="unCheckReadOnly('@item.Screen.Name')" checked="checked" />
+                                </td> }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" onclick="unCheckReadOnly('@item.Screen.Name')" class="@item.Screen.Name" />
+                                </td>}
+                            @if (item.Update)
+                            {
+                                <td>
+                                    <input type="checkbox" onclick="unCheckReadOnly('@item.Screen.Name')" class="@item.Screen.Name" checked />
+                                </td> }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" onclick="unCheckReadOnly('@item.Screen.Name')" class="@item.Screen.Name" />
+                                </td>}
+                            @if (item.Delete)
+                            {
+                                <td>
+                                    <input type="checkbox" onclick="unCheckReadOnly('@item.Screen.Name')" class="@item.Screen.Name" checked />
+                                </td> }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" onclick="unCheckReadOnly('@item.Screen.Name')" class="@item.Screen.Name" />
+                                </td>}
+                            @if (item.Read)
+                            {
+                                <td>
+                                    <input type="checkbox" onclick="unCheckAll('@item.Screen.Name')" id="read_@item.Screen.Name" checked />
+                                </td> }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" onclick="unCheckAll('@item.Screen.Name')" id="read_@item.Screen.Name" />
+                                </td>}
+                            @if (item.Authorized)
+                            {
+                                <td>
+                                    <input type="checkbox" onclick="unCheckReadOnly('@item.Screen.Name')" class="@item.Screen.Name" checked />
+                                </td> }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" onclick="unCheckReadOnly('@item.Screen.Name')" class="@item.Screen.Name" />
+                                </td>}
+                            @if (item.Check)
+                            {
+                                <td>
+                                    <input type="checkbox" onclick="unCheckReadOnly('@item.Screen.Name')" class="@item.Screen.Name" checked />
+                                </td> }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" onclick="unCheckReadOnly('@item.Screen.Name')" class="@item.Screen.Name" />
+                                </td>}
+                            @if (item.None)
+                            {
+                                <td>
+                                    <input type="checkbox" id="@item.Screen.Name" onclick="disableAll('@item.Screen.Name')" checked />
+                                </td> }
+                            else
+                            {
+                                <td>
+                                    <input type="checkbox" id="@item.Screen.Name" onclick="disableAll('@item.Screen.Name')" />
+                                </td>}
+                            <td hidden> @item.FormID</td>
+                        </tr>}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<div class="ButtonsControl">
+    <div class="text-center" style="padding-top:10px;">
+        <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+            <input type="submit" class="btn btn-primary " id="submit" onclick="submit()" />
+            @*<a href="~/GroupsRights/GroupRight/Create" class="btn btn-outline-primary"><i class="fa fa-group"></i> Add New Group</a>*@
+            <a href="~/GroupsRights/GroupRight/Details?Id=@Model.GId" class="btn btn-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+
+
+        </div>
+    </div>
+</div>
+    @section scripts{
+        <script>
+
+        function disableAll(code) {
+            var checked = $("#tbl").find('#' + code).prop("checked") == true;
+
+            if (checked) {
+
+                //checked = false;
+                //document.getElementsByClassName('.' + code).checked = false;
+                $("#tbl").find('.' + code).prop("checked", false);
+                $("#tbl").find('#read_' + code).prop("checked", false);
+
+                $("#tbl ").find('.' + code).attr("disabled", "disabled");
+                $("#tbl ").find('#read_' + code).attr("disabled", "disabled");
+
+            }
+            else {
+
+                $("#tbl ").find('#read_' + code).attr("disabled", false);
+
+                $("#tbl ").find('.' + code).attr("disabled", false);
+
+            }
+            //document.getElementsByClassName(code).checked = false;
+            //document.getElementById(code).disabled = true;
+        };
+
+
+        function unCheckAll(code) {
+            var checked = $("#tbl").find("#read_"+code).prop("checked") == true;
+
+            if (checked) {
+                //checked = false;
+                //document.getElementsByClassName('.' + code).checked = false;
+                $("#tbl").find('.' + code).prop("checked", false);
+
+                //$("#tbl").find('#read_' + code).attr("checked", true);
+
+            }
+            else {
+
+
+                $("#tbl ").find('.' + code).attr("disabled", false);
+
+            }
+        };
+
+        function unCheckReadOnly(code) {
+
+
+            //$("#tbl").find('#read').prop("checked") = false;
+            $("#tbl").find('#read_' + code).prop("checked", false);
+        };
+
+
+        function submit() {
+
+            var Code = document.getElementById("txtbxCode").value;
+            var GroupID = $("#grpdrpdwn :selected").val();
+
+            var Rightslist = [];
+            var table = $("table tbody");
+            table.find('tr').each(function (i) {
+                var $tds = $(this).find('td'),
+                    objName = $tds.eq(0).text(),
+                    hasCreate = $tds.eq(1).find('input[type=checkbox]').prop("checked") == true,
+                    hasUpdate = $tds.eq(2).find('input[type=checkbox]').prop("checked") == true,
+                    hasDelete = $tds.eq(3).find('input[type=checkbox]').prop("checked") == true,
+                    hasRead = $tds.eq(4).find('input[type=checkbox]').prop("checked") == true,
+                    Authorize = $tds.eq(5).find('input[type=checkbox]').prop("checked") == true,
+                    Check = $tds.eq(6).find('input[type=checkbox]').prop("checked") == true,
+                    noneOfAll = $tds.eq(7).find('input[type=checkbox]').prop("checked") == true,
+                    FormID = $tds.eq(8).text();
+
+                var obj = new Object();
+                obj.name = objName;
+                obj.hasCreate = hasCreate;
+                obj.hasUpdate = hasUpdate;
+                obj.hasDelete = hasDelete;
+                obj.hasRead = hasRead;
+                obj.Authorize = Authorize;
+                obj.Check = Check;
+                obj.noneOfAll = noneOfAll;
+                obj.FormID = FormID;
+                obj.GroupID = GroupID;
+                obj.Code = Code;
+
+                Rightslist.push(obj);
+            });
+
+            var GRList = JSON.stringify(Rightslist);
+            console.log(GRList);
+            $.ajax({
+                type: "Post",
+                url: '@servername/GroupsRights/GroupRight/Edit', // the method we are calling
+                contentType: "application/x-www-form-urlencoded",
+                data: { Rights: GRList },//, 'Code': Code, 'GroupID': GroupID },
+                //dataType: "json",
+                success: function (result) {
+
+                    window.location.href = "@servername/GroupsRights/GroupRight/Details/@ViewData["Code"]";
+                },
+                error: function (result) {
+
+                }
+            });
+        }
+
+        </script>
+    }

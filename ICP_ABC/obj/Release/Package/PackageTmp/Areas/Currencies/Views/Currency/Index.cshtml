@@ -1,0 +1,53 @@
+﻿@model ICP_ABC.Areas.Cities.Models.CreateViewModel
+
+@{
+    ViewBag.Title = "Currency Setup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Currency Setup</h2>
+
+@using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+
+<div style="height:375px;overflow-y:scroll;overflow-x:hidden;margin:3px;padding:5px; border:solid 1px #ddd;">
+
+    @Html.AntiForgeryToken()
+    <p class="text-danger">@Html.ValidationSummary(true)</p>
+    <div class="row">
+        <div class="form-group col-md-5 ">
+            <label for="inputEmail4">Code</label>
+            @*@Html.EditorFor(model => model.Code, new { htmlAttributes = new { @class = "form-control", Value = ViewData["currr"], @readonly = "readonly", Text = ViewData["currr"] } })*@
+            <div class="col-md-7">
+                @Html.TextBoxFor(m => m.Code, new { @class = "form-control form-control-sm", disabled = "disabled" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-5 ">
+            <label for="inputEmail4">Name</label>
+            @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+            <div class="col-md-7">
+                @Html.TextBox("ssss", "", new { @class = "form-control form-control-sm", disabled = "disabled" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-5 ">
+            <label for="inputEmail4">Short Name</label>
+
+            <div class="col-md-7">
+                @Html.TextBox("ssss", "", new { @class = "form-control form-control-sm", disabled = "disabled" })
+
+            </div>
+        </div>
+    </div>
+</div>
+    <div class="text-center" style="padding-top:15px;">
+        <div class="btn-group col-md-8" role="group" aria-label="Basic example">
+            <a href="~/Currencies/Currency/Create" class="btn btn-outline-primary"><i class="fa fa-plus"></i> Add New Currency</a>
+            <a href="~/Currencies/Currency/Search" class="btn btn-outline-primary"><i class="fa fa-search"></i> Search</a>
+            <a href="~/Home/Home/Index" class="btn btn-outline-primary"><i class="fa fa-home"></i> Back to Home</a>
+        </div>
+    </div>
+    }

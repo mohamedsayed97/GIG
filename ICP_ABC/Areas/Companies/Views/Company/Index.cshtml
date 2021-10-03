@@ -1,0 +1,85 @@
+﻿@model ICP_ABC.Areas.Policies.Models.PolicyViewModel
+
+@{
+    /**/
+
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="row">
+ 
+    <div class="offset-3 col-8">
+        <h2 >Policy Setup</h2>
+        <div style="margin-top:20px" class="row">
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="PolicyNo" class="control-label">Policy No</label>
+                    @Html.EditorFor(model => model.PolicyNo, new { htmlAttributes = new { @placeholder = "Policy No", @class = "form-control", disabled = "disabled" } })
+                </div>
+                <div class="form-group">
+                    <label for="PaymentFrequency" class="control-label">Payment Frequency</label>
+
+                    <select disabled name="PaymentFrequency" class="form-control">
+                        <option>Monthly</option>
+                        <option>Quarter</option>
+                        <option>Annual</option>
+                    </select>
+
+                </div>
+                <div class="form-group">
+                    <label for="Status" class="control-label">Status</label>
+
+                    <select disabled name="Status" class="form-control">
+                        <option>Issued</option>
+
+                    </select>
+
+                </div>
+                <div class="form-group">
+                    <label for="BusinessChannel" class="control-label">Business Channel</label>
+                    @Html.EditorFor(model => model.BusinessChannel, new { htmlAttributes = new { @placeholder = "Business Channel", @class = "form-control", disabled = "disabled" } })
+                </div>
+
+            </div>
+            <div class="col-4">
+                <div class="form-group">
+                    <label for="PolicyHolderName" class="control-label">PolicyHolder Name</label>
+                    @Html.EditorFor(model => model.PolicyHolderName, new { htmlAttributes = new { @placeholder = "PolicyHolder Name", @class = "form-control", disabled = "disabled" } })
+                </div>
+
+                <div class="form-group">
+                    <label for="EffectiveDate" class="control-label">Effective Date</label>
+                    @Html.EditorFor(model => model.EffectiveDate, new { htmlAttributes = new { @class = "form-control", disabled = "disabled" } })
+                </div>
+
+                <div class="form-group">
+                    <label for="CalculationBasis" class="control-label">Calculation Basis</label>
+
+                    <select disabled name="CalculationBasis" class="form-control">
+                        <option>Normal</option>
+
+                    </select>
+
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div class="ButtonsControl">
+
+
+    <div class="text-center" style="padding-top:15px;">
+
+        <div class="btn-group col-md-8" role="group" aria-label="Basic example">
+            <a href="~/Policies/Policy/Create" class="btn btn-primary"><i class="fa fa-plus"></i> Add New Policy</a>
+            <a href="~/Policies/Policy/Search" class="btn btn-primary"><i class="fa fa-search"></i> Search</a>
+            <a href="~/Home/Home/Index" class="btn btn-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+        </div>
+    </div>
+</div>

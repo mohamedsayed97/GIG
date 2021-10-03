@@ -1,0 +1,432 @@
+﻿@model ICP_ABC.Areas.Blocks.Models.BlockViewModel
+@using ICP_ABC.Areas.Blocks.Models
+@{ /**/
+                /**/
+
+                ViewBag.Title = "Blocks";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+                string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"]; }
+<style>
+
+    body {
+        font-weight: 500;
+        background-color: aliceblue;
+        /*background-image: url(../../Content/Images/vehdb4tur0fg6yphaiumv2bmtplollhqll0gvubgxt58t7znz43m5enjos1cxcdn-.jpg );*/
+    }
+</style>
+<h2>Block Setup: (Update)</h2>
+
+@using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form", id = "CreateForm" }))
+{
+    <div style="width:95%;height:375px;overflow-y:scroll;overflow-x:hidden;border:solid 1px #ddd;margin:3px;padding:5px;">
+        @Html.AntiForgeryToken()
+        <p id="valsum" class="text-danger"> @Html.ValidationSummary(true)</p>
+        <div class="horizontal">
+            <div class="row">
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.code, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.code, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                        @Html.ValidationMessageFor(model => model.code, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4" id="branchdiv">
+                    <label for="inputEmail4">Branch</label>
+                    @*@Html.LabelFor(model => model.branch_id, htmlAttributes: new { @class = "control-label col-md-4" })*@
+                    <div class="col-md-7">
+                        @*@Html.EditorFor(model => model.branch_id, "", new { htmlAttributes = new { @class = "form-control form-control-sm ",@Value = ViewData["Branch"], @readonly = "readonly" } })*@
+                        @*, @Value = ViewData["Branch"]*@
+                        @Html.Editor("branch", new { htmlAttributes = new { @class = "form-control form-control-sm", id = "branch_id", Value = ViewData["Branch"], disabled = "disabled" } })
+
+                        @Html.ValidationMessage("branchId", "", new { @class = "text-danger", id = "branchId" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.cust_id, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.cust_id, new { htmlAttributes = new { @class = "form-control form-control-sm", id = "cust_id", @readonly = "readonly" } })
+                        @*@Html.ValidationMessageFor(model => model.cust_id, "", new { @class = "text-danger" })*@
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4  mb-3">
+                    @Html.Label("Customer Name", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.CustomerName, new { htmlAttributes = new { @class = "form-control form-control-sm", id = "EnName", @readonly = "readonly" } })
+                        @Html.ValidationMessageFor(model => model.CustomerName, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.block_date, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.block_date, new { htmlAttributes = new { @class = "form-control form-control-sm", disabled = "disabled" } })
+                        @Html.ValidationMessageFor(model => model.block_date, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.fund_id, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.DropDownListFor(model => model.fund_id, ViewData["Funds"] as SelectList, "", new { @class = "form-control form-control-sm ddlist", id = "FundId" })
+                        @Html.ValidationMessage("fund_Id", "", new { @class = "text-danger", id = "fund_Id" }, "hhh")
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                @*<div class="form-group col-sm-4">
+            @Html.LabelFor(model => model.BlockCmb, htmlAttributes: new { @class = "control-label col-md-6" })
+
+            <div class="col-md-7">
+
+                @Html.DropDownListFor(model => model.BlockCmb, ViewData["CMB"] as SelectList, "", new { @class = "form-control form-control-sm ddlist ", id = "BlockCMB", disabled = "disabled" })
+            </div>
+        </div>*@
+                <div class="form-group col-sm-4">
+                    @Html.LabelFor(model => model.BlockCmb, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @*@//foreach (var item in ViewData["CMB"] as SelectList)
+                //{
+                                    <div style="display:inline-block" id="@/*item.Value*/">
+                                        <input type="radio" name="BlockRadio" value="@item.Text" />
+
+                                        @/*Html.RadioButtonFor(model => model.BlockCmb, @item.Value, new { htmlAttributes = new { @class = "form-control form-control-sm" } })*/
+                                        <lable>@/*item.Value*/</lable>
+                                    </div>
+                //}*@
+
+
+                        @foreach (var item in (List<blocktable>)ViewData["CMB"])
+                        {
+                            @*if (Model.BlockCmb == 0 && item.name =="Block")
+                    {
+                        <input type="radio" name="BlockCmb" id="@item.name" value="@item.code" checked />
+                        <label>@item.name</label>
+                    }
+                    else { }*@
+                            <input type="radio" name="BlockCmb" id="@item.name" value="@item.code" />
+                            <label>@item.name</label>
+                            @*<input type="text"  id="@item.code" value="@item.name" hidden/>*@
+                        }
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.Label("Qty ", htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        @Html.EditorFor(model => model.qty_block, new { htmlAttributes = new { @class = "form-control form-control-sm", id = "qty_block", type = "number" } })
+                    </div>
+                </div>
+                <div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.block_reson, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+
+                        @Html.TextAreaFor(model => model.block_reson, htmlAttributes: new { @class = "control-label col-md-12" })
+                        @*<textarea name="block_reson" value="model.block_reson" class="form-control form-control-sm" disabled> </textarea>*@
+                    </div>
+                </div>
+                @*<div class="form-group col-md-4">
+                    @Html.LabelFor(model => model.block_reson, htmlAttributes: new { @class = "control-label col-md-6" })
+                    <div class="col-md-7">
+                        <textarea name="block_reson" class="form-control form-control-sm"> </textarea>
+                    </div>
+                </div>*@
+            </div>
+        </div>
+    </div>
+    <div class="text-center" style="padding-top:15px;">
+        <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+            <button type="submit" value="validate" class="btn btn-outline-primary" onclick="return Validate()"><i class="fa fa-save"></i> Apply</button>
+            @*<button type="submit"  class="btn btn-outline-primary"><i class="fa fa-save"></i> Apply</button>*@
+            <a href="~/Blocks/Block/Details?Code=@Model.code" class="btn btn-outline-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+        </div>
+    </div>}
+@section scripts{
+    <script>
+        $(document).ready(function () {
+
+
+            $('#CreateForm').validate({ // initialize the plugin
+                rules: {
+                    qty_block: {
+                        required: true,
+                        // minlength: 5//,
+                        //maxlenght: 10
+                    },
+                    cust_id: {
+                        required: true
+                    },
+
+                    EnName: {
+                        required: true
+                        // minlength: 5//,
+                        //maxlenght: 10
+                    },
+                    //branch_id: {
+                    //    required: true,
+                    //    minlength: 1000,
+                    //    range: [1000, 50000]
+                    //    //maxlenght: 10
+                    //},
+
+                },
+                messages: {
+
+                    EnName: {
+                        required: "Customer Name Is Required " + "<br \>" + " (check The Customer Name)"
+                        //minlength: "custom message: {0} chars required"
+                    },
+                    //branch_id: {
+                    //    required: "ddlisttt",
+                    //    range: "custom message: {0} chars required"
+                    //},
+                    cust_id: {
+                        required: "Customer ID Is Required " + "<br \>" + " (check The Customer ID)"
+                        //minlength: "custom message: {0} chars required"
+                    },
+                    qty_block: {
+                        required: "QTY is Required",
+                        //minlength: "custom message: {0} chars required"
+                    }
+                },
+                errorClass: "text-danger"
+                //submitHandler: function (form) { // for demo
+                //    alert('valid form submitted'); // for demo
+                //    return false; // for demo
+                //}
+            })
+
+
+            $('[name="EnName"]').rules('add', {
+                messages: {
+                    required: "Customer Name is Required",
+                    //minlength: "{0} chars required"
+                }
+            }
+
+
+            );
+            $('[name="qty_block"]').rules('add', {
+                messages: {
+                    //required: "field 1 required",
+                    //minlength: "{0} chars required"
+                }
+            });
+
+
+        });
+
+
+
+
+    </script>
+    <script>
+        $(function () {
+            //   normal dropdown
+            $(".ddlist").chosen({
+                disable_search_threshold: 5,
+                width: "100%"
+            });
+            @*$("#branch_id").val(@Model.branch_id).trigger("chosen:updated");*@
+            $("#FundId").val(@Model.fund_id).trigger("chosen:updated");
+            $("#BlockCMB").val(@Model.BlockCmb).trigger("chosen:updated");
+            //$("#branch_id").chosen().change(function () {
+            //    $('span[data-valmsg-for="branchId"]').text(null);
+            //});
+
+            $("#FundId").chosen().change(function () {
+                $('span[data-valmsg-for="fund_Id"]').text(null);
+            });
+        });
+
+
+    </script>
+    <script>
+        function Validate() {
+
+            //QtyChange();
+
+            var branchList = document.getElementById("branch_id");
+            var fundId = document.getElementById("FundId");
+
+            if (branchList.value == "" || fundId.value == "") {
+
+                if (branchList.value == "") {
+
+                    //If the "Please Select" option is selected display error.
+                    // $("#branchdiv").focus();
+                    //document.getElementById("branchdiv").focus();
+                    $('span[data-valmsg-for="branchId"]').text("plz select branch");
+
+
+                }
+
+                if (fundId.value == "") {
+
+                    //If the "Please Select" option is selected display error.
+
+                    $('span[data-valmsg-for="fund_Id"]').text("plz select fund");
+
+
+                }
+                $("#CreateForm").validate().element("#cust_id");
+                $("#CreateForm").validate().element("#EnName");
+                $("#qty_block").val(null);
+                $("#CreateForm").validate().element("#qty_block");
+                return false;
+            }
+
+
+            return true;
+        }
+
+    </script>
+    <script>
+            $(function () {
+                $("#BlockCMB").change(function () {
+
+                    $("#qty_block").attr("readonly", false);
+                    $("#BlockCMB").attr("aria-invalid", true);
+                });
+
+
+            });
+            $(function () {
+                $("#qty_block").change(function () {
+                    //var custName = $('#EnName').val();
+                    //var fundId = $("#FundId :selected").val();
+                    //var branchId = $("#branch_id :selected").val();
+
+                    if (Validate()) {
+
+                        QtyChange();
+                    }
+                    else {
+
+                        //alert(custName.length + "hah");
+                        $("#CreateForm").validate().element("#cust_id");
+                        $("#CreateForm").validate().element("#EnName");
+                        $("#CreateForm").validate().element("#FundId");
+                        $("#CreateForm").validate().element("#branch_id");
+
+                    }
+                });
+            });
+            //Customer Functions
+            $("#cust_id").change(function () {
+
+                var custId = $('#cust_id').val();
+
+                $.ajax({
+                    type: "Post",
+                    url: '@servername/Blocks/Block/GetUserInfo', // the method we are calling
+                    contentType: "application/x-www-form-urlencoded",
+                    data: { CustId: custId },//, 'Code': Code, 'GroupID': GroupID },
+                    //dataType: "String",
+                    success: function (result) {
+                        if (result == 'No Customer Found') {
+                            //$("#FundsDrpDwn").attr("chosen-disabled", 'disabled');
+
+
+                            $("#EnName").prop("value", null);
+
+                            $("#CreateForm").validate().element('#EnName');
+                            // $('#FundsDrpDwn').prop('disabled', true).trigger("chosen:updated");
+                        }
+                        else {
+
+                            $('#EnName').val(result);
+                            //$("#FundsDrpDwn").prop("chosen-disabled", false);
+                            //$(".FundsDrpDwn").prop('disabled', true);
+
+                            $('#FundsDrpDwn').prop('disabled', false).trigger("chosen:updated");
+
+                            $("#EnName").attr("aria-invalid", true);
+                            $("#CreateForm").validate().element("#EnName");
+                        }
+
+                    },
+                    error: function (result) {
+                        $("#FundsDrpDwn").attr("disabled", "disabled");
+                        $('#FundsDrpDwn').trigger('chosen:updated');
+                        $("#EnName").prop("value", null);
+                        $("#CreateForm").validate().element("#EnName");
+                        $('#FundsDrpDwn').prop('disabled', true).trigger("chosen:updated");
+                    }
+                });
+            });
+    </script>
+    <script>
+            function QtyChange() {
+
+                var UnitCount = $('#qty_block').val();
+                var custId = $('#cust_id').val();
+                var fundId = $("#FundId :selected").val();
+                var CMBBlock = $("#BlockCMB :selected").val();
+                if (UnitCount.length < 1 || custId.length < 1 || fundId.length < 1 || CMBBlock.length < 1) {
+
+
+                    return false;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: '@servername/Blocks/Block/GetQtyRange', // the method we are calling
+                    contentType: "application/x-www-form-urlencoded",
+                    data: { Count: UnitCount, CustomerID: custId, FundID: fundId, CMBBlock: CMBBlock },//, 'Code': Code, 'GroupID': GroupID },
+                    //dataType: "String",
+                    success: function (result) {
+
+
+                        var state = result.status;
+
+                        //alert("max is " + result.Max);
+                        if (state == 'Not Match') {
+                            //alert("Not Match");
+                            $('[name="qty_block"]').each(function () {
+                                $(this).rules('add', {
+                                    range: [1, result.Max]
+                                });
+                            });
+                            $('[name="qty_block"]').each(function () {
+                                $(this).rules('add', {
+                                    messages: {
+                                        range: "range should be in {0} and {1}"
+                                    }
+                                });
+                            });
+                            $("#CreateForm").validate().element("#qty_block");
+                            //$('[name="units"]').rules('add', {
+                            //    messages: {
+                            //        required: "field 1 required",
+                            //        //minlength: "{0} chars required"
+                            //    }
+                            //});
+                        }
+
+                        else {
+
+                            $("#CreateForm").validate().element("#qty_block");
+                        }
+
+                    },
+                    error: function (result) {
+                        alert("erroor");
+                    }
+                });
+            }
+    </script>
+    <script>
+        $(document).ready(function () {
+       
+            if (@Model.BlockCmb == 0) {
+
+                $("#Block").attr("checked", true);
+            } else {
+                 $("#Block").attr("checked", true);
+            }
+
+        });
+    </script>
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

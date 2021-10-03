@@ -1,0 +1,64 @@
+﻿@model PagedList.IPagedList<ICP_ABC.Areas.Nationalities.Models.Nationality>
+@using PagedList.Mvc;
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+@{
+    /**/
+
+    ViewBag.Title = "Nationality";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2> Search</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<form class="form-inline" id="SearchForm">
+    <label class="sr-only" for="inlineFormInputName2">Name</label>
+    <input type="text" class="form-control mb-2 mr-sm-2" name="searchString" id="searchString" placeholder="By Name">
+
+    <button type="submit" class="btn btn-outline-primary mb-2 mr-sm-4"><i class="fa fa-search"></i> Search</button>
+</form>
+<div style="width:95%;height:295px;overflow-y:scroll;overflow-x:hidden;border:solid 1px #ddd;margin:3px;padding:5px;">
+    <table class="table">
+        <tr>
+
+
+            <th>
+                Code
+            </th>
+            <th>
+                Name
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+<tr>
+    <td>
+        @Html.DisplayFor(modelItem => item.Code)
+    </td>
+
+    <td>
+        @Html.DisplayFor(modelItem => item.Name)
+    </td>
+    <td>
+        <div class="btn-group" role="group" aria-label="Basic example">
+            @Html.ActionLink("Edit", "Edit", new { id = item.NationalityID }, new { @class = " btn btn-outline-primary" })
+            @*@Html.ActionLink("Details", "Details", new { id = item.GroupID }, new { @class = " btn btn-outline-primary" })*@
+            @Html.ActionLink("Delete", "Delete", new { id = item.NationalityID }, new { @class = " btn btn-outline-primary" })
+        </div>
+    </td>
+</tr>}
+
+    </table>
+</div>
+
+
+
+@*Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("Index",
+    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))*@

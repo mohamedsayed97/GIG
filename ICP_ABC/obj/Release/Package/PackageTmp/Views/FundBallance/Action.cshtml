@@ -1,0 +1,55 @@
+﻿@model IEnumerable<ICP_ABC.Reports.FundBallance.Model.FundBallanceData>
+
+@{
+    ViewBag.Title = "Action";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+@Html.ActionLink("Export To Excel", "Reports", new { ReportType = "Excel" }) |
+@Html.ActionLink("Export To PDF", "Reports", new { ReportType = "PDF" }) |
+@Html.ActionLink("Export To Word", "Reports", new { ReportType = "Word" }) |
+@Html.ActionLink("Export To Image", "Reports", new { ReportType = "Image" }) |
+<table class="table">
+    <tr>
+        <th>
+            Fund Code
+        </th>
+        <th>
+            Fund Name
+        </th>
+        <th>
+            Unites
+        </th>
+        <th>
+            Nav Date
+        </th>
+        <th>
+            Value Nav of Date
+        </th>
+        <th></th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.fund_id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.fname)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.units)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.navDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.totalPos)
+            </td>
+        </tr>
+    }
+
+</table>
+

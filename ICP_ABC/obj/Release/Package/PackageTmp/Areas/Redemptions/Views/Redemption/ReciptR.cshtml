@@ -1,0 +1,140 @@
+﻿@model ICP_ABC.Areas.Redemptions.Models.Redemption
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redemption</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/Chosen/chosen.min.css" rel="stylesheet" />
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+</head>
+<body>
+
+    <form id="form1" style="font:bold">
+        <div>
+            <table>
+                <tr>
+                    <td colspan="2" rowspan="2">
+                        <Image ID="Image1" runat="server" ImageUrl="~/Image/Untitled.jpg" />
+                    </td>
+                    <td style="width: 100px"></td>
+                    <td style="width: 100px"></td>
+                    <td style="width: 100px"></td>
+                    <td style="width: 100px"></td>
+                    <td style="width: 100px"></td>
+                    <td style="width: 100px"></td>
+                    <td style="width: 150px">
+                        <Label ID="Label1" Font-Bold="True" style="font-size:18px;font:bold">Print Date: </Label>
+                    </td>
+                    <td style="width: 100px">
+                        <Label ID="sysDate1" runat="server" Font-Bold="True" style="font-size:14px;font:bold">@DateTime.Now.Date.ToString("dd-MM-yyyy")</Label>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="width: 100px; height: 21px"></td>
+                    <td style="width: 100px; height: 21px"></td>
+                    <td style="width: 100px; height: 21px"></td>
+                    <td style="width: 100px; height: 21px"></td>
+                    <td style="width: 100px; height: 21px"></td>
+                    <td style="width: 100px"></td>
+                    <td style="width: 100px; height: 21px">
+                        <Label ID="Label15" runat="server" Font-Bold="True" style="font-size:18px;font:bold">Time:</Label>
+                    </td>
+                    <td style="width: 100px; height: 21px">
+                        <Label ID="sysTime" runat="server" Font-Bold="True" style="font-size:14px;font:bold">@DateTime.Now.ToString("hh:mm")</Label>
+                    </td>
+                </tr>
+            </table>
+            <table style="width: 960px">
+                <tr>
+                    <td align="center" colspan="3" style="height: 109px">
+                        <Label ID="fname" runat="server" style="font-size:20px;font:bold"
+                               Height="32px" Width="168px">@Model.Fund.Name</Label>
+                            <Label ID="Label2" runat="server" Font-Bold="True" style="color:Maroon;font-size:20pt"
+                                   Height="32px" Width="240px">Redemption Receipt</Label>
+                            <Label ID="Label8" runat="server" Font-Bold="True" Font-Size="50pt" Height="72px"
+                                   Text="MM"></Label>
+                            <Label ID="Label28" runat="server" Font-Bold="True" Font-Size="20pt" ForeColor="Maroon"
+                                   Height="24px" Text="2"></Label>&nbsp;
+                        </td>
+                    </tr>
+                </table>
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                <br />
+                <Panel ID="Panel1" runat="server" Width="944px" BorderWidth="1px" Height="120px">
+                    <Label ID="Label3" runat="server" Font-Bold="True" Text="Customer Name:" style="font-size:20px;font:bold;color:maroon">Customer Name: </Label>
+                    &nbsp; &nbsp; &nbsp;<Label ID="ename" runat="server" Font-Bold="True" Width="360px" Font-Size="14pt">@Model.Customer.EnName</Label>
+                    &nbsp; &nbsp; &nbsp; &nbsp;
+                    <Label ID="Label6" runat="server" Font-Bold="True" style="font-size:20px;font:bold;color:maroon">Branch Name:</Label>
+                    <Label ID="BName" runat="server" Font-Bold="True" Width="248px" Font-Size="14pt">@Model.Branch.BName</Label>
+                    <br />
+                    <br />
+                    <Label ID="Label4" runat="server" Font-Bold="True" style="font-size:20px;font:bold;color:maroon">Account Number:</Label>
+                    &nbsp; &nbsp;
+                    <Label ID="cust_acc_no" runat="server" Font-Bold="True" Width="360px" Font-Size="14pt">@Model.cust_acc_no</Label>
+                    &nbsp; &nbsp; &nbsp; &nbsp;
+                    <Label ID="Label7" runat="server" Font-Bold="True" style="font-size:20px;font:bold;color:maroon">Printing Date:</Label>&nbsp;
+                    <Label ID="sysDate" runat="server" Font-Bold="True" Width="248px" Font-Size="14pt">@DateTime.Now.Date </Label><br />
+                    <br />
+                    <Label ID="Label5" runat="server" Font-Bold="True" style="font-size:20px;font:bold;color:maroon">Application Number:</Label>
+                    &nbsp;<Label ID="id" runat="server" Font-Bold="True" Width="360px" Font-Size="14pt">@Model.appliction_no</Label>&nbsp;
+                </Panel>
+                <br />
+                <table style="font-weight: bold; font-size: 10pt; width: 944px;border:2px " border="1" cellpadding="0" cellspacing="0" frame="border">
+                    <tr style="color:maroon">
+                        <td align="center" style="width: 115px; height: 21px;">
+                            <Label ID="Label9" runat="server" Font-Bold="True" Font-Size="14pt" style="font-size:16px;font:bold;color:maroon" Text="" Width="176px">Redemption Date</Label>
+                        </td>
+                        <td align="center" style="width: 160px; height: 21px;">
+                            <Label ID="Label14" style="font-size:16px;font:bold;color:maroon">Number of ICs subscriped</Label>
+                        </td>
+                        <td align="center" style="width: 160px; height: 21px;">
+                            <Label ID="Label16" style="font-size:16px;font:bold;color:maroon">Net Asset Value per IC</Label>
+                        </td>
+                        <td align="center" style="font-weight: bold; font-size: 10pt; width: 199px; color: maroon; height: 21px;">
+                            <Label ID="Label17" style="font-size:16px;font:bold;color:maroon">Total Net Asset Value For Redemption Request</Label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td align="center" style="width: 115px; height: 40px">
+                            <Label ID="value_date" runat="server" Font-Bold="True" style="font-size:17px;font:bold;">@Model.nav_date</Label>
+                        </td>
+                        <td align="center" style="width: 160px; height: 40px">
+                            <Label ID="quantity" style="font-size:17px;font:bold;">@Model.units</Label>
+                        </td>
+                        <td align="center" style="width: 160px; height: 40px">
+                            <Label ID="unit_price" style="font-size:17px;font:bold;">@Model.NAV</Label>
+                        </td>
+                        <td style="width: 199px; height: 40px" align="center">
+                            <Label ID="total" style="font-size:17px;font:bold;">@Model.total</Label>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <br />
+            &nbsp;<Label ID="Label11" style="font-size:17px;font:bold;">Redemption Fees :</Label>
+            &nbsp;
+            <Label ID="fees" style="font-size:17px;font:bold;">@Model.sub_fees</Label><br />
+            <br />
+            &nbsp;<Label ID="Label10" style="font-size:17px;font:bold;">Total   debited  from customer account number :</Label>
+            &nbsp;&nbsp;
+            <Label ID="custaccno" style="font-size:17px;font:bold;">@Model.cust_acc_no</Label>
+            &nbsp; &nbsp;
+            <Label ID="Label12" style="font-size:17px;font:bold;">IS</Label>
+            &nbsp;&nbsp;
+            <Label ID="IsFinal" runat="server" Font-Bold="True" Width="200px" Font-Size="14pt"></Label>
+            <br />
+            <br />
+            <br />
+            <br />
+            &nbsp;<Label ID="Label13" style="font-size:17px;font:bold;">This is  a computer generated form reflecting requested transaction of subscribing above mentioned number of ICs.</Label>
+        </form>
+
+    </body>
+</html>

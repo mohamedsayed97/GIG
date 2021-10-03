@@ -1,0 +1,279 @@
+﻿@model ICP_ABC.Areas.VestingRules.Models.VestingRuleDetailsPageViewModel
+@using ICP_ABC.Extentions
+@{
+                /**/
+
+                /**/
+
+                /**/
+
+
+
+                ViewBag.Title = "Create";
+                Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="row">
+
+
+    <div class="col-12" id="">
+        <h2>Vesting Rule Setup</h2>
+
+        <div style="margin-bottom:100px;">
+
+
+
+            <div class="row">
+
+                <div class="form-group col-3">
+                    <label for="PolicyId" class="control-label">Policy</label>
+
+                    @Html.DropDownListFor(model => model.PolicyId, new SelectList(Model.Policies, "Id", "PolicyHolderName"), "Select Policy", new { @class = "form-control ", id = "PolicyId", @disabled = "@disabled" })
+                    @Html.ValidationMessageFor(model => model.PolicyId, "", new { @class = "text-danger" })
+
+
+                </div>
+                <div class="form-group col-3">
+
+            <label for="FundId" class="control-label">Fund</label>
+
+            @Html.DropDownListFor(model => model.FundId, new SelectList(Model.Funds, "FundID", "Name"), "Select Fund", new { @class = "form-control ", id = "FundId", @disabled = "@disabled" })
+            @Html.ValidationMessageFor(model => model.FundId, "", new { @class = "text-danger" })
+
+
+        </div>
+                <div class="form-group col-3">
+                    <label for="TransactionType" class="control-label">TransactionType</label>
+
+                    @Html.EnumDropDownListFor(model => model.TransactionType, "Select TransactionType", new { @class = "form-control", @disabled = "@disabled" })
+                    @Html.ValidationMessageFor(model => model.TransactionType, "", new { @class = "text-danger" })
+
+
+                </div>
+                <div class="form-group col-3">
+                    <label for="Base" class="control-label">Base</label>
+                    @Html.EnumDropDownListFor(model => model.Base, "Select Base", new { @class = "form-control", @disabled = "@disabled" })
+
+                    @Html.ValidationMessageFor(model => model.Base, "", new { @class = "text-danger" })
+
+
+                </div>
+                <div class="form-group col-12">
+
+                    <div class="alert alert-danger" style="display:none" id="ErrorMessage" role="alert">
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="row">
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+
+                            <th scope="col" style="width:10%">From</th>
+                            <th scope="col" style="width:10%"> To</th>
+
+                            <th scope="col">% Of Emp Share</th>
+                            <th scope="col">% Of Company Share</th>
+
+                            <th scope="col">% Of Emp Share(Booster)</th>
+                            <th scope="col">% Of Company Share Booster</th>
+                        
+                        </tr>
+                    </thead>
+                    <tbody id="vestingRuleItem">
+                        @for (int i = 0; i < Model.VestingRuleDetails.Count; i++)
+                        {
+                            <tr>
+
+                                <td>
+                                    @Html.EditorFor(model => Model.VestingRuleDetails[i].FromYear, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                  
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => Model.VestingRuleDetails[i].ToYear, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                 
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => Model.VestingRuleDetails[i].PercentageOfEmpShare, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                   
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => Model.VestingRuleDetails[i].PercentageOfCompanyShare, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                   
+                                </td>
+                                <td>
+
+                                    @Html.EditorFor(model => Model.VestingRuleDetails[i].PercentageOfEmpShareBooster, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                  
+                                </td>
+                                <td>
+                                    @Html.EditorFor(model => Model.VestingRuleDetails[i].PercentageOfCompanyShareBooster, new { htmlAttributes = new { @class = "form-control", @readonly = "readonly" } })
+                                 
+                                </td>
+
+                           
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+
+
+
+            </div>
+         
+        </div>
+        <div class="ButtonsControl">
+
+
+            <div class="text-center" style="padding-top:15px;">
+
+                <div class="btn-group col-md-10" role="group" aria-label="Basic example">
+
+                    @if (User.Identity.HasTheRights("VestingRule", "Create"))
+                    {
+                        <a href="~/VestingRules/VestingRule/Create" class="btn btn-primary AllCondition" id="GetAddButton"><i class="fa fa-plus"></i> Add Vesting Rule</a>
+                    }
+                    @if (User.Identity.HasTheRights("VestingRule", "Update"))
+                    {
+                        if (Model.EditBtn)
+                        {
+                            <a href="~/VestingRules/VestingRule/Edit?id=@Model.Id" class="btn btn-primary AllCondition" id="GetEditButton"><i class="fa fa-edit"></i> Edit </a>
+                        }
+                    }
+                    @if (User.Identity.HasTheRights("VestingRule", "Delete"))
+                    {
+                        if (Model.DeleteBtn)
+                        {
+                            <a href="#" data-toggle="modal" data-target="#Delete" class="btn btn-primary AllCondition"><i class="fa fa-remove"></i> Delete </a>
+                        }
+                    }
+                    @if (User.Identity.HasTheRights("VestingRule", "Check"))
+                    {
+                        if (Model.CheckBtn)
+                        {
+
+                            <a href="~/VestingRules/VestingRule/Check?id=@Model.Id" class="btn btn-primary AllCondition" id="GetCheckButton"><i class="fa fa-check"></i> Check </a>
+                        }
+                    }
+                    @if (User.Identity.HasTheRights("VestingRule", "Authorized"))
+                    {
+                        if (Model.AuthBtn)
+                        {
+                            <a href="#" data-toggle="modal" data-target="#Auth" class="btn btn-primary AllCondition"><i class="fa fa-user-secret"></i> Autherize </a>
+                        }
+
+                    }
+                    @if (User.Identity.HasTheRights("VestingRule", "Authorized"))
+                    {
+                        if (Model.UnAuthBtn)
+                        {
+                            <a href="#" data-toggle="modal" data-target="#UnAuth" class="btn btn-primary AllCondition"><i class="fa fa-user-secret"></i> UnAutherize </a>
+                        }
+                    }
+
+
+                    <a href="~/VestingRules/VestingRule/Search" class="btn btn-primary"><i class="fa fa-search"></i> Search</a>
+                    <a href="~/VestingRules/VestingRule/Previous?id=@Model.Id" id="Prev" class="btn btn-primary"><i class="fa fa-backward"></i> Previous </a>
+                    <a href="~/VestingRules/VestingRule/Next?id=@Model.Id" id="Next" class="btn btn-primary"><i class="fa fa-forward"></i> Next </a>
+                    <a href="~/Home/Home/Index" class="btn btn-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+<div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                Are You Sure You Want to Delete ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="~/VestingRules/VestingRule/Delete?id=@Model.Id" class="btn btn-danger ">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Auth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Autherize</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                Are You Sure You Want to Autherize ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="~/VestingRules/VestingRule/Authorize?id=@Model.Id" class="btn btn-primary">Autherize</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="UnAuth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Autherize</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                Are You Sure You Want to UnAutherize ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="~/VestingRules/VestingRule/UnAuthorize?id=@Model.Id" class="btn btn-primary">UnAutherize</a>
+            </div>
+        </div>
+    </div>
+</div>
+@section scripts
+{
+    <script>
+        $(function () {
+
+            var last=  "@TempData["Last"]" ;
+
+            if (last != null) {
+                if ("@TempData["Last"]" == "Last") {
+
+                    document.getElementById("Next").classList.add('disabled');
+                }
+            }
+            /////////////////////////
+           var last=  "@TempData["First"]" ;
+
+            if (last != null) {
+
+                if ("@TempData["First"]" == "First") {
+
+                    document.getElementById("Prev").classList.add('disabled');
+                }
+
+            }
+            /////////////////////
+        });
+
+    </script>
+}

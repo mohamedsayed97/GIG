@@ -1,0 +1,65 @@
+﻿@model ICP_ABC.Areas.Calendars.Models.EditViewModel
+
+@{
+    ViewBag.Title = "Calendar ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Calendar Setup: (Update)</h2>
+
+@using (Html.BeginForm("Edit", "Calendar", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <div style="height:375px;overflow-y:scroll;overflow-x:hidden;margin:3px;padding:5px; border:solid 1px #ddd;">
+        @Html.AntiForgeryToken()
+
+        <p class="text-danger">@Html.ValidationSummary(true)</p>
+
+        <div class="horizontal">
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Code</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Vacation Name</label>
+                @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Vacation_Name, new { @class = "form-control form-control-sm" })
+                    @Html.ValidationMessageFor(m => m.Vacation_Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Vacation Date</label>
+                @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                <div class="col-md-7">
+
+                    @Html.EditorFor(model => model.Vacation_date, new { htmlAttributes = new { @class = "datepicker form-control form-control-sm" } })
+                    @Html.ValidationMessageFor(m => m.Vacation_date, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+    <div class="text-center" style="padding-top:15px;">
+
+        <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+            <button type="submit" class="btn btn-outline-primary"><i class="fa fa-group"></i> Apply</button>
+            <a href="~/Calendars/Calendar/Details?Code=@Model.Code" class="btn btn-outline-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+
+        </div>
+    </div>
+}
+@section scripts
+{
+    @Scripts.Render("~/bundles/jqueryval")
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

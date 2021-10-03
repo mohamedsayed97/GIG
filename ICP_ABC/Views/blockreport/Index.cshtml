@@ -1,0 +1,70 @@
+﻿@model ICP_ABC.Reports.blockreport.Model.blockreportVM
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+@*<link rel="stylesheet" href="/resources/demos/style.css">*@
+<link href="~/Content/Site.css" rel="stylesheet" />
+
+@using (Html.BeginForm("blockreport", "blockreport"))
+{
+    <div style="width:95%;height:450px;overflow-y:scroll;overflow-x:hidden;border:solid 1px #ddd;margin:3px;padding:5px;">
+
+                  
+        <div class="row">
+            <div class="form-group col-lg-4 col-md-4">
+                <span class="input-group-addon" id="basic-addon1" aria-describedby="sizing-addon1">Fund Name</span>
+                <div class="input-group">
+
+                    @Html.DropDownListFor(m => m.Fund, new SelectList(Model.Funds, "code", "name"), "All Funds", new { @class = "form-control" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-lg-4 col-md-4">
+                <span class="input-group-addon" id="basic-addon1">Customer Name</span>
+                <div class="input-group">
+                    
+                    @Html.TextBoxFor(m => m.Code, new { @class = "form-control" })
+                    @*<input type="text" class="form-control" placeholder="Customer Code" id="Code" />*@
+                    @Html.TextBoxFor(m => m.CustomerCode, new { @class = "form-control", @readonly = "readonly" })
+                </div>
+                @Html.ValidationMessageFor(m => m.Code)
+            </div>
+        </div>
+    </div>
+    <div class="text-center" style="padding-top:15px;">
+
+
+        <button type="submit" class="btn btn-primary" aria-pressed="false">Preview</button>
+        </div>
+        }
+        @section scripts
+    {
+            @Scripts.Render("~/bundles/jqueryval")
+            <script>
+                $(document).ready(function () {
+
+                    $('#Code').on('change', function () {
+                        var Code = $("#Code").val();
+                        if (Code == "")
+                            Code = 0;
+                        $.ajax({
+                            url: '/GetEName/' + Code,
+                            type: 'POST',
+                            success: function (ename) {
+                                //alert(ename);
+                                $("#CustomerCode").val(ename);
+                            }
+                        });
+                    })
+
+                });
+            </script>
+
+        }
+

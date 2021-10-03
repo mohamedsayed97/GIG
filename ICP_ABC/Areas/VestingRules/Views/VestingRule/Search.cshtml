@@ -1,0 +1,237 @@
+﻿@model PagedList.IPagedList<ICP_ABC.Areas.VestingRules.Models.VestingRule>
+@using ICP_ABC.Areas.VestingRules.Models;
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string servername = System.Web.Configuration.WebConfigurationManager.AppSettings["servername_URL"];
+    TempData.Keep();
+}
+
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
+
+<h2>Policy Setup: (Search)</h2>
+<form class="form-inline" id="SearchForm">
+
+    <input type="text" class="form-control form-control-sm" title="Id" name="Id" id="Id" value="@ViewData["Id"]" placeholder="Code">
+    @*@Html.DropDownList("FundId", ViewData["Funds"] as SelectList, "Select Fund", new { @class = "form-control form-control-sm" })*@
+
+
+    @Html.DropDownList("PolicyId", ViewData["Policies"] as SelectList, "Select Policy", new { @class = "form-control form-control-sm" })
+    @Html.DropDownList("TransactionType", ViewData["TransactionTypes"] as SelectList, "Select Transaction Type", new { @class = "form-control form-control-sm" })
+
+
+    @Html.DropDownList("Base", ViewData["Bases"] as SelectList, "Select Base", new { @class = "form-control form-control-sm" })
+
+
+
+    @{
+        var chk = ViewData["radioCHeck"] as string;
+        var AuthorizeCHK = chk == "1" ? "checked" : "";
+        var CheckerCHK = chk == "2" ? "checked" : "";
+        var MakerCHK = chk == "3" ? "checked" : "";
+        var AllCHK = chk == "4" ? "checked" : "";
+
+    }
+    <input id="Authorize"
+           name="RadioCHeck"
+           type="radio"
+           value="1"
+           @AuthorizeCHK />Authorize&nbsp;
+    @{
+        if (ViewBag.SecuLevel == 3)
+        {
+            <input style="display:inline-block" id="Checker"
+                   name="RadioCHeck"
+                   type="radio"
+                   value="2" @CheckerCHK /><label style="display:inline-block" for="Check">Checker&nbsp;</label>
+        }
+    }
+
+    <input id="Maker"
+           name="RadioCHeck"
+           type="radio"
+           value="3"
+           @MakerCHK />Maker&nbsp;
+
+    <input id="All"
+           name="RadioCHeck"
+           type="radio"
+           value="4"
+           @AllCHK />All&nbsp;
+
+
+
+    <div class=" mb-2 mr-sm-2" style="padding-left:2px">
+        <label style="display:block;"> &nbsp;</label>
+        <button type="submit" class="btn btn-sm btn-primary mb-2"><i class="fa fa-search"></i> Search</button>
+
+    </div>
+
+</form>
+<p>
+    @if (Model.TotalItemCount != 0)
+    {
+        <a target="_blank" rel="noopener noreferrer" href="~/Blocks/Block/ExportToPDF">Print Result To PDF</a>
+
+        @Html.ActionLink("Print Result To Excel", "ExportToExcel", "Block")
+    }
+
+
+</p>
+
+<div style="margin-bottom:100px;">
+
+    <table class="table">
+        <tr style="font-family:initial;color:blue">
+
+
+
+
+
+
+
+
+
+
+            <th style="width:15%">
+                Id
+            </th>
+            @*<th style="width:10%">
+                Fund
+            </th>*@
+            <th style="width:10%">
+                Policy
+            </th>
+
+
+            <th style="width:15%">
+                Transaction Type
+            </th>
+            <th style="width:10%">
+                Base
+            </th>
+
+            <th style="width:5%">
+                Auth
+            </th>
+
+            <th style="width:5%">Action</th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+
+                @*<td>
+                    @Html.DisplayFor(modelItem => item.Fund.Name)
+                </td>*@
+                <td>
+                    @Html.DisplayFor(modelItem => item.Policy.PolicyHolderName)
+                </td>
+                <td>
+                    @{ var transactionType = Enum.GetName(typeof(VestingRuleTransactionType), item.TransactionType);}
+                    @transactionType
+                </td>
+
+                <td>
+                    @{ var baseType = Enum.GetName(typeof(VestingRuleBase), item.Base); }
+                    baseType
+                </td>
+
+
+
+                <td>
+
+                    @{var isAuth = item.Auth ? Convert.ToBoolean(item.Auth) : false;}
+                    @Html.CheckBoxFor(modelItem => isAuth, new { @disabled = "disabled" })
+                </td>
+                <td>
+                    <div class="btn-group" role="group" aria-label="Basic example">
+                        @Html.ActionLink("Details", "Details", new { id = item.Id }, new { @class = " btn btn-outline-primary" })
+                        @*@Html.ActionLink("Details", "Details", new { id = item.GroupID }, new { @class = " btn btn-outline-primary" })*@
+                    </div>
+                </td>
+            </tr>
+            <div class="modal fade" id=Delete_@item.Id tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalCenterTitle">Unlock User</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+
+                            Are You Sure You Want to Delete for @item.Policy.PolicyHolderName  ?
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <a href="~/Policies/Policy/Delete?id=@item.Id" class="btn btn-primary ">Confirm</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </table>
+
+
+
+
+
+
+
+</div>
+
+
+
+<div class="ButtonsControl">
+    @Html.PagedListPager(Model, page => Url.Action("Search",
+new { page,
+    RadioCHeck = Request.QueryString["RadioCHeck"] ,
+    Id = Request.QueryString["Id"],
+    //FundId = Request.QueryString["FundId"],
+    PolicyId = Request.QueryString["PolicyId"],
+    TransactionType = Request.QueryString["TransactionType"],
+    Base = Request.QueryString["Base"]
+
+}))
+    <div class="text-center">
+        <div class="col-md-3"></div>
+        <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+            <a href="~/VestingRules/VestingRule/Create" class="btn btn-primary" id="GetAddButton"><i class="fa fa-group"></i> Add Vesting Rule</a>
+
+            <a href="~/Home/Home/Index" class="btn btn-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+        </div>
+
+
+    </div>
+</div>
+    @section scripts{
+        @Scripts.Render("~/bundles/jqueryval")
+
+
+        <script>
+
+            $(function () {
+                //   normal dropdown
+                $(".ddlist").chosen({
+
+                    disable_search_threshold: 5,
+
+                });
+                //$("#BlockCMB").chosen({
+
+                //    disable_search_threshold: 5,
+                //    width: "90px",
+                //});
+            });
+        </script>
+    }

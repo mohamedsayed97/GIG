@@ -1,0 +1,65 @@
+﻿@model ICP_ABC.Areas.Sponsors.Models.CreateViewModel
+@{ /**/
+
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml"; }
+<style>
+    body {
+        font-weight: 500;
+        background-color: aliceblue;
+        /*background-image: url(../../Content/Images/vehdb4tur0fg6yphaiumv2bmtplollhqll0gvubgxt58t7znz43m5enjos1cxcdn-.jpg );*/
+    }
+</style>
+
+<h2>Sponsor Setup: (Create)</h2>
+@*<form method="post" action="@Url.Action("REgister", "Account")">*@
+@using (Html.BeginForm("Create", "Sponsor", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+<div style="height:375px;overflow-y:scroll;overflow-x:hidden;margin:3px;padding:5px; border:solid 1px #ddd;">
+    @Html.AntiForgeryToken()
+    <p class="text-danger">@Html.ValidationSummary(true)</p>
+    <div class="row">
+        <div class="form-group col-md-5 ">
+            <label for="inputEmail4">Sponsor Code</label>
+            <div class="col-md-7">
+                @Html.TextBoxFor(m => m.Code, new { @class = "form-control form-control-sm", @readonly = "readonly", Value = ViewData["LastCode"], texfgt = ViewData["LastCode"] })
+                @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="form-group col-md-5 ">
+            <label for="inputEmail4">Sponsor Name</label>
+            @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+            <div class="col-md-7">
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+</div>
+                <div class="text-center" style="padding-top:15px;">
+
+                    <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+                        <button type="submit" class="btn btn-outline-primary"><i class="fa fa-save"></i> Apply</button>
+                        <a href="~/Sponsors/Sponsor/Index" class="btn btn-outline-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+
+                    </div>
+                </div>}
+
+
+@section scripts{
+    @Scripts.Render("~/bundles/jqueryval")
+    <script>
+
+        $(function () {
+            //   normal dropdown
+            $(".ddlist").chosen({
+                //  disable_search_threshold: 1
+            });
+        });
+    </script>
+}
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

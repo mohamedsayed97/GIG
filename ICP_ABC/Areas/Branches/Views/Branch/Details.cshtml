@@ -1,0 +1,162 @@
+﻿@model ICP_ABC.Areas.Branches.Models.DetailsViewModel
+@using ICP_ABC.Extentions
+@{
+    /**/
+
+    ViewBag.Title = "Branches ";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Branch Setup: (Details)</h2>
+<div style="width:95%;height:375px;overflow-y:scroll;overflow-x:hidden;border:solid 1px #ddd;margin:3px;padding:5px;">
+    @using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+    {
+        @Html.AntiForgeryToken()
+
+        <p class="text-danger">@Html.ValidationSummary(true)</p>
+
+        <div class="row">
+            @Html.HiddenFor(model => model.BranchID, new { id = "BranchID", Value = ViewData["LastCode"] })
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Branch Code</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.branchcode, new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.branchcode, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            @Html.HiddenFor(model => model.BranchID, new { id = "BranchID", Value = ViewData["LastCode"] })
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Branch Name</label>
+                @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.BName, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.BName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Delete</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        Are You Sure You Want to Delete ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="~/Branches/Branch/Delete?Code=@Model.BranchID.ToString()" class="btn btn-danger ">Delete</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="Auth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalCenterTitle">Autherize</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+
+                        Are You Sure You Want to Autherize ?
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <a href="~/Branches/Branch/AuthorizeBranch?Code=@Model.BranchID.ToString()" class="btn btn-primary">Autherize</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    }
+</div>
+    <div class="text-center">
+        <div class="col-lg-2"></div>
+        <div class="btn-group col-md-12" role="group" aria-label="Basic example">
+            @if (User.Identity.HasTheRights("Branch", "Create"))
+            {
+                <a href="~/Branches/Branch/Create" class="btn btn-outline-primary"><i class="fa fa-plus"></i> Add Branch</a>
+            }
+            @if (User.Identity.HasTheRights("Branch", "Update"))
+            {
+                if (!Model.AuthForEditAndDelete)
+                {
+                    <a href="~/Branches/Branch/Edit?Code=@Model.BranchID.ToString()" class="btn btn-outline-primary"><i class="fa fa-edit"></i> Edit </a>
+                }
+                @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+            }
+            @if (User.Identity.HasTheRights("Branch", "Delete"))
+            {
+                if (!Model.AuthForEditAndDelete)
+                {
+                    <a href="#" data-toggle="modal" data-target="#Delete" class="btn btn-outline-primary"><i class="fa fa-remove"></i> Delete </a>
+                    @*<a href="~/Branches/Branch/Delete?Code=@Model.branchcode"  class="btn btn-outline-primary"><i class="fa fa-remove"></i> Delete </a>*@
+                }
+                @*@Html.ActionLink("Delete", "Delte", "Account", new { Code = Model.Code, }, new { @class = " btn btn-outline-primary fa fa-remove" })*@
+            }
+            @if (User.Identity.HasTheRights("Branch", "Check"))
+            {
+                if (!Model.Check)
+                {
+                    <a href="~/Branches/Branch/CheckBranch?Code=@Model.BranchID.ToString()" class="btn btn-outline-primary"><i class="fa fa-check"></i> Check </a>
+                }
+                @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+            }
+            @if (User.Identity.HasTheRights("Branch", "Authorized"))
+            {
+                if (Model.Check && !Model.Auth)
+                {
+                    <a href="#" data-toggle="modal" data-target="#Auth" class="btn btn-outline-primary"><i class="fa fa-user-secret"></i> Autherize </a>
+                    @*<a href="~/Branches/Branch/AuthorizeBranch?Code=@Model.branchcode" class="btn btn-outline-primary"><i class="fa fa-user-secret"></i> Autherize </a>*@
+                }
+
+                @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+            }
+            <a href="~/Branches/Branch/Search" class="btn btn-outline-primary"><i class="fa fa-search"></i> Search</a>
+            <a href="~/Branches/Branch/Previous?id=@Model.BranchID.ToString()" id="Prev" class="btn btn-outline-primary"><i class="fa fa-backward"></i> Previous </a>
+            <a href="~/Branches/Branch/Next?id=@Model.BranchID.ToString()" id="Next" class="btn btn-outline-primary"><i class="fa fa-forward"></i> Next </a>
+            <a href="~/Home/Home/Index" class="btn btn-outline-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+        </div>
+    </div>
+    <script src="~/Scripts/jquery-3.4.1.min.js"></script>
+    <script src="~/Scripts/jquery.validate.min.js"></script>
+    <script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+    <script>
+        $(function () {
+
+            var last=  "@TempData["Last"]" ;
+
+            if (last != null) {
+                if ("@TempData["Last"]" == "Last") {
+
+                    document.getElementById("Next").classList.add('disabled');
+                }
+            }
+            /////////////////////////
+           var last=  "@TempData["First"]" ;
+
+            if (last != null) {
+
+                if ("@TempData["First"]" == "First") {
+
+                    document.getElementById("Prev").classList.add('disabled');
+                }
+
+            }
+            /////////////////////
+        });
+
+    </script>

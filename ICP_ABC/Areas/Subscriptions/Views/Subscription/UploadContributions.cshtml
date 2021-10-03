@@ -1,0 +1,197 @@
+﻿@model ICP_ABC.Areas.Subscriptions.Models.UploadContributionsViewModel
+
+@{
+    ViewBag.Title = "Upload Contributions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@using (Html.BeginForm("UploadContributions", "Subscription", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return Loading()", id = "uploadForm" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="offset-4 col-4">
+            <div class="form-horizontal">
+
+                <br />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @if (!(ViewBag.Message is List<string>))
+                {
+                    if (ViewBag.Message == "File Uploaded Successfully.")
+                    {
+                        <div class="alert alert-success col-md-10" role="alert">
+                            @ViewBag.Message
+                        </div>
+
+                    }
+                }
+                @*<div class="form-group">
+            @Html.Label("Fund", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.DropDownListFor(model => model.FundId, new SelectList(Model.Funds, "FundID", "Name"), "Select Fund", new { @class = "form-control", @id = "Funds" })
+                @Html.ValidationMessageFor(model => model.FundId, "", new { @class = "text-danger" })
+            </div>
+        </div>*@
+                @*<div class="form-group">
+                    @Html.Label("Policy", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.PolicyNo, new SelectList(Model.Policies, "PolicyNo", "PolicyHolderName"), "Select Policy", new { @class = "form-control", @id = "Policies" })
+                        @Html.ValidationMessageFor(model => model.PolicyNo, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+                <div class="form-group">
+                    @Html.Label("Processing Date", htmlAttributes: new { @class = "control-label col-md-5" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.processingDate, new { htmlAttributes = new { @class = "datepicker form-control form-control-sm" } })
+                        @Html.ValidationMessageFor(model => model.processingDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                @*<div class="form-group">
+                    @Html.Label("Unit Price", htmlAttributes: new { @class = "control-label col-md-5", @style = "display: none", @id = "icpriceLable" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.icprice, new { htmlAttributes = new { @class = " form-control form-control-sm", @readonly = "readonly", @style = "display: none" } })
+                        @Html.ValidationMessageFor(model => model.icprice, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    @Html.Label("Value Date", htmlAttributes: new { @class = "control-label col-md-5", @style = "display: none", @id = "valueDateLable" })
+                    <div class="col-md-10">
+                        @Html.EditorFor(model => model.valueDate, new { htmlAttributes = new { @class = "datepicker form-control form-control-sm", @readonly = "readonly", @style = "display: none" } })
+                        @Html.ValidationMessageFor(model => model.valueDate, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+                <div class="form-group">
+                    <div class="control-label col-md-2">Excel</div>
+                    <div class="col-md-10">
+                        <input type="file" id="FileUpload" name="file" class="form-control" style="height:40px" />
+
+                        @Html.ValidationMessageFor(model => model.file, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+
+                        <button type="submit" disabled class="btn btn-primary form-control" id="UploadBtn">Upload</button>
+                    </div>
+                </div>
+                @if (ViewBag.Message is List<string>)
+                {
+                    var errors = (List<string>)ViewBag.Message;
+                    if (errors.Count > 0)
+                    {
+
+                        <button type="button" hidden id="btnErrors" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                            Launch error
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalCenterTitle">Excel Error</h5>
+
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+
+                                        </button>
+
+                                    </div>
+                                    <div class="modal-body">
+                                        @{
+
+                                            foreach (var error in errors)
+                                            {
+                                                <div>@error</div>
+                                            }
+
+                                        }
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                }
+
+
+            </div>
+        </div>
+    </div>
+
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            if ($('#btnErrors').length > 0) {
+                $('#btnErrors').click();
+            }
+            $(function () {
+                $("#Funds").chosen({
+                    disable_search_threshold: 5,
+                    width: "100%"
+                });
+            });
+        });
+
+    </script>
+    <script>
+        //$(function () {
+
+
+        //    $(document).ajaxComplete(function (event, xhr, settings) {
+        //        debugger
+        //        if (settings.url === "/Subscriptions/Subscription/IsAlreadyPriced" && xhr.responseJSON == true) {
+        //            $('#UploadBtn').attr("disabled", false);
+        //            $('#icpriceLable').css("display", "block");
+        //            $('#valueDateLable').css("display", "block");
+        //            $('#icprice').css("display", "block");
+        //            $('#valueDate').css("display", "block");
+        //            $('#icprice').val(xhr.getResponseHeader("Nav"));
+        //            var d = new Date(xhr.getResponseHeader("Nav_Date"));
+        //            var valueDate = (d.getMonth() + 1) + '/' + d.getDate() + '/' + d.getFullYear();
+        //            $('#valueDate').val(valueDate);
+
+
+        //        }
+        //        else {
+        //            $('#UploadBtn').attr("disabled", true);
+        //            $('#icpriceLable').css("display", "none");
+        //            $('#valueDateLable').css("display", "none");
+        //            $('#icprice').css("display", "none");
+        //            $('#valueDate').css("display", "none");
+        //            $('#icprice').val(null);
+
+        //            $('#valueDate').val(null);
+        //        }
+        //    });
+        //});
+        jQuery("input#FileUpload").change(function () {
+            debugger
+            var fileExtension = jQuery(this).val().split('.').pop().toLowerCase();
+            const excelExtensions = ["xls", "xlsx"];
+            if (excelExtensions.includes(fileExtension)) {
+                $('#UploadBtn').attr("disabled", false);
+            }
+
+        });
+        function Loading() {
+            debugger
+            var valid = $("#uploadForm").valid();
+            if (valid) {
+                document.getElementById("UploadBtn").innerHTML = '';
+                var content = '<i class="fa fa-spinner fa-pulse fa-x fa-fw"></i>';
+                $('#UploadBtn').append(content);
+                $('#UploadBtn').attr('disabled', true);
+            }
+        }
+    </script>
+}

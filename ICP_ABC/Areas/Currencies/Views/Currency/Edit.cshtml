@@ -1,0 +1,56 @@
+﻿@model ICP_ABC.Areas.Currencies.Models.EditViewModel
+
+@{
+    ViewBag.Title = "Currency Setup";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Currency Setup: (Update)</h2>
+
+@using (Html.BeginForm("Edit", "Currency", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+
+
+<div style="height:375px;overflow-y:scroll;overflow-x:hidden;margin:3px;padding:5px; border:solid 1px #ddd;">
+    @Html.AntiForgeryToken()
+    <p class="text-danger">@Html.ValidationSummary(true)</p>
+    <div class="horizontal">
+        <div class="form-group col-md-5 ">
+            <label for="inputEmail4">Currency Code</label>
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.Code, new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                @Html.ValidationMessageFor(m => m.Code, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group col-md-5 ">
+            <label for="inputEmail4">Currency Name</label>
+            @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.Name, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.Name, "", new { @class = "text-danger" })
+            </div>
+        </div>
+        <div class="form-group col-md-5 ">
+            <label for="inputEmail4">Currency Short Name</label>
+            @*@Html.EditorFor(model => model.Password, new { htmlAttributes = new { @class = "form-control" } })*@
+            <div class="col-md-9">
+                @Html.TextBoxFor(m => m.ShortName, new { @class = "form-control form-control-sm" })
+                @Html.ValidationMessageFor(m => m.ShortName, "", new { @class = "text-danger" })
+            </div>
+        </div>
+    </div>
+</div>
+   
+    <div class="text-center" style="padding-top:15px;">
+
+        <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+            <button type="submit" class="btn btn-outline-primary"><i class="fa fa-group"></i> Apply</button>
+            <a href="~/Currencies/Currency/Details?Code=@Model.Code" class="btn btn-outline-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+
+        </div>
+    </div>
+}
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>

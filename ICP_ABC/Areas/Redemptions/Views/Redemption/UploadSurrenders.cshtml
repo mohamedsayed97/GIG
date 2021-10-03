@@ -1,0 +1,153 @@
+﻿@model ICP_ABC.Areas.Redemptions.Models.UploadSurrendersViewModel
+@using System;
+@{
+    ViewBag.Title = "Upload Surrender";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@using (Html.BeginForm("UploadSurrenders", "Redemption", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return Loading()" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="offset-4 col-4">
+            <div class="form-horizontal">
+
+                <br />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @if (!(ViewBag.Message is List<string>))
+                {
+                    if (ViewBag.Message == "File Uploaded Successfully.")
+                    {
+                        <div class="alert alert-success col-md-10" role="alert">
+                            @ViewBag.Message
+                        </div>
+
+                    }
+                }
+
+                @*<div class="form-group">
+                    @Html.Label("Fund", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.FundId, new SelectList(Model.Funds, "FundID", "Name"), "Select Fund", new { @class = "form-control", @id = "Funds" })
+                        @Html.ValidationMessageFor(model => model.FundId, "", new { @class = "text-danger" })
+                    </div>
+                </div>*@
+                <div class="form-group">
+                    <div class="control-label col-md-2">Excel</div>
+                    <div class="col-md-10">
+                        <input type="file" id="FileUpload" name="file" class="form-control" style="height:40px" />
+
+                        @Html.ValidationMessageFor(model => model.file, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        @*<input type="submit" id="UploadBtn" value="Upload" class="btn btn-primary form-control" />*@
+                        <button type="submit" disabled class="btn btn-primary form-control" id="UploadBtn">Upload</button>
+                    </div>
+                </div>
+
+                @if (ViewBag.Message is List<string>)
+                {
+                    var errors = (List<string>)ViewBag.Message;
+                    if (errors.Count > 0)
+                    {
+
+                        <button type="button" hidden id="btnErrors" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalCenter">
+                            Launch error
+                        </button>
+
+                        <!-- Modal -->
+                        <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="exampleModalCenterTitle">Excel Error</h5>
+
+                                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                            <span aria-hidden="true">&times;</span>
+
+                                        </button>
+
+                                    </div>
+                                    <div class="modal-body">
+                                        @{
+
+                                            foreach (var error in errors)
+                                            {
+                                                <div>@error</div>
+                                            }
+
+                                        }
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                }
+
+
+
+
+            </div>
+        </div>
+    </div>
+
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+            debugger
+            $('#UploadBtn').attr("disabled", true);
+            if ($('#btnErrors').length > 0) {
+                $('#btnErrors').click();
+            }
+            $(function () {
+                $("#Funds").chosen({
+                    disable_search_threshold: 5,
+                    width: "100%"
+                });
+            });
+
+
+        });
+
+    </script>
+    <script>
+        $(function () {
+
+
+            jQuery("input#FileUpload").change(function () {
+                debugger
+                var fileExtension = jQuery(this).val().split('.').pop().toLowerCase();
+                const excelExtensions = ["xls", "xlsx"];
+                if (excelExtensions.includes(fileExtension)) {
+                    $('#UploadBtn').attr("disabled", false);
+                }
+
+            });
+
+            
+        })
+            function Loading() {
+                debugger
+
+                $('#UploadBtn').attr('disabled', true);
+                document.getElementById("UploadBtn").innerHTML = '';
+                var content = '<i class="fa fa-spinner fa-pulse fa-x fa-fw"></i>';
+                $('#UploadBtn').append(content);
+
+
+
+            }
+    </script>
+}

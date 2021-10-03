@@ -1,0 +1,151 @@
+﻿@model List<ICP_ABC.Models.ApplicationUser>
+@{
+
+    TempData.Keep();
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Details</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+    <link href="~/Content/Chosen/chosen.min.css" rel="stylesheet" />
+    <link href="~/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+
+    <style>
+
+        .dropdown-submenu {
+            position: relative;
+        }
+
+            .dropdown-submenu > .dropdown-menu {
+                top: 0;
+                left: 100%;
+                margin-top: -6px;
+                margin-left: -1px;
+                -webkit-border-radius: 0 6px 6px 6px;
+                -moz-border-radius: 0 6px 6px;
+                border-radius: 0 6px 6px 6px;
+            }
+
+            .dropdown-submenu:hover > .dropdown-menu {
+                display: block;
+            }
+
+            .dropdown-submenu > a:after {
+                display: block;
+                content: " ";
+                float: right;
+                width: 0;
+                height: 0;
+                border-color: transparent;
+                border-style: solid;
+                border-width: 5px 0 5px 5px;
+                border-left-color: #ccc;
+                margin-top: 5px;
+                margin-right: -10px;
+            }
+
+            .dropdown-submenu:hover > a:after {
+                border-left-color: #fff;
+            }
+
+            .dropdown-submenu.pull-left {
+                float: none;
+            }
+
+                .dropdown-submenu.pull-left > .dropdown-menu {
+                    left: -100%;
+                    margin-left: 10px;
+                    -webkit-border-radius: 6px 0 6px 6px;
+                    -moz-border-radius: 6px 0 6px 6px;
+                    border-radius: 6px 0 6px 6px;
+                }
+    </style>
+
+</head>
+<body class="container-fluid">
+    <div class="row">
+        @*<div>
+                <img src="~/Content/Images/SawEuJI.jpg" style="width:100%;height:100px; top:0px;" class=" navbar-expand-lg" />
+            </div>*@
+    </div>
+    <nav class="navbar row  navbar-expand-md navbar-dark bg-primary sticky-top" style="margin-bottom:10px">
+        @*<a class="navbar-brand" href="#">ICP ABC </a>*@
+        <p class="navbar-brand" href="#">User Details</p>
+
+    </nav>
+
+    <div class="container body-content">
+        <div class="row">
+            <div class="col-lg-12">
+                <table class="table table-responsive-md ">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                Code
+                            </th>
+                            <th scope="col">
+                                User Name
+                            </th>
+                            <th scope="col">
+                                Branch Name
+                            </th>
+                            <th scope="col">
+                                Group
+                            </th>
+                            <th scope="col">
+                                Title
+                            </th>
+                            <th scope="col">
+                                Locked User
+                            </th>
+                        </tr>
+                    </thead>
+                    @foreach (var item in Model)
+                    {
+                        <tbody>
+                            <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Code)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Branch.BName)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.UserGroup.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Title.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.IsLocked)
+                                </td>
+
+                            </tr>
+                        </tbody>
+                    }
+                </table>
+            </div>
+        </div>
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year M.R.Soft</p>
+        </footer>
+    </div>
+
+    <script src="~/Scripts/chosen.jquery.min.js"></script>
+    @section scripts{
+        @Scripts.Render("~/bundles/jqueryval")
+
+    }
+
+</body>
+</html>
+
+

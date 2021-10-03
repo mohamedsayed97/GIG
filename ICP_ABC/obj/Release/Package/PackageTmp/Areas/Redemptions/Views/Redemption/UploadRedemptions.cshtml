@@ -1,0 +1,71 @@
+﻿@model ICP_ABC.Areas.Redemptions.Models.UploadRedemptionsViewModel
+
+@{
+    ViewBag.Title = "UploadRedemptions";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+@using (Html.BeginForm("UploadRedemptions", "Redemption", FormMethod.Post, new { enctype = "multipart/form-data", onsubmit = "return myFunction()" }))
+  {
+    @Html.AntiForgeryToken()
+    <div class="row">
+        <div class="offset-4 col-4">
+            <div class="form-horizontal">
+
+                <br />
+                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                @if (ViewBag.Message != null)
+                {
+                    var color = ViewBag.Message == "File Uploaded Successfully." ? "alert-success" : "alert-danger";
+                    <div class="alert @color col-md-10" role="alert">
+                        @ViewBag.Message
+                    </div>
+
+                }
+                <div class="form-group">
+                    @Html.Label("Fund:", htmlAttributes: new { @class = "control-label col-md-2" })
+                    <div class="col-md-10">
+                        @Html.DropDownListFor(model => model.FundId, new SelectList(Model.Funds, "FundID", "Name"), "Select Fund", new { @class = "form-control", @id = "Funds" })
+                        @Html.ValidationMessageFor(model => model.FundId, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="control-label col-md-2">Excel:</div>
+                    <div class="col-md-10">
+                        <input type="file" id="FileUpload" name="file" class="form-control" style="height:40px" />
+                        @Html.ValidationMessageFor(model => model.file, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <br />
+
+                <br />
+
+                <div class="form-group">
+                    <div class="col-md-offset-2 col-md-10">
+                        <input type="submit" value="Upload" class="btn btn-primary form-control" />
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+}
+
+@section scripts
+{
+    <script>
+        $(document).ready(function () {
+          
+            $(function () {
+                $("#Funds").chosen({
+                    disable_search_threshold: 5,
+                    width: "100%"
+                });
+            });
+        });
+          
+    </script>
+    }
