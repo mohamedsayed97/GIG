@@ -1,0 +1,88 @@
+﻿@model ICP_ABC.Areas.Company.Models.CompanyViewModel
+
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Company Setup: (Create) </h2>
+
+@using (Html.BeginForm("Create", "Company", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    @Html.AntiForgeryToken()
+    <p class="text-danger">@Html.ValidationSummary(true)</p>
+
+    <div class="horizontal">
+        <div class="row">
+            <div class="form-group col-md-4 ">
+                <label for="inputEmail4">Code</label>
+                <div class="col-md-9">
+                    @Html.TextBoxFor(m => m.CompanyID, new { @class = "form-control form-control-sm", Value = ViewData["LastCode"], text = ViewData["LastCode"], @readOnly = "readOnly" })
+                    @Html.ValidationMessageFor(m => m.CompanyID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4 ">
+                <label>Company Name</label>
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Companyname, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Companyname, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4 ">
+                <label>Commerical Record</label>
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.ComericalRecord, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.ComericalRecord, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-4 ">
+                <label for="inputEmail4">Address 1</label>
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Address1, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Address1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4 ">
+                <label for="inputEmail4">Address 2</label>
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Address2, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Address2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+            <div class="form-group col-md-4 ">
+                <label for="inputEmail4">Phone 1</label>
+                <div class="col-md-9">
+                    @Html.EditorFor(model => model.Phone1, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(m => m.Phone1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+             <div class="col-md-4">
+                <label for="inputEmail4">Phone 2</label>
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.Phone2, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.ValidationMessageFor(model => model.Phone2, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        </div>
+       
+        <div class="navbar fixed-bottom navbar-light bg-light " style=" display: block;text-align: center;">
+
+            <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+                <button type="submit" class="btn btn-outline-primary"><i class="fa fa-save"></i> Apply</button>
+                <a href="~/Company/Company/Index" class="btn btn-outline-primary"><i class="fa fa-times-circle"></i> Cancel</a>
+            </div>
+        </div>
+    </div>
+}
+

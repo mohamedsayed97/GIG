@@ -1,0 +1,182 @@
+﻿@model ICP_ABC.Areas.Company.Models.CompanyDetailsViewModel
+@using ICP_ABC.Extentions
+
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Company Setup: (Details)</h2>
+
+@using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+    <div>
+        @Html.AntiForgeryToken()
+
+        <p class="text-danger">@Html.ValidationSummary(true)</p>
+
+        <div class="row">
+
+            <div class="form-group col-md-4 ">
+                <label for="inputEmail4">Company Code</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.CompanyID, new { @class = "form-control form-control-sm", @readonly = "readonly" })
+                    @Html.ValidationMessageFor(m => m.CompanyID, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4 ">
+                <label for="inputEmail4">Companyname</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Companyname, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.Companyname, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4 ">
+                <label for="inputEmail4">comerical Record</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.ComericalRecord, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.ComericalRecord, "", new { @class = "text-danger" })
+                </div>
+            </div>
+
+        </div>
+
+        <div class="row">
+            <div class="form-group col-md-4 ">
+                <label for="inputEmail4">Address 1</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Address1, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.Address1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4 ">
+                <label for="inputEmail4">Address 2</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Address2, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.Address2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+            <div class="form-group col-md-4 ">
+                <label for="inputEmail4">Phone 1</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Phone1, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.Phone1, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4 ">
+                <label for="inputEmail4">Phone 2</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Phone2, new { @class = "form-control form-control-sm", disabled = "disabled" })
+                    @Html.ValidationMessageFor(m => m.Phone2, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="text-center" style="padding-top:15px;">
+        <div class="col-lg-2"></div>
+        <div class="btn-group col-md-12" role="group" aria-label="Basic example">
+            @if (User.Identity.HasTheRights("Company", "Create"))
+            {
+                <a href="~/Company/Company/Create" class="btn btn-outline-primary"><i class="fa fa-group"></i> Add New Company</a>
+            }
+            @if (User.Identity.HasTheRights("Company", "Update"))
+            {
+                if (!Model.AuthForEditAndDelete)
+                {
+                    <a href="~/Company/Company/Edit?Code=@Model.CompanyID" class="btn btn-outline-primary"><i class="fa fa-edit"></i> Edit </a>
+                }
+                @*@Html.ActionLink("Edit", "Edit", "Account", new { UserName = Model.UserName, }, new { @class = " btn btn-outline-primary fa fa-edit" })*@
+            }
+            @if (User.Identity.HasTheRights("Company", "Delete"))
+            {
+                if (!Model.AuthForEditAndDelete)
+                {
+                    <a href="" data-toggle="modal" data-target="#Delete" class="btn btn-outline-primary"><i class="fa fa-remove"></i> Delete </a>
+                }
+                @*@Html.ActionLink("Delete", "Delte", "Account", new { Code = Model.Code, }, new { @class = " btn btn-outline-primary fa fa-remove" })*@
+            }
+          
+         
+            <a href="~/Company/Company/Search" class="btn btn-outline-primary"><i class="fa fa-search"></i> Search</a>
+            <a href="~/Company/Company/Previous?Id=@Model.CompanyID" id="Prev" class="btn btn-outline-primary"><i class="fa fa-backward"></i> Previous </a>
+            <a href="~/Company/Company/Next?Id=@Model.CompanyID" id="Next" class="btn btn-outline-primary"><i class="fa fa-forward"></i> Next </a>
+            <a href="~/Home/Home/Index" class="btn btn-outline-primary"><i class="fa fa-home"></i> Back to Home</a>
+
+        </div>
+    </div>
+}
+
+<div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Delete</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                Are You Sure You Want to Delete ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <a href="~/Company/Company/Delete?code=@Model.CompanyID" class="btn btn-danger ">Delete</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="Auth" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalCenterTitle">Autherize</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+
+                Are You Sure You Want to Autherize ?
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                @*
+                    <a href="~/cities/City/AuthorizeCity?Code=@Model.Code" class="btn btn-primary">Autherize</a>
+            *@</div>
+        </div>
+    </div>
+</div>
+
+<script src="~/Scripts/jquery-3.4.1.min.js"></script>
+<script src="~/Scripts/jquery.validate.min.js"></script>
+<script src="~/Scripts/jquery.validate.unobtrusive.min.js"></script>
+<script>
+        $(function () {
+
+            var last=  "@TempData["Last"]" ;
+
+            if (last != null) {
+                if ("@TempData["Last"]" == "Last") {
+
+                    document.getElementById("Next").classList.add('disabled');
+                }
+            }
+            /////////////////////////
+           var last=  "@TempData["First"]" ;
+
+            if (last != null) {
+
+                if ("@TempData["First"]" == "First") {
+
+                    document.getElementById("Prev").classList.add('disabled');
+                }
+
+            }
+            /////////////////////
+        });
+
+</script>

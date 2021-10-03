@@ -1,0 +1,250 @@
+﻿@model PagedList.IPagedList<ICP_ABC.Areas.ExcelAuthorization.Models.ExcelDetails>
+@using PagedList.Mvc;
+@using ICP_ABC.Extentions
+
+@{
+    ViewBag.Title = "Search";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<h2>Transaction Setup: (Authentication)</h2>
+
+<form class="form-inline" id="SearchForm">
+    <label class="sr-only" for="inlineFormInputName2">Name</label>
+    <input type="text" class="form-control form-control-sm" name="Code" value="@ViewData["Code"]" id="Code" placeholder="By Code">
+    <input type="text" class="form-control form-control-sm" name="searchString" value="@ViewData["searchString"]" id="searchString" placeholder="By Name">
+    <input id="datefield" class="form-control form-control-sm" dateval="@ViewData["date"]" name="date" type='date' value="@ViewData["date"]" min='1960-01-01' max='@DateTime.Now.ToString("yyyy-MM-dd")'>
+    <input type="text" data-id="@ViewData["Type"]" name="type" hidden value="@ViewData["Type"]" id="Type" />
+    @{
+        var chk = ViewData["radioCHeck"] as string;
+        var AuthorizeCHK = chk == "1" ? "checked" : "";
+        var PendingCHK = chk == "2" ? "checked" : "";
+        var DeleteCHK = chk == "3" ? "checked" : "";
+        var AllCHK = chk == "4" ? "checked" : "";
+        var Type = ViewData["Type"];
+    }
+    <input id="Authorize"
+           name="RadioCHeck"
+           type="radio"
+           value="1"
+           @AuthorizeCHK />Authorized&nbsp;
+
+    <input style="display:inline-block" id="Checker"
+           name="RadioCHeck"
+           type="radio"
+           value="2" @PendingCHK /><label style="display:inline-block" for="Check">Pending&nbsp;</label>
+
+    <input id="Maker"
+           name="RadioCHeck"
+           type="radio"
+           value="3"
+           @DeleteCHK />Deleted&nbsp;
+
+    <input id="All"
+           name="RadioCHeck"
+           type="radio"
+           value="4"
+           @AllCHK />All&nbsp;
+    <button type="submit" class="btn btn-outline-primary mb-2 mr-sm-4" style="margin-left:5px;"><i class="fa fa-search"></i> Search</button>
+</form>
+
+
+<div>
+    <table class="table" id="transaction">
+        <tr style="font-family:initial;color:blue">
+            <th>
+                Code
+            </th>
+            <th>
+                Excel
+            </th>
+            <th>
+                Date
+            </th>
+            <th>
+                Status
+            </th>
+            <th></th>
+        </tr>
+
+        @foreach (var item in Model)
+        {
+            var id = item.Id;
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => id)
+                </td>
+
+                <td>
+                    <a href="~/ExcelAuth/ExcelAuth/DownloadExcel/@item.Id">@item.Name</a>
+                </td>
+                <td>
+                    @{
+                        var date = item.uploadDate.ToString();
+                    }
+                    @Html.DisplayFor(modelItem => date)
+                </td>
+                <td>
+                    @{
+                        byte status = item.Status;
+                    }
+                    @if (status == 1)
+                    {
+                        <button href="~/ExcelAuthorization/ExcelAuth/AuthorizeExcel?code=@item.Id&type=@ViewData["Type"]" ExcelID="@item.Id" type="@ViewData["Type"]" id="verify-'@item.Id'" class="btn btn-warning verify">pending</button>
+                    }
+                    else if (status == 2)
+                    {
+                        <a href="#" class="btn btn-danger" disabled>Deleted</a>
+                    }
+                    else if (status == 3)
+                    {
+                        <a href="#" class="btn btn-success" disabled>Verified</a>
+                    }
+                    else
+                    {
+                        <p>Error</p>
+                    }
+                </td>
+                <td>
+
+                        @if (User.Identity.HasTheRights(ViewData["Typename"].ToString(), "Delete") && item.Status == 1)
+                        {
+                            <a href="" id='delete-@item.Id' data-id="@item.Id" data-toggle="modal" data-target="#Delete" class="btn btn-outline-primary delete"><i class="fa fa-remove"></i> Delete </a>
+                        }
+                        else if (User.Identity.HasTheRights(ViewData["Typename"].ToString(), "Authorized") && item.Status == 3)
+                        {
+                            <button href="~/ExcelAuthorization/ExcelAuth/UnAuthorizeExcel?code=@item.Id&type=@ViewData["Type"]" ExcelID="@item.Id" type="@ViewData["Type"]" id="unauth-@item.Id"  class="btn btn-outline-primary unauth">Un Auth</button>
+                        }
+                </td>
+            </tr>
+
+
+        }
+    </table>
+
+    <div class="modal fade" id="Delete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalCenterTitle">Delete</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    Are You Sure You Want to Delete ?
+                </div>
+                <div class="modal-footer" id="modelfooter">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <a id="deleteId" href="" class="btn btn-primary ">Confirm</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @Html.PagedListPager(Model, page => Url.Action("Search", new { page, RadioCHeck = Request.QueryString["RadioCHeck"], Type = Request.QueryString["Type"], Code = Request.QueryString["CodeString"], searchString = Request.QueryString["searchString"] }))
+
+
+    <div class="text-center">
+        <div class="btn-group col-md-5" role="group" aria-label="Basic example">
+            <a href="~/Subscriptions/Subscription/Create" class="btn btn-outline-primary"><i class="fa fa-plus"></i> Add New Transaction</a>
+            <a href="~/Home/Home/Index" class="btn btn-outline-primary"><i class="fa fa-home"></i> Back to Home</a>
+        </div>
+    </div>
+
+
+    @section scripts{
+
+        <script>
+            $(document).on("click", ".delete", function () {
+                console.log($(this).data('id'))
+                var mytransId = $(this).data('id');
+                var pagetype = $("#Type").data('id');
+                console.log(pagetype);
+                $("#deleteId").attr("href", "/ExcelAuthorization/ExcelAuth/Delete?" + "id=" + mytransId + "&type=" + pagetype);
+                console.log($("#deleteid").attr("href"));
+
+            });
+
+            $(function () {
+                $("#datefield").val($("#datefield").attr["dateval"]);
+            });
+
+            //function setattributes(type, ExcelID,href) {
+            //    but.setAttribute("type", type);
+            //    but.setAttribute("href", href + ExcelID + ' & type=' + type);
+            //    but.setAttribute("ExcelID", ExcelID);
+            //    but.setAttribute("id", "unauth-'" + ExcelID + "'");
+            //}
+
+
+            $("#transaction").on("click", ".verify", function (e) {
+                var button = $(this);
+                var id = button.attr("ExcelID");
+                var type = button.attr("type");
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "/ExcelAuthorization/ExcelAuth/AuthorizeExcel?code=" + id + "&type=" + button.attr("type"),
+                    success: function (result) {
+                        button.attr("href", "");
+                        button.removeClass("btn-warning");
+                        button.addClass("btn-success");
+                        button.html("Verified");
+                        var but = document.createElement('button');
+                        but.setAttribute('class', "btn btn-outline-primary unauth");
+                        but.innerHTML = "UnAuth";
+                        but.setAttribute("type", type);
+                        but.setAttribute("href","~/ExcelAuthorization/ExcelAuth/UnAuthorizeExcel?code="+id+"&type="+type);
+                        but.setAttribute("ExcelID", id);
+                        but.setAttribute("id", "unauth-" + id);
+                        document.getElementById("delete-" + id).parentNode.append(but);
+                        document.getElementById("delete-" + id).remove();
+                    },
+                    error: function (result) {
+                        alert('error');
+                    }
+                });
+            });
+
+            $("#transaction").on("click", ".unauth", function (e) {
+                var button = $(this);
+                var id = button.attr("ExcelID");
+                e.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: "/ExcelAuthorization/ExcelAuth/UnAuthorizeExcel?code="+id +"&type="+ button.attr("type"),
+                    success: function (result) {
+                        var a = document.createElement('a');
+                        a.setAttribute("data-id", id);
+                        a.setAttribute("id", "delete-" + id)
+                        a.setAttribute("data-toggle","modal");
+                        a.setAttribute("data-target", "#Delete");
+                        a.setAttribute("class", "btn btn-outline-primary delete");
+                        a.innerHTML="<i class='fa fa-remove'></i> Delete ";
+                        document.getElementById("unauth-" + id).parentNode.append(a);
+                        var pendbutton = document.getElementById("unauth-" + id).parentNode.parentNode.children[3]
+                        pendbutton.innerHTML = " <button href='~/ExcelAuthorization/ExcelAuth/AuthorizeExcel?code=" + id + "&type=" + button.attr("type")+ "'"+ " ExcelID='" + id + "' type='" + button.attr("type")+"' id='verify-"+id+"' class='btn btn-warning verify'>pending</button>";
+                        $("#unauth-" + id).removeClass("btn btn-warning verify").addClass("btn btn-success");
+                        document.getElementById("unauth-" + id).remove();
+
+                    },
+                    error: function (result) {
+                        alert('error');
+                    }
+                });
+            });
+
+
+
+          /*  function reply_click(clicked_id) {
+                if ($("#clicked_id").hasClass("verify"))
+
+                
+
+            }*/
+           
+        </script>
+    }

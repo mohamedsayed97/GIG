@@ -1,0 +1,94 @@
+﻿@model  ICP_ABC.Areas.Company.Models.Company
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Company Setup</h2>
+@using (Html.BeginForm("", "", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+{
+<div>
+    @Html.AntiForgeryToken()
+
+    <p class="text-danger">@Html.ValidationSummary(true)</p>
+
+    <div class="row">
+        <div class="col-md-4">
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Company Code</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.CompanyID, new { @class = "form-control-sm", Value = ViewData["LastCode"], text = ViewData["LastCode"], @readOnly = "readOnly" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Company Name</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Companyname, new { @class = "form-control-sm", disabled = "disabled" })
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-4">
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Comerical Record</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.ComericalRecord, new { @class = "form-control-sm", disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="row">
+
+        <div class="col-md-4">
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Address1</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Address1, new { @class = "form-control-sm", disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Address 2</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Address2, new { @class = "form-control-sm", disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">phone 1</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Phone1, new { @class = "form-control-sm", disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group col-md-5 ">
+                <label for="inputEmail4">Phone 2</label>
+                <div class="col-md-7">
+                    @Html.TextBoxFor(m => m.Phone2, new { @class = "form-control-sm", disabled = "disabled" })
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="navbar fixed-bottom navbar-light bg-light " style=" display: block;text-align: center;">
+        <div class="col-md-3"></div>
+        <div class="btn-group col-md-8" role="group" aria-label="Basic example">
+            <a href="~/Company/Company/Create" class="btn btn-outline-primary"><i class="fa fa-plus"></i> Add New Company</a>
+            <a href="~/Company/Company/Search" class="btn btn-outline-primary"><i class="fa fa-search"></i> Search</a>
+            <a href="~/Home/Home/Index" class="btn btn-outline-primary"><i class="fa fa-home"></i> Back To Home</a>
+
+        </div>
+    </div>
+  
+</div>
+        }
